@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<title>npl_awt_event_InputEvent: Classe InputEvent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 1.0.4">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="tipuesearch/tipuesearch.css">
+
+<link rel="StyleSheet" type="text/css" href="bootstrap.min.css">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<nav class="navbar d-md-none sticky-top bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Documentation</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarNav" aria-controls="sidebarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+<div class="offcanvas-md offcanvas-start navigation" tabindex="-1" id="sidebarNav" data-bs-scroll="true">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Documentation</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarNav" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body py-2">
+<ul class="nav flex-column px-3"><li class="nav-item"><a class="nav-link px-2 py-1" href="AllUnits.html">Units</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="ClassHierarchy.html">Hierarquia de Classes</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="AllClasses.html">Classes, Interfaces, Objetos e Registros</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="AllTypes.html">Tipos</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="AllVariables.html">Variáveis</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="AllConstants.html">Constantes</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="AllFunctions.html">Funções e Procedimentos</a></li><li class="nav-item"><a class="nav-link px-2 py-1" href="AllIdentifiers.html">Identificadores</a></li><li class="nav-item pt-2 px-2"><form class="search-form" action="tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input" pattern=".{1,}" title="At least 1 characters" required><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></div></form>
+<div style="clear: both"></div>
+</li></ul></div></div>
+<main class="pasdoc-content content">
+<div class="container-fluid py-3 px-4">
+<span id="InputEvent"></span><h1 class="cio">Classe InputEvent</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Descrição</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarquia</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Campos</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Métodos</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a href="npl_awt_event_InputEvent.html">npl_awt_event_InputEvent</a></p>
+<h2 class="declaration">Declaração</h2>
+<p class="declaration">
+<code>type InputEvent = class(<a class="normal" href="npl_awt_event_ComponentEvent.ComponentEvent.html">ComponentEvent</a>)</code></p>
+<h2 class="description">Descrição</h2>
+<p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarquia</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="npl.NPLObject.html">NPLObject</a></li>
+<li class="ancestor"><a class="normal" href="npl_util_EventObject.EventObject.html">EventObject</a></li>
+<li class="ancestor"><a class="normal" href="npl_awt_AWTEvent.AWTEvent.html">AWTEvent</a></li>
+<li class="ancestor"><a class="normal" href="npl_awt_event_ComponentEvent.ComponentEvent.html">ComponentEvent</a></li>
+<li class="thisitem">InputEvent</li></ul><h2 class="overview">Visão Geral</h2>
+<span id="PasDoc-Fields"></span><h3 class="summary">Campos</h3>
+<table class="summary wide_list">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><code><strong><a href="npl_awt_event_InputEvent.InputEvent.html#fWhen">fWhen</a></strong>: <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr class="list2 visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><code><strong><a href="npl_awt_event_InputEvent.InputEvent.html#fModifiers">fModifiers</a></strong>: <a href="npl.html#int">int</a>;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Methods"></span><h3 class="summary">Métodos</h3>
+<table class="summary wide_list">
+<tr class="list visibility-private">
+<td class="visibility"><span class="badge vis-private">Private</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getButtonDownMasks">getButtonDownMasks</a></strong>: <a href="npl.html#intarr">intarr</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>constructor <strong><a href="npl_awt_event_InputEvent.InputEvent.html#create-AWTComponent-int-long-int-">create</a></strong>(source : <a href="npl_awt_Component.AWTComponent.html">AWTComponent</a>; id : <a href="npl.html#int">int</a>; when : <a href="npl.html#long">long</a>; modifiers : <a href="npl.html#int">int</a>); virtual;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isShiftDown">isShiftDown</a></strong>: boolean; virtual;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isControlDown">isControlDown</a></strong>: boolean; virtual;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isMetaDown">isMetaDown</a></strong>: boolean; virtual;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isAltDown">isAltDown</a></strong>: boolean; virtual;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isAltGraphDown">isAltGraphDown</a></strong>: boolean; virtual;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getWhen">getWhen</a></strong>: <a href="npl.html#long">long</a>; virtual;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getModifiers">getModifiers</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getModifiersEx">getModifiersEx</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_awt_event_InputEvent.InputEvent.html#consume">consume</a></strong>; override;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isConsumed">isConsumed</a></strong>: boolean; override;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getMaskForButton-int-">getMaskForButton</a></strong>(button : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getModifiersExText-int-">getModifiersExText</a></strong>(modifiers : <a href="npl.html#int">int</a>) : <a href="npl.html#wstring">wstring</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Descrição</h2>
+<h3 class="detail">Campos</h3>
+<table class="detail visibility-protected wide_list">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><span id="fWhen"></span><code><strong>fWhen</strong>: <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-protected wide_list">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><span id="fModifiers"></span><code><strong>fModifiers</strong>: <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<h3 class="detail">Métodos</h3>
+<table class="detail visibility-private wide_list">
+<tr class="list visibility-private">
+<td class="visibility"><span class="badge vis-private">Private</span></td>
+<td class="itemcode"><span id="getButtonDownMasks"></span><code>class function <strong>getButtonDownMasks</strong>: <a href="npl.html#intarr">intarr</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="create-AWTComponent-int-long-int-"></span><code>constructor <strong>create</strong>(source : <a href="npl_awt_Component.AWTComponent.html">AWTComponent</a>; id : <a href="npl.html#int">int</a>; when : <a href="npl.html#long">long</a>; modifiers : <a href="npl.html#int">int</a>); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isShiftDown"></span><code>function <strong>isShiftDown</strong>: boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isControlDown"></span><code>function <strong>isControlDown</strong>: boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isMetaDown"></span><code>function <strong>isMetaDown</strong>: boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isAltDown"></span><code>function <strong>isAltDown</strong>: boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isAltGraphDown"></span><code>function <strong>isAltGraphDown</strong>: boolean; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="getWhen"></span><code>function <strong>getWhen</strong>: <a href="npl.html#long">long</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="getModifiers"></span><code>function <strong>getModifiers</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="getModifiersEx"></span><code>function <strong>getModifiersEx</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="consume"></span><code>procedure <strong>consume</strong>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isConsumed"></span><code>function <strong>isConsumed</strong>: boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="getMaskForButton-int-"></span><code>class function <strong>getMaskForButton</strong>(button : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="getModifiersExText-int-"></span><code>class function <strong>getModifiersExText</strong>(modifiers : <a href="npl.html#int">int</a>) : <a href="npl.html#wstring">wstring</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<hr><span class="appinfo"><em>Gerado por <a href="https://pasdoc.github.io/">PasDoc 1.0.4</a>. </em>
+</span>
+</div></main>
+<script src="bootstrap.bundle.min.js"></script>
+</body></html>
