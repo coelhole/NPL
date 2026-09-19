@@ -69,7 +69,7 @@ type
   AWTComponent=class(NPLObject)
   private
     fValid : boolean;
-    fName : string;
+    fName : nstring;
     fNameExplicitlySet : boolean;
     fFocusable : boolean;
     fIsFocusTraversableOverridden : int;
@@ -111,9 +111,9 @@ type
     function getAlignmentY : float; virtual;
     function getBoundsOp : int; virtual;
     procedure setBoundsOp(op : int); virtual;
-    function constructComponentName : string; virtual;
-    function getName : string; virtual;
-    procedure setName(name : string); virtual;
+    function constructComponentName : nstring; virtual;
+    function getName : nstring; virtual;
+    procedure setName(name : nstring); virtual;
     function getParent : AWTContainer; virtual;
     function getContainer : AWTContainer; virtual;
     function isRecursivelyVisible : boolean; virtual;
@@ -162,7 +162,7 @@ type
     property maximumSize : AWTDimension read getMaximumSize write setMaximumSize;
     property alignmentX : float read getAlignmentX;
     property alignmentY : float read getAlignmentY;
-    property name : string read getName write setName;
+    property name : nstring read getName write setName;
     property parent : AWTContainer read getParent;
   end;
 
@@ -460,12 +460,12 @@ begin
     fBoundsOp := op;
 end;
 
-function AWTComponent.constructComponentName : string;
+function AWTComponent.constructComponentName : nstring;
 begin
   result := '';
 end;
 
-function AWTComponent.getName: string;
+function AWTComponent.getName: nstring;
 begin
   if (fName = '') and (not fNameExplicitlySet) then
   begin
@@ -480,9 +480,9 @@ begin
   result := fName;
 end;
 
-procedure AWTComponent.setName(name : string);
+procedure AWTComponent.setName(name : nstring);
 var
-  oldName : string;
+  oldName : nstring;
 begin
   getTreeLock.enter;
   try

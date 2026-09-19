@@ -26,7 +26,7 @@ begin
   ResultSize := GetModuleFileName(0, Buffer, Length(Buffer));
   
   if ResultSize = 0 then
-    RaiseLastWin32Error;
+    {$IFDEF DELPHI6UPORFPC}RaiseLastOSError{$ELSE}RaiseLastWin32Error{$ENDIF};
 
   if ResultSize >= DWORD(Length(Buffer)) then
   begin
@@ -34,7 +34,7 @@ begin
     SetLength(ExtendedBuffer, AllocatedSize);
     ResultSize := GetModuleFileName(0, PChar(ExtendedBuffer), AllocatedSize);
     if (ResultSize = 0) or (ResultSize >= AllocatedSize) then
-      RaiseLastWin32Error;
+      {$IFDEF DELPHI6UPORFPC}RaiseLastOSError{$ELSE}RaiseLastWin32Error{$ENDIF};
     SetLength(ExtendedBuffer, ResultSize);
     Result := ExtendedBuffer;
   end

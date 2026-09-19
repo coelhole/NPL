@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>npl: Class NPLInterfacedObject</title>
+<title>npl: Class NPLNumber</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="PasDoc 1.0.4">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -30,92 +30,69 @@
 </li></ul></div></div>
 <main class="pasdoc-content content">
 <div class="container-fluid py-3 px-4">
-<span id="NPLInterfacedObject"></span><h1 class="cio">Class NPLInterfacedObject</h1>
+<span id="NPLNumber"></span><h1 class="cio">Class NPLNumber</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLInterfacedObject = class(<a class="normal" href="npl.NPLObject.html">NPLObject</a>, IUnknown)</code></p>
+<code>type NPLNumber = class(<a class="normal" href="npl.NPLObject.html">NPLObject</a>)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
 <li class="ancestor"><a class="normal" href="npl.NPLObject.html">NPLObject</a></li>
-<li class="thisitem">NPLInterfacedObject</li></ul><h2 class="overview">Overview</h2>
+<li class="thisitem">NPLNumber</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
 <table class="summary wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code><strong><a href="npl.NPLInterfacedObject.html#FRefCount">FRefCount</a></strong>: Integer;</code></td>
+<tr class="list visibility-private">
+<td class="visibility"><span class="badge vis-private">Private</span></td>
+<td class="itemcode"><code><strong><a href="npl.NPLNumber.html#fValue">fValue</a></strong>: <a href="npl.union.html">union</a>;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#QueryInterface-TGUID-const-">QueryInterface</a></strong>(const IID : TGUID; out Obj) : HResult; stdcall;</code></td>
-</tr>
-<tr class="list2 visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#_AddRef">_AddRef</a></strong>: Integer; stdcall;</code></td>
-</tr>
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#_Release">_Release</a></strong>: Integer; stdcall;</code></td>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#sbyteValue">sbyteValue</a></strong>: <a href="npl.html#sbyte">sbyte</a>; virtual;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl.NPLInterfacedObject.html#AfterConstruction">AfterConstruction</a></strong>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#shortValue">shortValue</a></strong>: <a href="npl.html#short">short</a>; virtual;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl.NPLInterfacedObject.html#BeforeDestruction">BeforeDestruction</a></strong>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#intValue">intValue</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLInterfacedObject.html#NewInstance">NewInstance</a></strong>: TObject; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#longValue">longValue</a></strong>: <a href="npl.html#long">long</a>; virtual;</code></td>
 </tr>
-</table>
-<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
-<table class="summary wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>property <strong><a href="npl.NPLInterfacedObject.html#RefCount">RefCount</a></strong> : Integer read <a href="npl.NPLInterfacedObject.html#FRefCount">FRefCount</a>;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#floatValue">floatValue</a></strong>: <a href="npl.html#float">float</a>; virtual;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#doubleValue">doubleValue</a></strong>: double; virtual;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Fields</h3>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="FRefCount"></span><code><strong>FRefCount</strong>: Integer;</code></td>
+<table class="detail visibility-private wide_list">
+<tr class="list visibility-private">
+<td class="visibility"><span class="badge vis-private">Private</span></td>
+<td class="itemcode"><span id="fValue"></span><code><strong>fValue</strong>: <a href="npl.union.html">union</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <h3 class="detail">Methods</h3>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="QueryInterface-TGUID-const-"></span><code>function <strong>QueryInterface</strong>(const IID : TGUID; out Obj) : HResult; stdcall;</code></td>
-</tr>
-<tr><td colspan="2">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="_AddRef"></span><code>function <strong>_AddRef</strong>: Integer; stdcall;</code></td>
-</tr>
-<tr><td colspan="2">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="_Release"></span><code>function <strong>_Release</strong>: Integer; stdcall;</code></td>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="sbyteValue"></span><code>function <strong>sbyteValue</strong>: <a href="npl.html#sbyte">sbyte</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -123,7 +100,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="AfterConstruction"></span><code>procedure <strong>AfterConstruction</strong>; override;</code></td>
+<td class="itemcode"><span id="shortValue"></span><code>function <strong>shortValue</strong>: <a href="npl.html#short">short</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -131,7 +108,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="BeforeDestruction"></span><code>procedure <strong>BeforeDestruction</strong>; override;</code></td>
+<td class="itemcode"><span id="intValue"></span><code>function <strong>intValue</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -139,16 +116,23 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="NewInstance"></span><code>class function <strong>NewInstance</strong>: TObject; override;</code></td>
+<td class="itemcode"><span id="longValue"></span><code>function <strong>longValue</strong>: <a href="npl.html#long">long</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
-<h3 class="detail">Properties</h3>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="RefCount"></span><code>property <strong>RefCount</strong> : Integer read <a href="npl.NPLInterfacedObject.html#FRefCount">FRefCount</a>;</code></td>
+<td class="itemcode"><span id="floatValue"></span><code>function <strong>floatValue</strong>: <a href="npl.html#float">float</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="doubleValue"></span><code>function <strong>doubleValue</strong>: double; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

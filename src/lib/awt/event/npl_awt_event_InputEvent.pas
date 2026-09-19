@@ -52,7 +52,7 @@ type
     procedure consume; override;
     function isConsumed : boolean; override;
     class function getMaskForButton(button : int) : int;
-    class function getModifiersExText(modifiers : int) : wstring;
+    class function getModifiersExText(modifiers : int) : nstring;
   end;
 
 const
@@ -142,7 +142,7 @@ begin
   result := fConsumed;
 end;
 
-class function InputEvent.getModifiersExText(modifiers : int) : wstring;
+class function InputEvent.getModifiersExText(modifiers : int) : nstring;
 var
   strm : TStringStream;
   buttonNumber, mask : int;

@@ -1,6 +1,6 @@
 [Main]
 StoreRelativePaths=1
-Language=br.utf8
+Language=en
 OutputDir=..\doc
 GenerateFormat=0
 ImplementationComments=0
