@@ -32,7 +32,7 @@
 <div class="container-fluid py-3 px-4">
 <h1 class="unit">Unit npl</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Uses">Uses</a></div><div class="one_section"><a class="section" href="#PasDoc-Classes">Classes, Interfaces, Objects and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-Types">Types</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Uses">Uses</a></div><div class="one_section"><a class="section" href="#PasDoc-Classes">Classes, Interfaces, Objects and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-FuncsProcs">Functions and Procedures</a></div><div class="one_section"><a class="section" href="#PasDoc-Types">Types</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Uses"></span><h2 class="uses">Uses</h2>
 <ul class="useslist"><li>classes</li><li>SysUtils</li><li>Windows</li></ul><h2 class="overview">Overview</h2>
@@ -91,7 +91,7 @@
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list">
-<td class="itemname">Class&nbsp;<a class="bold" href="npl.NPLInt.html"><code>NPLInt</code></a></td>
+<td class="itemname">Class&nbsp;<a class="bold" href="npl.NPLInteger.html"><code>NPLInteger</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
@@ -117,6 +117,15 @@
 <tr class="list">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.NPLChar.html"><code>NPLChar</code></a></td>
 <td class="itemdesc">&nbsp;</td>
+</tr>
+</table>
+<span id="PasDoc-FuncsProcs"></span><h3 class="summary">Functions and Procedures</h3>
+<table class="summary wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><code>function <strong><a href="npl.html#signedRightShift-int-int-">signedRightShift</a></strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code>function <strong><a href="npl.html#signedRightShift-long-int-">signedRightShift</a></strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Types"></span><h3 class="summary">Types</h3>
@@ -314,7 +323,7 @@
 <td class="itemcode"><code><strong><a href="npl.html#NPLShortClass">NPLShortClass</a></strong> = class of <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NPLIntClass">NPLIntClass</a></strong> = class of <a href="npl.NPLInt.html">NPLInt</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NPLIntegerClass">NPLIntegerClass</a></strong> = class of <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLLongClass">NPLLongClass</a></strong> = class of <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
@@ -336,6 +345,21 @@
 </tr>
 </table>
 <h2 class="description">Description</h2>
+<h3 class="detail">Functions and Procedures</h3>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="signedRightShift-int-int-"></span><code>function <strong>signedRightShift</strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="signedRightShift-long-int-"></span><code>function <strong>signedRightShift</strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
 <h3 class="detail">Types</h3>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
@@ -826,7 +850,7 @@ array types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NPLIntClass"></span><code><strong>NPLIntClass</strong> = class of <a href="npl.NPLInt.html">NPLInt</a>;</code></td>
+<td class="itemcode"><span id="NPLIntegerClass"></span><code><strong>NPLIntegerClass</strong> = class of <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>

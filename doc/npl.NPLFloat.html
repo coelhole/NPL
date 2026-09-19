@@ -55,6 +55,46 @@
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLFloat.html#equals-TObject-">equals</a></strong>(obj : TObject) : boolean; override;</code></td>
 </tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLFloat.html#compareTo-NPLFloat-">compareTo</a></strong>(anotherFloat : <a href="npl.NPLFloat.html">NPLFloat</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLFloat.html#isNaN">isNaN</a></strong>: boolean; overload;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLFloat.html#isInfinite">isInfinite</a></strong>: boolean; overload;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLFloat.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; override;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLFloat.html#floatToRawIntBits-float-">floatToRawIntBits</a></strong>(value : <a href="npl.html#float">float</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLFloat.html#intBitsToFloat-int-">intBitsToFloat</a></strong>(bits : <a href="npl.html#int">int</a>) : <a href="npl.html#float">float</a>;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLFloat.html#isNaN-float-">isNaN</a></strong>(v : <a href="npl.html#float">float</a>) : boolean; overload;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLFloat.html#isInfinite-float-">isInfinite</a></strong>(v : <a href="npl.html#float">float</a>) : boolean; overload;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLFloat.html#floatToIntBits-float-">floatToIntBits</a></strong>(value : <a href="npl.html#float">float</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLFloat.html#compare-float-float-">compare</a></strong>(f1, f2 : <a href="npl.html#float">float</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
@@ -77,6 +117,86 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="equals-TObject-"></span><code>function <strong>equals</strong>(obj : TObject) : boolean; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="compareTo-NPLFloat-"></span><code>function <strong>compareTo</strong>(anotherFloat : <a href="npl.NPLFloat.html">NPLFloat</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isNaN"></span><code>function <strong>isNaN</strong>: boolean; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isInfinite"></span><code>function <strong>isInfinite</strong>: boolean; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="hashCode"></span><code>function <strong>hashCode</strong>: <a href="npl.html#int">int</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="floatToRawIntBits-float-"></span><code>class function <strong>floatToRawIntBits</strong>(value : <a href="npl.html#float">float</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="intBitsToFloat-int-"></span><code>class function <strong>intBitsToFloat</strong>(bits : <a href="npl.html#int">int</a>) : <a href="npl.html#float">float</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isNaN-float-"></span><code>class function <strong>isNaN</strong>(v : <a href="npl.html#float">float</a>) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isInfinite-float-"></span><code>class function <strong>isInfinite</strong>(v : <a href="npl.html#float">float</a>) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="floatToIntBits-float-"></span><code>class function <strong>floatToIntBits</strong>(value : <a href="npl.html#float">float</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="compare-float-float-"></span><code>class function <strong>compare</strong>(f1, f2 : <a href="npl.html#float">float</a>) : <a href="npl.html#int">int</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

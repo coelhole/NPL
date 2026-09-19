@@ -30,6 +30,7 @@
 {$ENDIF}
 
 {$IFDEF FPC}	{ Free Pascal Compiler }
+  {$MODE DELPHI}
   {$UNDEF DELPHI5UP}
   {$UNDEF DELPHI6UP}
   {$DEFINE DELPHI5ORFPC}

@@ -71,6 +71,11 @@ type
 {$endif FPC}
 {$endif DELPHI5OROLDER}
 
+{$ifdef DELPHI5OROLDER}
+const
+  E_NOINTERFACE = HRESULT($80004002);
+{$endif DELPHI5OROLDER}
+
 type
   int8    = shortint;
   int16   = smallint;
@@ -163,7 +168,7 @@ type
 
   NPLClass = class of NPLObject;
 
-  NPLInterfacedObject = class(NPLObject, IUnknown)
+  NPLInterfacedObject = class(NPLObject, {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}IInterface{$ENDIF})
   protected
     FRefCount: Integer;
     function QueryInterface(const IID : TGUID; out Obj) : HResult; stdcall;
@@ -220,6 +225,9 @@ type
   public
     constructor create(aValue : sbyte);
     function equals(obj : TObject) : boolean; override;
+    function compareTo(anotherByte : NPLSByte) : int;
+    function hashCode : int; override;
+    class function compare(x, y : sbyte) : int;
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
   end;
 
@@ -229,24 +237,32 @@ type
   public
     constructor create(aValue : short);
     function equals(obj : TObject) : boolean; override;
+    function compareTo(anotherShort : NPLShort) : int;
+    function hashCode : int; override;
+    class function compare(x, y : short) : int;
+    class function reverseBytes(i : short) : short;
     property value : short read fValue.shortValue write fValue.shortValue;
   end;
 
   NPLShortClass = class of NPLShort;
 
-  NPLInt = class(NPLNumber)
+  NPLInteger = class(NPLNumber)
   public
     constructor create(aValue : int);
     function equals(obj : TObject) : boolean; override;
+    function compareTo(anotherInteger : NPLInteger) : int;
+    function hashCode : int; override;
+    class function compare(x, y : int) : int;
     property value : int read fValue.intValue write fValue.intValue;
   end;
 
-  NPLIntClass = class of NPLInt;
+  NPLIntegerClass = class of NPLInteger;
 
   NPLLong = class(NPLNumber)
   public
     constructor create(aValue : long);
     function equals(obj : TObject) : boolean; override;
+    function hashCode : int; override;
     property value : long read fValue.longValue write fValue.longValue;
   end;
 
@@ -256,6 +272,16 @@ type
   public
     constructor create(aValue : float);
     function equals(obj : TObject) : boolean; override;
+    function compareTo(anotherFloat : NPLFloat) : int;
+    function isNaN : boolean; overload;
+    function isInfinite : boolean; overload;
+    function hashCode : int; override;
+    class function floatToRawIntBits(value : float) : int;
+    class function intBitsToFloat(bits : int) : float;
+    class function isNaN(v : float) : boolean; overload;
+    class function isInfinite(v : float) : boolean; overload;
+    class function floatToIntBits(value : float) : int;
+    class function compare(f1, f2 : float) : int;
     property value : float read fValue.floatValue write fValue.floatValue;
   end;
 
@@ -303,10 +329,56 @@ type
 
   NPLCharClass = class of NPLChar;
 
+
+function signedRightShift(value, bits : int): int; overload;
+function signedRightShift(value : long; bits : int): long; overload;
+
 implementation
 
 uses
-  typInfo;
+  npl_Float
+  ,npl_misc_FloatConsts
+  ,typInfo
+  ;
+
+function signedRightShift(value, bits : int): int;
+begin
+  if bits = 0 then
+    result := value
+  else if bits >= 32 then
+  begin
+    if value < 0 then
+      result := -1
+    else
+      result := 0;
+  end
+  else
+  begin
+    result := value shr bits;
+    if value < 0 then
+      result := result or (int($FFFFFFFF) shl (32 - bits));
+  end;
+end;
+
+function signedRightShift(value : long; bits : int): long;
+begin
+  if bits = 0 then
+    result := value
+  else if bits >= 64 then
+  begin
+    if value < 0 then
+      result := -1
+    else
+      result := 0;
+  end
+  else
+  begin
+    result := value shr bits;
+    if value < 0 then
+      result := result or
+        (long($FFFFFFFFFFFFFFFF) shl (64 - bits));
+  end;
+end;
 
 class function NPLObject.unitName : ansistring;
 var
@@ -371,7 +443,7 @@ begin
   if GetInterface(IID, Obj) then
     result := 0
   else
-    result := $80004002;
+    result := E_NOINTERFACE;
 end;
 
 function NPLInterfacedObject._AddRef : Integer;
@@ -431,6 +503,21 @@ begin
   result := fValue.sbyteValue=NPLSByte(obj).fValue.sbyteValue;
 end;
 
+function NPLSByte.compareTo(anotherByte : NPLSByte) : int;
+begin
+  result := NPLSByte.compare(self.fValue.sbyteValue, anotherByte.fValue.sbyteValue);
+end;
+
+function NPLSByte.hashCode : int;
+begin
+  result := int(fValue.sbyteValue);
+end;
+
+class function NPLSByte.compare(x, y : sbyte) : int;
+begin
+  result := x-y;
+end;
+
 constructor NPLShort.create(aValue : short);
 begin
   fValue.shortValue := aValue;
@@ -446,19 +533,59 @@ begin
   result := fValue.shortValue=NPLShort(obj).fValue.shortValue;
 end;
 
-constructor NPLInt.create(aValue : int);
+function NPLShort.compareTo(anotherShort : NPLShort) : int;
+begin
+  result := NPLShort.compare(self.fValue.shortValue, anotherShort.fValue.shortValue);
+end;
+
+function NPLShort.hashCode : int;
+begin
+  result := int(fValue.shortValue);
+end;
+
+class function NPLShort.compare(x, y : short) : int;
+begin
+  result := x-y;
+end;
+
+class function NPLShort.reverseBytes(i : short) : short;
+begin
+  result := short(short(signedRightShift(i and $FF00, 8)) or (i shl 8));
+end;
+
+constructor NPLInteger.create(aValue : int);
 begin
   fValue.intValue := aValue;
 end;
 
-function NPLInt.equals(obj : TObject) : boolean;
+function NPLInteger.equals(obj : TObject) : boolean;
 begin
   result := false;
   if obj=NIL then
     exit;
-  if not (obj is NPLInt) then
+  if not (obj is NPLInteger) then
     exit;
-  result := fValue.intValue=NPLInt(obj).fValue.intValue;
+  result := fValue.intValue=NPLInteger(obj).fValue.intValue;
+end;
+
+function NPLInteger.compareTo(anotherInteger : NPLInteger) : int;
+begin
+  result := NPLInteger.compare(self.fValue.intValue, anotherInteger.fValue.intValue);
+end;
+
+function NPLInteger.hashCode : int;
+begin
+  result := fValue.intValue;
+end;
+
+class function NPLInteger.compare(x, y : int) : int;
+begin
+  if x < y then
+    result := -1
+  else if x = y then
+    result := 0
+  else
+    result := 1;
 end;
 
 constructor NPLLong.create(aValue : long);
@@ -476,6 +603,11 @@ begin
   result := fValue.longValue=NPLLong(obj).fValue.longValue;
 end;
 
+function NPLLong.hashCode : int;
+begin
+  result := int(fValue.longValue xor (fValue.longValue shr 32));
+end;
+
 constructor NPLFloat.create(aValue : float);
 begin
   fValue.floatValue := aValue;
@@ -488,7 +620,89 @@ begin
     exit;
   if not (obj is NPLFloat) then
     exit;
-  result := fValue.floatValue=NPLFloat(obj).fValue.floatValue;
+  result := NPLFloat.floatToIntBits(self.fValue.floatValue)=NPLFloat.floatToIntBits(NPLFloat(obj).fValue.floatValue);
+end;
+
+function NPLFloat.compareTo(anotherFloat : NPLFloat) : int;
+begin
+  result := NPLFloat.compare(self.fValue.floatValue, anotherFloat.fValue.floatValue);
+end;
+
+function NPLFloat.isNaN : boolean;
+begin
+  result := NPLFloat.isNaN(fValue.floatValue);
+end;
+
+function NPLFloat.isInfinite : boolean;
+begin
+  result := NPLFloat.isInfinite(fValue.floatValue);
+end;
+
+function NPLFloat.hashCode : int;
+begin
+  result := NPLFloat.floatToIntBits(fValue.floatValue);
+end;
+
+class function NPLFloat.floatToRawIntBits(value : float) : int;
+var
+  u : union;
+begin
+  u.floatValue := value;
+  result := u.intValue;
+end;
+
+class function NPLFloat.intBitsToFloat(bits : int) : float;
+var
+  u : union;
+begin
+  u.intValue := long(bits);
+  result := u.floatValue;
+end;
+
+class function NPLFloat.isNaN(v : float) : boolean;
+var
+  bits: int;
+begin
+  bits := floatToRawIntBits(v);
+  result := ((bits and $7F800000) = $7F800000) and ((bits and $007FFFFF) <> 0);
+end;
+
+class function NPLFloat.isInfinite(v : float) : boolean;
+begin
+  result := (v = npl_Float.POSITIVE_INFINITY) or (v = npl_Float.NEGATIVE_INFINITY);
+end;
+
+class function NPLFloat.floatToIntBits(value : float) : int;
+begin
+  result := floatToRawIntBits(value);
+  if ((result and npl_misc_FloatConsts.EXP_BIT_MASK) = npl_misc_FloatConsts.EXP_BIT_MASK) and
+      ((result and npl_misc_FloatConsts.SIGNIF_BIT_MASK) <> 0) then
+      result := $7fc00000;
+end;
+
+class function NPLFloat.compare(f1, f2 : float) : int;
+var
+  thisBits, anotherBits : int;
+begin
+  if f1 < f2 then begin
+    result := -1;
+    exit;
+  end;
+
+  if f1 > f2 then begin
+    result := 1;
+    exit;
+  end;
+
+  thisBits := NPLFloat.floatToIntBits(f1);
+  anotherBits := NPLFloat.floatToIntBits(f2);
+
+  if thisBits = anotherBits then
+    result := 0
+  else if thisBits < anotherBits then
+    result := -1
+  else
+    result := 1;
 end;
 
 constructor NPLDouble.create(aValue : double);

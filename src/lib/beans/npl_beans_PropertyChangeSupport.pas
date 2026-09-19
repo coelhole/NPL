@@ -185,14 +185,14 @@ end;
 procedure PropertyChangeSupport.firePropertyChange(const propertyName : string; oldValue, newValue : int);
 var
   evt : PropertyChangeEvent;
-  oldInt, newInt : NPLInt;
+  oldInt, newInt : NPLInteger;
 begin
   if oldValue = newValue then
     exit;
 
-  oldInt := NPLInt.create(oldValue);
+  oldInt := NPLInteger.create(oldValue);
   try
-    newInt := NPLInt.create(newValue);
+    newInt := NPLInteger.create(newValue);
     try
       evt := PropertyChangeEvent.create(fSource, propertyName, oldInt, newInt);
       try
