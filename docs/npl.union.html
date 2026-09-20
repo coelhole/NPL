@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>npl: Class NPLLong</title>
+<title>npl: Record union</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="PasDoc 1.0.4">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -30,73 +30,78 @@
 </li></ul></div></div>
 <main class="pasdoc-content content">
 <div class="container-fluid py-3 px-4">
-<span id="NPLLong"></span><h1 class="cio">Class NPLLong</h1>
+<span id="union"></span><h1 class="cio">Record union</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLLong = class(<a class="normal" href="npl.NPLNumber.html">NPLNumber</a>)</code></p>
+<code>type union = record</code></p>
 <h2 class="description">Description</h2>
-<p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">TObject</li>
-<li class="ancestor"><a class="normal" href="npl.NPLObject.html">NPLObject</a></li>
-<li class="ancestor"><a class="normal" href="npl.NPLNumber.html">NPLNumber</a></li>
-<li class="thisitem">NPLLong</li></ul><h2 class="overview">Overview</h2>
-<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<p class="nodescription">This item has no description.</p><h2 class="overview">Overview</h2>
+<span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
 <table class="summary wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>constructor <strong><a href="npl.NPLLong.html#create-long-">create</a></strong>(aValue : <a href="npl.html#long">long</a>);</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#sbyteValue">sbyteValue</a></strong>: <a href="npl.html#sbyte">sbyte</a></code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLLong.html#equals-TObject-">equals</a></strong>(obj : TObject) : boolean; override;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#ubyteValue">ubyteValue</a></strong>: <a href="npl.html#ubyte">ubyte</a></code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLLong.html#compareTo-NPLLong-">compareTo</a></strong>(anotherLong : <a href="npl.NPLLong.html">NPLLong</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#shortValue">shortValue</a></strong>: <a href="npl.html#short">short</a></code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLLong.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; override;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#ushortValue">ushortValue</a></strong>: <a href="npl.html#ushort">ushort</a></code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#compare-long-long-">compare</a></strong>(x, y : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#intValue">intValue</a></strong>: <a href="npl.html#int">int</a></code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#highestOneBit-long-">highestOneBit</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#uintValue">uintValue</a></strong>: <a href="npl.html#uint">uint</a></code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#lowestOneBit-long-">lowestOneBit</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#longValue">longValue</a></strong>: <a href="npl.html#long">long</a></code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#numberOfLeadingZeros-long-">numberOfLeadingZeros</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#floatValue">floatValue</a></strong>: <a href="npl.html#float">float</a></code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#numberOfTrailingZeros-long-">numberOfTrailingZeros</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#doubleValue">doubleValue</a></strong>: double</code></td>
 </tr>
-</table>
-<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
-<table class="summary wide_list">
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#moneyValue">moneyValue</a></strong>: <a href="npl.html#money">money</a></code></td>
+</tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>property <strong><a href="npl.NPLLong.html#value">value</a></strong> : <a href="npl.html#long">long</a> read fValue.longValue write fValue.longValue;</code></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#booleanValue">booleanValue</a></strong>: boolean</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#charValue">charValue</a></strong>: char</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code><strong><a href="npl.union.html#ncharValue">ncharValue</a></strong>: <a href="npl.html#nchar">nchar</a></code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
-<h3 class="detail">Methods</h3>
+<h3 class="detail">Fields</h3>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="create-long-"></span><code>constructor <strong>create</strong>(aValue : <a href="npl.html#long">long</a>);</code></td>
+<td class="itemcode"><span id="sbyteValue"></span><code><strong>sbyteValue</strong>: <a href="npl.html#sbyte">sbyte</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -104,7 +109,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="equals-TObject-"></span><code>function <strong>equals</strong>(obj : TObject) : boolean; override;</code></td>
+<td class="itemcode"><span id="ubyteValue"></span><code><strong>ubyteValue</strong>: <a href="npl.html#ubyte">ubyte</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -112,7 +117,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="compareTo-NPLLong-"></span><code>function <strong>compareTo</strong>(anotherLong : <a href="npl.NPLLong.html">NPLLong</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><span id="shortValue"></span><code><strong>shortValue</strong>: <a href="npl.html#short">short</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -120,7 +125,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="hashCode"></span><code>function <strong>hashCode</strong>: <a href="npl.html#int">int</a>; override;</code></td>
+<td class="itemcode"><span id="ushortValue"></span><code><strong>ushortValue</strong>: <a href="npl.html#ushort">ushort</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -128,7 +133,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="compare-long-long-"></span><code>class function <strong>compare</strong>(x, y : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><span id="intValue"></span><code><strong>intValue</strong>: <a href="npl.html#int">int</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -136,7 +141,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="highestOneBit-long-"></span><code>class function <strong>highestOneBit</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
+<td class="itemcode"><span id="uintValue"></span><code><strong>uintValue</strong>: <a href="npl.html#uint">uint</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -144,7 +149,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="lowestOneBit-long-"></span><code>class function <strong>lowestOneBit</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
+<td class="itemcode"><span id="longValue"></span><code><strong>longValue</strong>: <a href="npl.html#long">long</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -152,7 +157,17 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="numberOfLeadingZeros-long-"></span><code>class function <strong>numberOfLeadingZeros</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><span id="floatValue"></span><code><strong>floatValue</strong>: <a href="npl.html#float">float</a></code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+8: (ulongValue : ulong);</p>
+</td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="doubleValue"></span><code><strong>doubleValue</strong>: double</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -160,16 +175,31 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="numberOfTrailingZeros-long-"></span><code>class function <strong>numberOfTrailingZeros</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><span id="moneyValue"></span><code><strong>moneyValue</strong>: <a href="npl.html#money">money</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
-<h3 class="detail">Properties</h3>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="value"></span><code>property <strong>value</strong> : <a href="npl.html#long">long</a> read fValue.longValue write fValue.longValue;</code></td>
+<td class="itemcode"><span id="booleanValue"></span><code><strong>booleanValue</strong>: boolean</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="charValue"></span><code><strong>charValue</strong>: char</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="ncharValue"></span><code><strong>ncharValue</strong>: <a href="npl.html#nchar">nchar</a></code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

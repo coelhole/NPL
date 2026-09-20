@@ -266,7 +266,13 @@ type
   public
     constructor create(aValue : long);
     function equals(obj : TObject) : boolean; override;
+    function compareTo(anotherLong : NPLLong) : int;
     function hashCode : int; override;
+    class function compare(x, y : long) : int;
+    class function highestOneBit(i : long) : long;
+    class function lowestOneBit(i : long) : long;
+    class function numberOfLeadingZeros(i : long) : int;
+    class function numberOfTrailingZeros(i : long) : int;
     property value : long read fValue.longValue write fValue.longValue;
   end;
 
@@ -332,7 +338,6 @@ type
   end;
 
   NPLCharClass = class of NPLChar;
-
 
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
@@ -607,9 +612,130 @@ begin
   result := fValue.longValue=NPLLong(obj).fValue.longValue;
 end;
 
+function NPLLong.compareTo(anotherLong : NPLLong) : int;
+begin
+  result := NPLLong.compare(self.fValue.longValue, anotherLong.fValue.longValue);
+end;
+
 function NPLLong.hashCode : int;
 begin
   result := int(fValue.longValue xor (fValue.longValue shr 32));
+end;
+
+class function NPLLong.compare(x, y : long) : int;
+begin
+  if x < y then
+    result := -1
+  else if x = y then
+    result := 0
+  else
+    result := 1;
+end;
+
+class function NPLLong.highestOneBit(i : long) : long;
+  function sRightShift(value : long; bits : int) : long;
+  begin
+    result := value shr bits;
+    if value < 0 then
+      result := result or
+        (long($FFFFFFFFFFFFFFFF) shl (64 - bits));
+  end;
+begin
+  i := i or sRightShift(i, 1);
+  i := i or sRightShift(i, 2);
+  i := i or sRightShift(i, 4);
+  i := i or sRightShift(i, 8);
+  i := i or sRightShift(i, 16);
+  i := i or sRightShift(i, 32);
+  result := i - (i shr 1);
+end;
+
+class function NPLLong.lowestOneBit(i : long) : long;
+begin
+  result := i and -i;  
+end;
+
+class function NPLLong.numberOfLeadingZeros(i : long) : int;
+var
+  x : int;
+begin
+  if i = 0 then begin
+    result := 64;
+    exit;
+  end;
+
+  result := 1;
+  x := int(i shr 32);
+
+  if x = 0 then begin
+    result := result + 32;
+    x := int(i);
+  end;
+
+  if (x shr 16) = 0 then begin
+    result := result + 16;
+    x := x shl 16;
+  end;
+
+  if (x shr 24) = 0 then begin
+    result := result + 8;
+    x := x shl 8;
+  end;
+
+  if (x shr 28) = 0 then begin
+    result := result + 4;
+    x := x shl 4;
+  end;
+
+  if (x shr 30) = 0 then begin
+    result := result + 2;
+    x := x shl 2;
+  end;
+
+  result := result - (x shr 31);
+end;
+
+class function NPLLong.numberOfTrailingZeros(i : long) : int;
+var
+  x, y, n : int;
+begin
+  if i = 0 then begin
+    result := 64;
+    exit;
+  end;
+
+  n := 63;
+  y := int(i);
+  if y <> 0 then begin
+    n := n - 32;
+    x := y;
+  end else x := int(i shr 32);
+
+  y := x shl 16;
+  if y <> 0 then begin
+    n := n - 16;
+    x := y;
+  end;
+
+  y := x shl 8;
+  if y <> 0 then begin
+    n := n - 8;
+    x := y;
+  end;
+
+  y := x shl 4;
+  if y <> 0 then begin
+    n := n - 4;
+    x := y;
+  end;
+
+  y := x shl 2;
+  if y <> 0 then begin
+    n := n - 2;
+    x := y;
+  end;
+
+  result := n - ((x shl 1) shr 31);
 end;
 
 constructor NPLFloat.create(aValue : float);
