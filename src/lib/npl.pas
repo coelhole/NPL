@@ -102,6 +102,11 @@ type
   float   = single;
   nchar   = widechar;
   nstring = widestring;
+{$IFDEF CPU64}
+  nint = long;
+{$ELSE}
+  nint = int;
+{$ENDIF}
 
   //array types
   stringarr   = array of string;
@@ -135,6 +140,7 @@ type
   doublearr   = array of double;
   extendedarr = array of extended;
   real48arr   = array of real48;
+  nintarr     = array of nint;
 
   basetype = (t_sbyte,t_ubyte,t_short,t_ushort,t_int,t_uint,t_long,//t_ulong,
     t_float,t_double,t_money,
@@ -422,12 +428,16 @@ end;
 
 function NPLObject.hashCode : int;
 begin
+{$IFDEF CPU64}
+  result := int(nint(self) xor (nint(self) shr 32));
+{$ELSE}
   result := int(self);
+{$ENDIF}
 end;
 
 function NPLObject.toString : string;
 begin
-  result := format('%s@%s', [qualifiedClassName, lowerCase(intToHex(integer(self), 8))]);
+  result := format('%s@%s', [qualifiedClassName, lowerCase(intToHex(hashCode, 8))]);
 end;
 
 procedure NPLInterfacedObject.AfterConstruction;

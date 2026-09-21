@@ -4,7 +4,6 @@ interface
 
 uses
   npl
-  ,npl_Float
   ;
 
 const
