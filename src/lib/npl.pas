@@ -99,22 +99,34 @@ type
   int     = int32;
   uint    = uint32;
   long    = int64;
+{$IFDEF FPC}
+  ulong   = uint64;
+{$ELSE}
+  ulong   = long;
+{$ENDIF}
   dword   = cardinal;
   money   = currency;
   float   = single;
   decimal = extended;
+  sstring = shortstring;
   wchar   = widechar;
   wstring = widestring;
   nchar   = wchar;
   nstring = wstring;
 {$IFDEF CPU64}
-  nint    = long;
+  nint    = int64;
+  {$IFDEF FPC}
+  nuint   = uint64;
+  {$ELSE}
+  nuint   = nint;
+  {$ENDIF}
 {$ELSE}
-  nint    = int;
-  nuint   = uint;
+  nint    = int32;
+  nuint   = uint32;
 {$ENDIF}
 
   //array types
+  sstringarr  = array of shortstring;
   stringarr   = array of string;
   wstringarr  = array of wstring;
   nstringarr  = array of nstring;
@@ -154,14 +166,26 @@ type
   realarr     = array of real;
   real48arr   = array of real48;
   nintarr     = array of nint;
-{$IFNDEF CPU64}
   nuintarr    = array of nuint;
-{$ENDIF}
 
-  basetype = (t_sbyte,t_ubyte,t_short,t_ushort,t_int,t_uint,t_long,//t_ulong,
-    t_float,t_double,t_money,
-    t_boolean,t_char,t_wchar,
-    t_string,t_wstring);
+  basetype = (
+    t_sbyte,
+    t_ubyte,
+    t_short,
+    t_ushort,
+    t_int,
+    t_uint,
+    t_long,
+    t_ulong,
+    t_float,
+    t_double,
+    t_money,
+    t_boolean,
+    t_char,
+    t_wchar,
+    t_string,
+    t_wstring
+  );
 
   union = record
     case integer of
@@ -172,13 +196,14 @@ type
       5:  (intValue     : int);
       6:  (uintValue    : uint);
       7:  (longValue    : long);
-      8:  (floatValue   : float);
-      9:  (doubleValue  : double);
-      10: (decimalValue : decimal);
-      11: (moneyValue   : money);
-      12: (booleanValue : boolean);
-      13: (charValue    : char);
-      14: (wcharValue   : wchar);
+      8:  (ulongValue   : ulong);
+      9:  (floatValue   : float);
+      10: (doubleValue  : double);
+      11: (decimalValue : decimal);
+      12: (moneyValue   : money);
+      13: (booleanValue : boolean);
+      14: (charValue    : char);
+      15: (wcharValue   : wchar);
   end;
 
 {$M+}
@@ -298,6 +323,10 @@ type
     function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
     function hashCode : int; override;
     class function compare(x, y : int) : int;
+    class function highestOneBit(i : int) : int;
+    class function lowestOneBit(i : int) : int;
+    class function numberOfLeadingZeros(i : int) : int;
+    class function numberOfTrailingZeros(i : int) : int;
     property value : int read fValue.intValue write fValue.intValue;
   end;
 
@@ -491,10 +520,12 @@ end;
 
 function NPLObject._AddRef : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
+  result := 0;
 end;
 
 function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
+  result := 0;
 end;
 
 procedure NPLInterfacedObject.AfterConstruction;
@@ -678,6 +709,97 @@ begin
     result := 0
   else
     result := 1;
+end;
+
+class function NPLInteger.highestOneBit(i : int) : int;
+  function sRightShift(value, bits : int): int;
+  begin
+    result := value shr bits;
+    if value < 0 then
+      result := result or (int($FFFFFFFF) shl (32 - bits));
+  end;
+begin
+  i := i or sRightShift(i, 1);
+  i := i or sRightShift(i, 2);
+  i := i or sRightShift(i, 4);
+  i := i or sRightShift(i, 8);
+  i := i or sRightShift(i, 16);
+  result := i - (i shr 1);
+end;
+
+class function NPLInteger.lowestOneBit(i : int) : int;
+begin
+  result := i and -i;
+end;
+
+class function NPLInteger.numberOfLeadingZeros(i : int) : int;
+begin
+  if i = 0 then begin
+    result := 32;
+    exit;
+  end;
+
+  result := 1;
+
+  if (i shr 16) = 0 then begin
+    result := result + 16;
+    i := i shl 16;
+  end;
+
+  if (i shr 24) = 0 then begin
+    result := result + 8;
+    i := i shl 8;
+  end;
+
+  if (i shr 28) = 0 then begin
+    result := result + 4;
+    i := i shl 4;
+  end;
+
+  if (i shr 30) = 0 then begin
+    result := result + 2;
+    i := i shl 2;
+  end;
+
+  result := result - (i shr 31);
+end;
+
+class function NPLInteger.numberOfTrailingZeros(i : int) : int;
+var
+  y : int;
+begin
+  if i = 0 then begin
+    result := 32;
+    exit;
+  end;
+
+  result := 31;
+
+  y := i shl 16;
+  if y <> 0 then begin
+    result := result - 16;
+    i := y;
+  end;
+
+  y := i shl 8;
+  if y <> 0 then begin
+    result := result - 8;
+    i := y;
+  end;
+
+  y := i shl 4;
+  if y <> 0 then begin
+    result := result - 4;
+    i := y;
+  end;
+
+  y := i shl 2;
+  if y <> 0 then begin
+    result := result - 2;
+    i := y;
+  end;
+
+  result := result - ((i shl 1) shr 31);
 end;
 
 constructor NPLLong.create(aValue : long);

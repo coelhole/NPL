@@ -6,8 +6,8 @@ uses
   npl;
 
 const
-  MIN_VALUE : int = $80000000;
-  MAX_VALUE : int = $7fffffff;
+  MIN_VALUE : int = int($80000000);
+  MAX_VALUE : int = int($7fffffff);
   SIZE      : int = 32;
 
   digits : array[0..35] of ansichar = (

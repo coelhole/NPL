@@ -18,9 +18,9 @@ const
   MIN_EXPONENT      : int   = -126;
   MIN_SUB_EXPONENT  : int   = -126 - (24 - 1);
   EXP_BIAS          : int   = 127;
-  SIGN_BIT_MASK     : int   = $80000000;
-  EXP_BIT_MASK      : int   = $7F800000;
-  SIGNIF_BIT_MASK   : int   = $007FFFFF;
+  SIGN_BIT_MASK     : int   = int($80000000);
+  EXP_BIT_MASK      : int   = int($7F800000);
+  SIGNIF_BIT_MASK   : int   = int($007FFFFF);
 
 implementation
 

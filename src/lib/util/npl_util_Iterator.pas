@@ -11,10 +11,10 @@ uses
   ;
 
 type
-  Iterator=interface
-    ['{43D18F32-A48B-45C4-8A36-79BA86804109}']
+  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Iterator<E>{$ELSE}Iterator{$ENDIF}=interface
+    ['{7405C282-E0BF-4FB2-86D2-4D6C68267F87}']
     function hasNext : boolean;
-    function next : NPLObject;
+    function next : {$IFDEF GENERICS}E{$ELSE}NPLObject{$ENDIF};
     procedure remove;
   end;
 
