@@ -92,13 +92,13 @@ type
   uint8   = byte;
   uint16  = word;
   uint32  = cardinal;
-  sbyte   = shortint;
+  sbyte   = type shortint;
   ubyte   = byte;
-  short   = smallint;
+  short   = type smallint;
   ushort  = word;
-  int     = int32;
+  int     = type int32;
   uint    = uint32;
-  long    = int64;
+  long    = type int64;
 {$IFDEF FPC}
   ulong   = uint64;
 {$ELSE}
@@ -106,7 +106,7 @@ type
 {$ENDIF}
   dword   = cardinal;
   money   = currency;
-  float   = single;
+  float   = type single;
   decimal = extended;
   sstring = shortstring;
   wchar   = widechar;
@@ -327,6 +327,12 @@ type
     class function lowestOneBit(i : int) : int;
     class function numberOfLeadingZeros(i : int) : int;
     class function numberOfTrailingZeros(i : int) : int;
+    class function bitCount(i : int) : int;
+    class function rotateLeft(i, distance : int) : int;
+    class function rotateRight(i, distance : int) : int;
+    class function reverse(i : int) : int;
+    class function signum(i : int) : int;
+    class function reverseBytes(i : int) : int;
     property value : int read fValue.intValue write fValue.intValue;
   end;
 
@@ -377,6 +383,10 @@ type
   public
     constructor create(aValue : double);
     function equals(obj : TObject) : boolean; override;
+    class function doubleToLongBits(value : double) : long;
+    class function doubleToRawLongBits(value : double) : long;
+    class function longBitsToDouble(bits : long) : double;
+    class function compare(d1, d2 : double) : int;
     property value : double read fValue.doubleValue write fValue.doubleValue;
   end;
 
@@ -422,6 +432,7 @@ implementation
 
 uses
   npl_Float
+  ,npl_misc_DoubleConsts
   ,npl_misc_FloatConsts
   ,typInfo
   ;
@@ -802,6 +813,50 @@ begin
   result := result - ((i shl 1) shr 31);
 end;
 
+class function NPLInteger.bitCount(i : int) : int;
+begin
+  i := i - ((i shr 1) and $55555555);
+  i := (i and $33333333) + ((i shr 2) and $33333333);
+  i := (i + (i shr 4)) and $0f0f0f0f;
+  i := i + (i shr 8);
+  i := i + (i shr 16);
+  result := i and $3f;
+end;
+
+class function NPLInteger.rotateLeft(i, distance : int) : int;
+begin
+  result := (i shl distance) or (i shr -distance);
+end;
+
+class function NPLInteger.rotateRight(i, distance : int) : int;
+begin
+  result := (i shr distance) or (i shl -distance);
+end;
+
+class function NPLInteger.reverse(i : int) : int;
+begin
+  i := (i and $55555555) shl 1 or (i shr 1) and $55555555;
+  i := (i and $33333333) shl 2 or (i shr 2) and $33333333;
+  i := (i and $0f0f0f0f) shl 4 or (i shr 4) and $0f0f0f0f;
+  i := (i shl 24) or ((i and $ff00) shl 8) or ((i shr 8) and $ff00) or (i shr 24);
+  result := i;
+end;
+
+class function NPLInteger.signum(i : int) : int;
+begin
+  if i < 0 then
+    result := -1
+  else if i > 0 then
+    result := 1
+  else
+    result := 0;
+end;
+
+class function NPLInteger.reverseBytes(i : int) : int;
+begin
+  result := ((i shr 24)) or ((i shl 8) and $FF00) or ((i shl 8) and $FF0000) or ((i shl 24));
+end;
+
 constructor NPLLong.create(aValue : long);
 begin
   fValue.longValue := aValue;
@@ -1053,7 +1108,7 @@ class function NPLFloat.intBitsToFloat(bits : int) : float;
 var
   u : union;
 begin
-  u.intValue := long(bits);
+  u.intValue := bits;
   result := u.floatValue;
 end;
 
@@ -1116,6 +1171,55 @@ begin
   if not (obj is NPLDouble) then
     exit;
   result := fValue.doubleValue=NPLDouble(obj).fValue.doubleValue;
+end;
+
+class function NPLDouble.doubleToLongBits(value : double) : long;
+begin
+  result := doubleToRawLongBits(value);
+  //
+  //  ...
+  //
+end;
+
+class function NPLDouble.doubleToRawLongBits(value : double) : long;
+var
+  u : union;
+begin
+  u.doubleValue := value;
+  result := u.longValue;
+end;
+
+class function NPLDouble.longBitsToDouble(bits : long) : double;
+var
+  u : union;
+begin
+  u.longValue := bits;
+  result := u.doubleValue;
+end;
+
+class function NPLDouble.compare(d1, d2 : double) : int;
+var
+  thisBits, anotherBits : long;
+begin
+  if d1 < d2 then begin
+    result := -1;
+    exit;
+  end else
+  if d1 > d2 then begin
+    result := 1;
+    exit;
+  end;
+
+  thisBits := NPLDouble.doubleToLongBits(d1);
+  anotherBits := NPLDouble.doubleToLongBits(d2);
+
+  if thisBits = anotherBits then
+    result := 0
+  else
+  if thisBits < anotherBits then
+    result := -1
+  else
+    result := 1;
 end;
 
 constructor NPLBoolean.create(aValue : boolean);

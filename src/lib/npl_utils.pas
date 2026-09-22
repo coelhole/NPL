@@ -24,7 +24,7 @@ begin
   Result := '';
 
   ResultSize := GetModuleFileName(0, Buffer, Length(Buffer));
-  
+
   if ResultSize = 0 then
     {$IFDEF DELPHI6UPORFPC}RaiseLastOSError{$ELSE}RaiseLastWin32Error{$ENDIF};
 
