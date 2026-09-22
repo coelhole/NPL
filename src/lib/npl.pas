@@ -81,6 +81,7 @@ const
 {$endif DELPHI5OROLDER}
 
 type
+  bool    = boolean;
   int8    = shortint;
   int16   = smallint;
   int32   = integer;
@@ -90,30 +91,38 @@ type
   sint64  = int64;
   uint8   = byte;
   uint16  = word;
-  uint32  = longword;
+  uint32  = cardinal;
   sbyte   = shortint;
   ubyte   = byte;
   short   = smallint;
   ushort  = word;
-  int     = integer;
-  uint    = longword;
+  int     = int32;
+  uint    = uint32;
   long    = int64;
+  dword   = cardinal;
   money   = currency;
   float   = single;
-  nchar   = widechar;
-  nstring = widestring;
+  decimal = extended;
+  wchar   = widechar;
+  wstring = widestring;
+  nchar   = wchar;
+  nstring = wstring;
 {$IFDEF CPU64}
-  nint = long;
+  nint    = long;
 {$ELSE}
-  nint = int;
+  nint    = int;
+  nuint   = uint;
 {$ENDIF}
 
   //array types
   stringarr   = array of string;
+  wstringarr  = array of wstring;
   nstringarr  = array of nstring;
   chararr     = array of char;
+  wchararr    = array of wchar;
   nchararr    = array of nchar;
   booleanarr  = array of boolean;
+  boolarr     = array of bool;
   int8arr     = array of int8;
   int16arr    = array of int16;
   int32arr    = array of int32;
@@ -131,6 +140,8 @@ type
   intarr      = array of int;
   uintarr     = array of uint;
   longarr     = array of long;
+  wordarr     = array of word;
+  dwordarr    = array of dword;
   pointerarr  = array of pointer;
   currencyarr = array of currency;
   moneyarr    = array of money;
@@ -139,13 +150,18 @@ type
   floatarr    = array of float;
   doublearr   = array of double;
   extendedarr = array of extended;
+  decimalarr  = array of decimal;
+  realarr     = array of real;
   real48arr   = array of real48;
   nintarr     = array of nint;
+{$IFNDEF CPU64}
+  nuintarr    = array of nuint;
+{$ENDIF}
 
   basetype = (t_sbyte,t_ubyte,t_short,t_ushort,t_int,t_uint,t_long,//t_ulong,
     t_float,t_double,t_money,
-    t_boolean,t_char,t_nchar,
-    t_string,t_nstring);
+    t_boolean,t_char,t_wchar,
+    t_string,t_wstring);
 
   union = record
     case integer of
@@ -156,46 +172,53 @@ type
       5:  (intValue     : int);
       6:  (uintValue    : uint);
       7:  (longValue    : long);
-    //8:  (ulongValue   : ulong);
       8:  (floatValue   : float);
       9:  (doubleValue  : double);
-      10: (moneyValue   : money);
-      11: (booleanValue : boolean);
-      12: (charValue    : char);
-      13: (ncharValue   : nchar);
+      10: (decimalValue : decimal);
+      11: (moneyValue   : money);
+      12: (booleanValue : boolean);
+      13: (charValue    : char);
+      14: (wcharValue   : wchar);
   end;
 
 {$M+}
-  NPLObject=class
+  NPLObject=class(TObject, {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF})
+  protected
+    function QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}HResult; virtual; stdcall;{$ENDIF}
+    function _AddRef : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
+    function _Release : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
   public
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
-    function equals(obj :TObject) : boolean; virtual;
+    function equals(obj :TObject) : boolean; {$IFDEF FPC}override;{$ELSE}virtual;{$ENDIF}
     function hashCode : int; virtual;
-    function toString : string; virtual;
+    function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
   end;
 {$M-}
 
   NPLClass = class of NPLObject;
 
-  NPLInterfacedObject = class(NPLObject, {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}IInterface{$ENDIF})
+  NPLInterfacedObject = class(NPLObject)
   protected
-    FRefCount: Integer;
-    function QueryInterface(const IID : TGUID; out Obj) : HResult; stdcall;
-    function _AddRef : Integer; stdcall;
-    function _Release : Integer; stdcall;
+    fRefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF};  
+    function _AddRef : {$IFDEF FPC}longint; override; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; override; stdcall;{$ENDIF}
+    function _Release : {$IFDEF FPC}longint; override; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; override; stdcall;{$ENDIF}
   public
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
     class function NewInstance : TObject; override;
-    property RefCount : Integer read FRefCount;
+    property RefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF} read fRefCount;
   end;
 
-  NPLInterfacedObjectClass = class of NPLInterfacedObject;
+  NPLInterfacedClass = class of NPLInterfacedObject;
 
   NPLException=class(Exception);
 
   NPLExceptionClass = class of NPLException;
+
+  NilPointerException = class(NPLException);
+
+  NilPointerExceptionClass = class of NilPointerException;
 
   IllegalArgumentException = class(NPLException);
 
@@ -217,6 +240,11 @@ type
 
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
+  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface
+    ['{6EBC1ADC-027E-4B7B-AA27-88D8F2D1CC17}']
+    function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
+  end;
+
   NPLNumber = class(NPLObject)
   private
     fValue : union;
@@ -231,11 +259,18 @@ type
 
   NPLNumberClass = class of NPLNumber;
 
-  NPLSByte = class(NPLNumber)
+  NPLSByte = class;
+  NPLShort = class;
+  NPLInteger = class;
+  NPLLong = class;
+  NPLFloat = class;
+  NPLDouble = class;          
+
+  NPLSByte = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLSByte>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : sbyte);
     function equals(obj : TObject) : boolean; override;
-    function compareTo(anotherByte : NPLSByte) : int;
+    function compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
     function hashCode : int; override;
     class function compare(x, y : sbyte) : int;
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
@@ -243,11 +278,11 @@ type
 
   NPLSByteClass = class of NPLSByte;
 
-  NPLShort = class(NPLNumber)
+  NPLShort = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLShort>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : short);
     function equals(obj : TObject) : boolean; override;
-    function compareTo(anotherShort : NPLShort) : int;
+    function compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
     function hashCode : int; override;
     class function compare(x, y : short) : int;
     class function reverseBytes(i : short) : short;
@@ -256,11 +291,11 @@ type
 
   NPLShortClass = class of NPLShort;
 
-  NPLInteger = class(NPLNumber)
+  NPLInteger = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLInteger>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : int);
     function equals(obj : TObject) : boolean; override;
-    function compareTo(anotherInteger : NPLInteger) : int;
+    function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
     function hashCode : int; override;
     class function compare(x, y : int) : int;
     property value : int read fValue.intValue write fValue.intValue;
@@ -268,27 +303,33 @@ type
 
   NPLIntegerClass = class of NPLInteger;
 
-  NPLLong = class(NPLNumber)
+  NPLLong = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLLong>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : long);
     function equals(obj : TObject) : boolean; override;
-    function compareTo(anotherLong : NPLLong) : int;
+    function compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
     function hashCode : int; override;
     class function compare(x, y : long) : int;
     class function highestOneBit(i : long) : long;
     class function lowestOneBit(i : long) : long;
     class function numberOfLeadingZeros(i : long) : int;
     class function numberOfTrailingZeros(i : long) : int;
+    class function bitCount(i : long) : int;
+    class function rotateLeft(i : long; distance : int) : long;
+    class function rotateRight(i : long; distance : int) : long;
+    class function reverse(i : long) : long;
+    class function signum(i : long) : int;
+    class function reverseBytes(i : long) : long;
     property value : long read fValue.longValue write fValue.longValue;
   end;
 
   NPLLongClass = class of NPLLong;
 
-  NPLFloat = class(NPLNumber)
+  NPLFloat = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLFloat>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : float);
     function equals(obj : TObject) : boolean; override;
-    function compareTo(anotherFloat : NPLFloat) : int;
+    function compareTo(anotherFloat : {$IFDEF GENERICS}NPLFloat{$ELSE}NPLObject{$ENDIF}) : int;
     function isNaN : boolean; overload;
     function isInfinite : boolean; overload;
     function hashCode : int; override;
@@ -440,6 +481,22 @@ begin
   result := format('%s@%s', [qualifiedClassName, lowerCase(intToHex(hashCode, 8))]);
 end;
 
+function NPLObject.QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint;{$ELSE}HResult;{$ENDIF}
+begin
+  if GetInterface(IID, Obj) then
+    result := 0
+  else
+    result := E_NOINTERFACE;
+end;
+
+function NPLObject._AddRef : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
+begin
+end;
+
+function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
+begin
+end;
+
 procedure NPLInterfacedObject.AfterConstruction;
 begin
   InterlockedDecrement(FRefCount);
@@ -457,20 +514,12 @@ begin
   NPLInterfacedObject(result).FRefCount := 1;
 end;
 
-function NPLInterfacedObject.QueryInterface(const IID : TGUID; out Obj) : HResult;
-begin
-  if GetInterface(IID, Obj) then
-    result := 0
-  else
-    result := E_NOINTERFACE;
-end;
-
-function NPLInterfacedObject._AddRef : Integer;
+function NPLInterfacedObject._AddRef : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
   result := InterlockedIncrement(FRefCount);
 end;
 
-function NPLInterfacedObject._Release : Integer;
+function NPLInterfacedObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
   result := InterlockedDecrement(FRefCount);
   if result = 0 then
@@ -522,9 +571,17 @@ begin
   result := fValue.sbyteValue=NPLSByte(obj).fValue.sbyteValue;
 end;
 
-function NPLSByte.compareTo(anotherByte : NPLSByte) : int;
+function NPLSByte.compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  result := NPLSByte.compare(self.fValue.sbyteValue, anotherByte.fValue.sbyteValue);
+  if anotherByte=NIL then
+    raise NilPointerException.create('anotherByte');
+
+  {$IFNDEF GENERICS}
+  if not (anotherByte is NPLSByte) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLSByte.compare(self.fValue.sbyteValue, NPLSByte(anotherByte).fValue.sbyteValue);
 end;
 
 function NPLSByte.hashCode : int;
@@ -552,9 +609,17 @@ begin
   result := fValue.shortValue=NPLShort(obj).fValue.shortValue;
 end;
 
-function NPLShort.compareTo(anotherShort : NPLShort) : int;
+function NPLShort.compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  result := NPLShort.compare(self.fValue.shortValue, anotherShort.fValue.shortValue);
+  if anotherShort=NIL then
+    raise NilPointerException.create('anotherShort');
+
+  {$IFNDEF GENERICS}
+  if not (anotherShort is NPLShort) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLShort.compare(self.fValue.shortValue, NPLShort(anotherShort).fValue.shortValue);
 end;
 
 function NPLShort.hashCode : int;
@@ -587,9 +652,17 @@ begin
   result := fValue.intValue=NPLInteger(obj).fValue.intValue;
 end;
 
-function NPLInteger.compareTo(anotherInteger : NPLInteger) : int;
+function NPLInteger.compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  result := NPLInteger.compare(self.fValue.intValue, anotherInteger.fValue.intValue);
+  if anotherInteger=NIL then
+    raise NilPointerException.create('anotherInteger');
+
+  {$IFNDEF GENERICS}
+  if not (anotherInteger is NPLInteger) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLInteger.compare(self.fValue.intValue, NPLInteger(anotherInteger).fValue.intValue);
 end;
 
 function NPLInteger.hashCode : int;
@@ -622,9 +695,17 @@ begin
   result := fValue.longValue=NPLLong(obj).fValue.longValue;
 end;
 
-function NPLLong.compareTo(anotherLong : NPLLong) : int;
+function NPLLong.compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  result := NPLLong.compare(self.fValue.longValue, anotherLong.fValue.longValue);
+  if anotherLong=NIL then
+    raise NilPointerException.create('anotherLong');
+
+  {$IFNDEF GENERICS}
+  if not (anotherLong is NPLLong) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLLong.compare(self.fValue.longValue, NPLLong(anotherLong).fValue.longValue);
 end;
 
 function NPLLong.hashCode : int;
@@ -748,6 +829,53 @@ begin
   result := n - ((x shl 1) shr 31);
 end;
 
+class function NPLLong.bitCount(i : long) : int;
+begin
+  i := i - ((i shr 1) and long($5555555555555555));
+  i := (i and long($3333333333333333)) + ((i shr 2) and long($3333333333333333));
+  i := (i + (i shr 4)) and long($0f0f0f0f0f0f0f0f);
+  i := i + (i shr 8);
+  i := i + (i shr 16);
+  i := i + (i shr 32);
+  result := int(i) and $7f;
+end;
+
+class function NPLLong.rotateLeft(i : long; distance : int) : long;
+begin
+  result := (i shl distance) or (i shr -distance);
+end;
+
+class function NPLLong.rotateRight(i : long; distance : int) : long;
+begin
+  result := (i shr distance) or (i shl -distance);
+end;
+
+class function NPLLong.reverse(i : long) : long;
+begin
+  i := (i and long($5555555555555555)) shl 1 or (i shr 1) and long($5555555555555555);
+  i := (i and long($3333333333333333)) shl 2 or (i shr 2) and long($3333333333333333);
+  i := (i and long($0f0f0f0f0f0f0f0f)) shl 4 or (i shr 4) and long($0f0f0f0f0f0f0f0f);
+  i := (i and long($00ff00ff00ff00ff)) shl 8 or (i shr 8) and long($00ff00ff00ff00ff);
+  i := (i shl 48) or ((i and long($ffff0000)) shl 16) or ((i shr 16) and long($ffff0000)) or (i shr 48);
+  result := i;
+end;
+
+class function NPLLong.signum(i : long) : int;
+begin
+  if i < 0 then
+    result := -1
+  else if i > 0 then
+    result := 1
+  else
+    result := 0;
+end;
+
+class function NPLLong.reverseBytes(i : long) : long;
+begin
+  i := (i and long($00ff00ff00ff00ff)) shl 8 or (i shr 8) and long($00ff00ff00ff00ff);
+  result := (i shl 48) or ((i and long($ffff0000)) shl 16) or ((i shr 16) and long($ffff0000)) or (i shr 48);
+end;
+
 constructor NPLFloat.create(aValue : float);
 begin
   fValue.floatValue := aValue;
@@ -763,9 +891,17 @@ begin
   result := NPLFloat.floatToIntBits(self.fValue.floatValue)=NPLFloat.floatToIntBits(NPLFloat(obj).fValue.floatValue);
 end;
 
-function NPLFloat.compareTo(anotherFloat : NPLFloat) : int;
+function NPLFloat.compareTo(anotherFloat : {$IFDEF GENERICS}NPLFloat{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  result := NPLFloat.compare(self.fValue.floatValue, anotherFloat.fValue.floatValue);
+  if anotherFloat=NIL then
+    raise NilPointerException.create('anotherFloat');
+
+  {$IFNDEF GENERICS}
+  if not (anotherFloat is NPLFloat) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLFloat.compare(self.fValue.floatValue, NPLFloat(anotherFloat).fValue.floatValue);
 end;
 
 function NPLFloat.isNaN : boolean;

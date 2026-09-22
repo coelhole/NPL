@@ -38,36 +38,72 @@
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLObject = class(TObject)</code></p>
+<code>type NPLObject = class(TObject, IUnknown)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
 <li class="thisitem">NPLObject</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
-<tr class="list visibility-public">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#QueryInterface-TGUID-const-">QueryInterface</a></strong>(const IID : TGUID; out Obj) : longint; virtual; cdecl;</code></td>
+</tr>
+<tr class="list2 visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#_AddRef">_AddRef</a></strong>: longint; virtual; cdecl;</code></td>
+</tr>
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#_Release">_Release</a></strong>: longint; virtual; cdecl;</code></td>
+</tr>
+<tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#unitName">unitName</a></strong>: ansistring;</code></td>
 </tr>
-<tr class="list2 visibility-public">
+<tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#qualifiedClassName">qualifiedClassName</a></strong>: ansistring;</code></td>
 </tr>
-<tr class="list visibility-public">
-<td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#equals-TObject-">equals</a></strong>(obj :TObject) : boolean; virtual;</code></td>
-</tr>
 <tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#equals-TObject-">equals</a></strong>(obj :TObject) : boolean; override;</code></td>
+</tr>
+<tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
-<tr class="list visibility-public">
+<tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#toString">toString</a></strong>: string; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#toString">toString</a></strong>: string; reintroduce; virtual;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
+<table class="detail visibility-protected wide_list">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><span id="QueryInterface-TGUID-const-"></span><code>function <strong>QueryInterface</strong>(const IID : TGUID; out Obj) : longint; virtual; cdecl;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-protected wide_list">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><span id="_AddRef"></span><code>function <strong>_AddRef</strong>: longint; virtual; cdecl;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-protected wide_list">
+<tr class="list visibility-protected">
+<td class="visibility"><span class="badge vis-protected">Protected</span></td>
+<td class="itemcode"><span id="_Release"></span><code>function <strong>_Release</strong>: longint; virtual; cdecl;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -87,7 +123,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="equals-TObject-"></span><code>function <strong>equals</strong>(obj :TObject) : boolean; virtual;</code></td>
+<td class="itemcode"><span id="equals-TObject-"></span><code>function <strong>equals</strong>(obj :TObject) : boolean; override;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -103,7 +139,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="toString"></span><code>function <strong>toString</strong>: string; virtual;</code></td>
+<td class="itemcode"><span id="toString"></span><code>function <strong>toString</strong>: string; reintroduce; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

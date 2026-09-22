@@ -38,7 +38,7 @@
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLInterfacedObject = class(<a class="normal" href="npl.NPLObject.html">NPLObject</a>, IInterface)</code></p>
+<code>type NPLInterfacedObject = class(<a class="normal" href="npl.NPLObject.html">NPLObject</a>)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
@@ -48,32 +48,28 @@
 <table class="summary wide_list">
 <tr class="list visibility-protected">
 <td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code><strong><a href="npl.NPLInterfacedObject.html#FRefCount">FRefCount</a></strong>: Integer;</code></td>
+<td class="itemcode"><code><strong><a href="npl.NPLInterfacedObject.html#fRefCount">fRefCount</a></strong>: longint;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list visibility-protected">
 <td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#QueryInterface-TGUID-const-">QueryInterface</a></strong>(const IID : TGUID; out Obj) : HResult; stdcall;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#_AddRef">_AddRef</a></strong>: longint; override; cdecl;</code></td>
 </tr>
 <tr class="list2 visibility-protected">
 <td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#_AddRef">_AddRef</a></strong>: Integer; stdcall;</code></td>
-</tr>
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#_Release">_Release</a></strong>: Integer; stdcall;</code></td>
-</tr>
-<tr class="list2 visibility-public">
-<td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl.NPLInterfacedObject.html#AfterConstruction">AfterConstruction</a></strong>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLInterfacedObject.html#_Release">_Release</a></strong>: longint; override; cdecl;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl.NPLInterfacedObject.html#BeforeDestruction">BeforeDestruction</a></strong>; override;</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl.NPLInterfacedObject.html#AfterConstruction">AfterConstruction</a></strong>; override;</code></td>
 </tr>
 <tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>procedure <strong><a href="npl.NPLInterfacedObject.html#BeforeDestruction">BeforeDestruction</a></strong>; override;</code></td>
+</tr>
+<tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLInterfacedObject.html#NewInstance">NewInstance</a></strong>: TObject; override;</code></td>
 </tr>
@@ -82,7 +78,7 @@
 <table class="summary wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>property <strong><a href="npl.NPLInterfacedObject.html#RefCount">RefCount</a></strong> : Integer read <a href="npl.NPLInterfacedObject.html#FRefCount">FRefCount</a>;</code></td>
+<td class="itemcode"><code>property <strong><a href="npl.NPLInterfacedObject.html#RefCount">RefCount</a></strong> : longint read <a href="npl.NPLInterfacedObject.html#fRefCount">fRefCount</a>;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -90,7 +86,7 @@
 <table class="detail visibility-protected wide_list">
 <tr class="list visibility-protected">
 <td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="FRefCount"></span><code><strong>FRefCount</strong>: Integer;</code></td>
+<td class="itemcode"><span id="fRefCount"></span><code><strong>fRefCount</strong>: longint;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -99,7 +95,7 @@
 <table class="detail visibility-protected wide_list">
 <tr class="list visibility-protected">
 <td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="QueryInterface-TGUID-const-"></span><code>function <strong>QueryInterface</strong>(const IID : TGUID; out Obj) : HResult; stdcall;</code></td>
+<td class="itemcode"><span id="_AddRef"></span><code>function <strong>_AddRef</strong>: longint; override; cdecl;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -107,15 +103,7 @@
 <table class="detail visibility-protected wide_list">
 <tr class="list visibility-protected">
 <td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="_AddRef"></span><code>function <strong>_AddRef</strong>: Integer; stdcall;</code></td>
-</tr>
-<tr><td colspan="2">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="_Release"></span><code>function <strong>_Release</strong>: Integer; stdcall;</code></td>
+<td class="itemcode"><span id="_Release"></span><code>function <strong>_Release</strong>: longint; override; cdecl;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -148,7 +136,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="RefCount"></span><code>property <strong>RefCount</strong> : Integer read <a href="npl.NPLInterfacedObject.html#FRefCount">FRefCount</a>;</code></td>
+<td class="itemcode"><span id="RefCount"></span><code>property <strong>RefCount</strong> : longint read <a href="npl.NPLInterfacedObject.html#fRefCount">fRefCount</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

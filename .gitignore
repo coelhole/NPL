@@ -80,3 +80,5 @@ teste/
 *.lpi
 *.lpr
 *.lps
+*.ppu
+*.compiled

@@ -38,7 +38,7 @@
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLLong = class(<a class="normal" href="npl.NPLNumber.html">NPLNumber</a>)</code></p>
+<code>type NPLLong = class(<a class="normal" href="npl.NPLNumber.html">NPLNumber</a>, <a class="normal" href="npl.Comparable.generic.html">Comparable&lt;NPLLong&gt;</a>)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
@@ -82,6 +82,30 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#numberOfTrailingZeros-long-">numberOfTrailingZeros</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#bitCount-long-">bitCount</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#rotateLeft-long-int-">rotateLeft</a></strong>(i : <a href="npl.html#long">long</a>; distance : <a href="npl.html#int">int</a>) : <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#rotateRight-long-int-">rotateRight</a></strong>(i : <a href="npl.html#long">long</a>; distance : <a href="npl.html#int">int</a>) : <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#reverse-long-">reverse</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#signum-long-">signum</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLLong.html#reverseBytes-long-">reverseBytes</a></strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
@@ -161,6 +185,54 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="numberOfTrailingZeros-long-"></span><code>class function <strong>numberOfTrailingZeros</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="bitCount-long-"></span><code>class function <strong>bitCount</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="rotateLeft-long-int-"></span><code>class function <strong>rotateLeft</strong>(i : <a href="npl.html#long">long</a>; distance : <a href="npl.html#int">int</a>) : <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="rotateRight-long-int-"></span><code>class function <strong>rotateRight</strong>(i : <a href="npl.html#long">long</a>; distance : <a href="npl.html#int">int</a>) : <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="reverse-long-"></span><code>class function <strong>reverse</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="signum-long-"></span><code>class function <strong>signum</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="reverseBytes-long-"></span><code>class function <strong>reverseBytes</strong>(i : <a href="npl.html#long">long</a>) : <a href="npl.html#long">long</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
