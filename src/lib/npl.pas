@@ -257,6 +257,13 @@ type
 
   ArrayIndexOutOfBoundsExceptionClass = class of ArrayIndexOutOfBoundsException;
 
+  StringIndexOutOfBoundsException = class(IndexOutOfBoundsException)
+  public
+    constructor create(index : int);
+  end;
+
+  StringIndexOutOfBoundsExceptionClass = class of StringIndexOutOfBoundsException;
+
   NumberFormatException = class(IllegalArgumentException);
 
   NumberFormatExceptionClass = class of NumberFormatException;
@@ -317,11 +324,18 @@ type
   NPLShortClass = class of NPLShort;
 
   NPLInteger = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLInteger>{$ELSE}Comparable{$ENDIF})
+  private
+    class function toUnsignedString(i, shift : int) : string;
   public
     constructor create(aValue : int);
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
     function hashCode : int; override;
+    class function toString(i, radix : int) : string; overload;
+    class function toString(i : int) : string; overload;
+    class function toHexString(i : int) : string;
+    class function toOctalString(i : int) : string;
+    class function toBinaryString(i : int) : string;
     class function compare(x, y : int) : int;
     class function highestOneBit(i : int) : int;
     class function lowestOneBit(i : int) : int;
@@ -435,8 +449,10 @@ function signedRightShift(value : long; bits : int): long; overload;
 implementation
 
 uses
-  npl_Double
+  npl_Character
+  ,npl_Double
   ,npl_Float
+  ,npl_Integer
   ,npl_misc_DoubleConsts
   ,npl_misc_FloatConsts
   ,typInfo
@@ -523,7 +539,7 @@ end;
 
 function NPLObject.toString : string;
 begin
-  result := format('%s@%s', [qualifiedClassName, lowerCase(intToHex(hashCode, 8))]);
+  result := qualifiedClassName + '@' + NPLInteger.toHexString(hashCode);
 end;
 
 function NPLObject.QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint;{$ELSE}HResult;{$ENDIF}
@@ -571,6 +587,11 @@ begin
   result := InterlockedDecrement(FRefCount);
   if result = 0 then
     Destroy;
+end;
+
+constructor StringIndexOutOfBoundsException.create(index : int);
+begin
+  inherited createFmt('String index out of range: %d',[index]);
 end;
 
 function NPLNumber.sbyteValue : sbyte;
@@ -715,6 +736,93 @@ end;
 function NPLInteger.hashCode : int;
 begin
   result := fValue.intValue;
+end;
+
+class function NPLInteger.toString(i, radix : int) : string;
+var
+  buf : chararr;
+  negative : boolean;
+  charPos : int;
+begin
+  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+    radix := 10;
+
+  if radix = 10 then begin
+    result := toString(i);
+    exit;
+  end;
+
+  setLength(buf, 33);
+  negative := (i < 0);
+  charPos := 32;
+
+  if not negative then
+    i := -i;
+
+  while i <= -radix do begin
+    buf[charPos] := digits[-(i mod radix)];
+    dec(charPos);
+    i := i div radix;
+  end;
+  buf[charPos] := digits[-i];
+
+  if negative then begin
+    dec(charPos);
+    buf[charPos] := '-';
+  end;
+
+  result := string(copy(buf, charPos, 33-charPos));
+end;
+
+class function NPLInteger.toString(i : int) : string;
+var
+  size : int;
+  buf : chararr;
+begin
+  if i = npl_Integer.MIN_VALUE then begin
+    result := '-2147483648';
+    exit;
+  end;
+
+  if i < 0 then
+    size := npl_Integer.stringSize(-i) + 1
+  else size := npl_Integer.stringSize(i);
+
+  setLength(buf, size);
+  npl_Integer.getChars(i, size, buf);
+  result := string(buf);
+end;
+
+class function NPLInteger.toUnsignedString(i, shift : int) : string;
+var
+  buf : chararr;
+  charPos, radix, mask : int;
+begin
+  setLength(buf, 32);
+  charPos := 32;
+  radix := 1 shl shift;
+  mask := radix - 1;
+  repeat
+    dec(charPos);
+    buf[charPos] := digits[i and mask];
+    i := i shr shift;
+  until i = 0;
+  result := string(copy(buf, charPos, 32-charPos));
+end;
+
+class function NPLInteger.toHexString(i : int) : string;
+begin
+  result := toUnsignedString(i, 4);
+end;
+
+class function NPLInteger.toOctalString(i : int) : string;
+begin
+  result := toUnsignedString(i, 3);
+end;
+
+class function NPLInteger.toBinaryString(i : int) : string;
+begin
+  result := toUnsignedString(i, 1);
 end;
 
 class function NPLInteger.compare(x, y : int) : int;

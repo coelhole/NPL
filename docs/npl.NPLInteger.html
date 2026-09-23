@@ -47,21 +47,45 @@
 <li class="thisitem">NPLInteger</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
-<tr class="list visibility-public">
+<tr class="list visibility-private">
+<td class="visibility"><span class="badge vis-private">Private</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLInteger.html#toUnsignedString-int-int-">toUnsignedString</a></strong>(i, shift : <a href="npl.html#int">int</a>) : string;</code></td>
+</tr>
+<tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>constructor <strong><a href="npl.NPLInteger.html#create-int-">create</a></strong>(aValue : <a href="npl.html#int">int</a>);</code></td>
 </tr>
-<tr class="list2 visibility-public">
+<tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLInteger.html#equals-TObject-">equals</a></strong>(obj : TObject) : boolean; override;</code></td>
 </tr>
-<tr class="list visibility-public">
+<tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLInteger.html#compareTo-NPLInteger-">compareTo</a></strong>(anotherInteger : <a href="npl.NPLInteger.html">NPLInteger</a>) : <a href="npl.html#int">int</a>;</code></td>
 </tr>
-<tr class="list2 visibility-public">
+<tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLInteger.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; override;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLInteger.html#toString-int-int-">toString</a></strong>(i, radix : <a href="npl.html#int">int</a>) : string; overload;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLInteger.html#toString-int-">toString</a></strong>(i : <a href="npl.html#int">int</a>) : string; overload;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLInteger.html#toHexString-int-">toHexString</a></strong>(i : <a href="npl.html#int">int</a>) : string;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLInteger.html#toOctalString-int-">toOctalString</a></strong>(i : <a href="npl.html#int">int</a>) : string;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLInteger.html#toBinaryString-int-">toBinaryString</a></strong>(i : <a href="npl.html#int">int</a>) : string;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -117,6 +141,14 @@
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
+<table class="detail visibility-private wide_list">
+<tr class="list visibility-private">
+<td class="visibility"><span class="badge vis-private">Private</span></td>
+<td class="itemcode"><span id="toUnsignedString-int-int-"></span><code>class function <strong>toUnsignedString</strong>(i, shift : <a href="npl.html#int">int</a>) : string;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -145,6 +177,46 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="hashCode"></span><code>function <strong>hashCode</strong>: <a href="npl.html#int">int</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="toString-int-int-"></span><code>class function <strong>toString</strong>(i, radix : <a href="npl.html#int">int</a>) : string; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="toString-int-"></span><code>class function <strong>toString</strong>(i : <a href="npl.html#int">int</a>) : string; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="toHexString-int-"></span><code>class function <strong>toHexString</strong>(i : <a href="npl.html#int">int</a>) : string;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="toOctalString-int-"></span><code>class function <strong>toOctalString</strong>(i : <a href="npl.html#int">int</a>) : string;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="toBinaryString-int-"></span><code>class function <strong>toBinaryString</strong>(i : <a href="npl.html#int">int</a>) : string;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

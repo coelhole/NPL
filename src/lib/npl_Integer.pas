@@ -50,12 +50,12 @@ const
     99999999, 999999999, int($7fffffff)
   );
 
-  procedure getChars(i, index : int; out buf : chararr);
+  procedure getChars(i, index : int; var buf : chararr);
   function stringSize(x : int) : int;
 
 implementation
 
-procedure getChars(i, index : int; out buf : chararr);
+procedure getChars(i, index : int; var buf : chararr);
 var
   q, r, charPos : int;
   sign : char;
