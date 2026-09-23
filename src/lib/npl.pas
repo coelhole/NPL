@@ -859,7 +859,7 @@ end;
 
 class function NPLInteger.reverseBytes(i : int) : int;
 begin
-  result := ((i shr 24)) or ((i shl 8) and $FF00) or ((i shl 8) and $FF0000) or ((i shl 24));
+  result := ((i shr 24)) or (signedRightShift(i, 8) and $FF00) or ((i shl 8) and $FF0000) or ((i shl 24));
 end;
 
 constructor NPLLong.create(aValue : long);
