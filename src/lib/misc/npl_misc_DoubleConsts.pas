@@ -25,8 +25,8 @@ const
 implementation
 
 initialization
-  assert(((SIGN_BIT_MASK or EXP_BIT_MASK or SIGNIF_BIT_MASK) = not 0) and
-    (((SIGN_BIT_MASK and EXP_BIT_MASK) = 0.0) and
-    ((SIGN_BIT_MASK and SIGNIF_BIT_MASK) = 0.0) and
-    ((EXP_BIT_MASK and SIGNIF_BIT_MASK) = 0.0)));
+  assert(((SIGN_BIT_MASK or EXP_BIT_MASK or SIGNIF_BIT_MASK) = not long(0)) and
+    (((SIGN_BIT_MASK and EXP_BIT_MASK) = long(0)) and
+    ((SIGN_BIT_MASK and SIGNIF_BIT_MASK) = long(0)) and
+    ((EXP_BIT_MASK and SIGNIF_BIT_MASK) = long(0))));
 end.

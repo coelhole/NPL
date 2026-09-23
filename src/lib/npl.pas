@@ -379,10 +379,14 @@ type
 
   NPLFloatClass = class of NPLFloat;
 
-  NPLDouble = class(NPLNumber)
+  NPLDouble = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLDouble>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : double);
     function equals(obj : TObject) : boolean; override;
+    function compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;    
+    function isInfinite : boolean; overload;
+    function hashCode : int; override;
+    class function isInfinite(v : double) : boolean; overload;
     class function doubleToLongBits(value : double) : long;
     class function doubleToRawLongBits(value : double) : long;
     class function longBitsToDouble(bits : long) : double;
@@ -431,7 +435,8 @@ function signedRightShift(value : long; bits : int): long; overload;
 implementation
 
 uses
-  npl_Float
+  npl_Double
+  ,npl_Float
   ,npl_misc_DoubleConsts
   ,npl_misc_FloatConsts
   ,typInfo
@@ -1170,15 +1175,46 @@ begin
     exit;
   if not (obj is NPLDouble) then
     exit;
-  result := fValue.doubleValue=NPLDouble(obj).fValue.doubleValue;
+  result := NPLDouble.doubleToLongBits(self.fValue.doubleValue)=NPLDouble.doubleToLongBits(NPLDouble(obj).fValue.doubleValue);
+end;
+
+function NPLDouble.compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;
+begin
+  if anotherDouble=NIL then
+    raise NilPointerException.create('anotherDouble');
+
+  {$IFNDEF GENERICS}
+  if not (anotherDouble is NPLDouble) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLDouble.compare(self.fValue.doubleValue, NPLDouble(anotherDouble).fValue.doubleValue);
+end;
+
+function NPLDouble.isInfinite : boolean;
+begin
+  result := isInfinite(fValue.doubleValue);
+end;
+
+function NPLDouble.hashCode : int;
+var
+  bits : long;
+begin
+  bits := doubleToLongBits(fValue.doubleValue);
+  result := int(bits xor (bits shr 32));
+end;
+
+class function NPLDouble.isInfinite(v : double) : boolean;
+begin
+  result := (v = npl_Double.POSITIVE_INFINITY) or (v = npl_Double.NEGATIVE_INFINITY);
 end;
 
 class function NPLDouble.doubleToLongBits(value : double) : long;
 begin
   result := doubleToRawLongBits(value);
-  //
-  //  ...
-  //
+  if ((result and npl_misc_DoubleConsts.EXP_BIT_MASK) = npl_misc_DoubleConsts.EXP_BIT_MASK)
+     and ((result and npl_misc_DoubleConsts.SIGNIF_BIT_MASK) <> long(0)) then
+      result := long($7ff8000000000000);
 end;
 
 class function NPLDouble.doubleToRawLongBits(value : double) : long;

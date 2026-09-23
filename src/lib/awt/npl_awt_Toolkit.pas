@@ -13,7 +13,7 @@ uses
 type
   Toolkit = class(NPLObject)
   public
-    class function getProperty(key : string; defaultValue : string) : string;
+    class function getProperty(const key, defaultValue : string) : string;
   end;
 
 implementation
@@ -25,7 +25,7 @@ uses
 var
   Properties : TStringList;
 
-class function Toolkit.getProperty(key : string; defaultValue : string) : string;
+class function Toolkit.getProperty(const key, defaultValue : string) : string;
 begin
   if not assigned(Properties) then begin
     result := defaultValue;

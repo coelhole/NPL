@@ -113,21 +113,21 @@ type
     procedure setBoundsOp(op : int); virtual;
     function constructComponentName : nstring; virtual;
     function getName : nstring; virtual;
-    procedure setName(name : nstring); virtual;
+    procedure setName(const name : nstring); virtual;
     function getParent : AWTContainer; virtual;
     function getContainer : AWTContainer; virtual;
     function isRecursivelyVisible : boolean; virtual;
 
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : NPLObject); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : string); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : boolean); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : int); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : sbyte); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : short); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : long); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : char); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : float); overload; virtual;
-    procedure firePropertyChange(propertyName : string; oldValue, newValue : double); overload; virtual;            
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : NPLObject); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : string); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : boolean); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : int); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : sbyte); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : short); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : long); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : char); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : float); overload; virtual;
+    procedure firePropertyChange(const propertyName : string; oldValue, newValue : double); overload; virtual;
   public
     constructor create;virtual;
     destructor destroy;override;
@@ -480,7 +480,7 @@ begin
   result := fName;
 end;
 
-procedure AWTComponent.setName(name : nstring);
+procedure AWTComponent.setName(const name : nstring);
 var
   oldName : nstring;
 begin
@@ -613,7 +613,7 @@ begin
   end;
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : NPLObject);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : NPLObject);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -630,7 +630,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : string);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : string);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -647,7 +647,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : boolean);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : boolean);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -664,7 +664,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : int);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : int);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -681,7 +681,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : sbyte);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : sbyte);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -698,7 +698,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : short);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : short);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -715,7 +715,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : long);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : long);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -732,7 +732,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : char);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : char);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -749,7 +749,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : float);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : float);
 var
   changeSupport : PropertyChangeSupport;
 begin
@@ -766,7 +766,7 @@ begin
   changeSupport.firePropertyChange(propertyName, oldValue, newValue);
 end;
 
-procedure AWTComponent.firePropertyChange(propertyName : string; oldValue, newValue : double);
+procedure AWTComponent.firePropertyChange(const propertyName : string; oldValue, newValue : double);
 var
   changeSupport : PropertyChangeSupport;
 begin
