@@ -209,10 +209,14 @@ type
 {$M+}
   NPLObject=class(TObject, {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF})
   protected
+    fRefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF};
     function QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}HResult; virtual; stdcall;{$ENDIF}
     function _AddRef : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
     function _Release : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
   public
+    procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
+    class function NewInstance : TObject; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
     function equals(obj :TObject) : boolean; {$IFDEF FPC}override;{$ELSE}virtual;{$ENDIF}
@@ -222,20 +226,6 @@ type
 {$M-}
 
   NPLClass = class of NPLObject;
-
-  NPLInterfacedObject = class(NPLObject)
-  protected
-    fRefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF};  
-    function _AddRef : {$IFDEF FPC}longint; override; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; override; stdcall;{$ENDIF}
-    function _Release : {$IFDEF FPC}longint; override; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; override; stdcall;{$ENDIF}
-  public
-    procedure AfterConstruction; override;
-    procedure BeforeDestruction; override;
-    class function NewInstance : TObject; override;
-    property RefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF} read fRefCount;
-  end;
-
-  NPLInterfacedClass = class of NPLInterfacedObject;
 
   NPLException=class(Exception)
   public
@@ -284,6 +274,17 @@ type
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
 
+  NPLNumber     = class;
+  NPLSByte      = class;
+  NPLShort      = class;
+  NPLInteger    = class;
+  NPLLong       = class;
+  NPLFloat      = class;
+  NPLDouble     = class;
+  NPLBoolean    = class;
+  NPLCharacter  = class;
+  NPLString     = class;
+
   NPLNumber = class(NPLObject)
   private
     fValue : union;
@@ -297,13 +298,6 @@ type
   end;
 
   NPLNumberClass = class of NPLNumber;
-
-  NPLSByte = class;
-  NPLShort = class;
-  NPLInteger = class;
-  NPLLong = class;
-  NPLFloat = class;
-  NPLDouble = class;          
 
   NPLSByte = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLSByte>{$ELSE}Comparable{$ENDIF})
   public
@@ -430,16 +424,32 @@ type
 
   NPLDoubleClass = class of NPLDouble;
 
-  NPLBoolean = class(NPLObject)
+  NPLBoolean = class(NPLObject,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLBoolean>{$ELSE}Comparable{$ENDIF})
   private
     fValue : boolean;
   public
     constructor create(aValue : boolean);
+    class function toString(b : boolean) : string; overload;
+    function toString : string; overload; override;
+    function hashCode : int; override;
     function equals(obj : TObject) : boolean; override;
+    function compareTo(b : {$IFDEF GENERICS}NPLBoolean{$ELSE}NPLObject{$ENDIF}) : int;
+    class function compare(x, y : boolean) : int;
     property value : boolean read fValue write fValue;
   end;
 
   NPLBooleanClass = class of NPLBoolean;
+
+  NPLCharacter = class(NPLObject)
+  private
+    fValue : char;
+  public
+    constructor create(aValue : char);
+    function equals(obj : TObject) : boolean; override;
+    property value : char read fValue write fValue;
+  end;
+
+  NPLCharacterClass = class of NPLCharacter;
 
   NPLString = class(NPLObject)
   private
@@ -451,17 +461,6 @@ type
   end;
 
   NPLStringClass = class of NPLString;
-
-  NPLChar = class(NPLObject)
-  private
-    fValue : char;
-  public
-    constructor create(aValue : char);
-    function equals(obj : TObject) : boolean; override;
-    property value : char read fValue write fValue;
-  end;
-
-  NPLCharClass = class of NPLChar;
 
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
@@ -573,41 +572,29 @@ end;
 
 function NPLObject._AddRef : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
-  result := 0;
+  result := InterlockedIncrement(fRefCount);
 end;
 
 function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
-  result := 0;
+  result := InterlockedDecrement(fRefCount);
 end;
 
-procedure NPLInterfacedObject.AfterConstruction;
+procedure NPLObject.AfterConstruction;
 begin
-  InterlockedDecrement(FRefCount);
+  InterlockedDecrement(fRefCount);
 end;
 
-procedure NPLInterfacedObject.BeforeDestruction;
+procedure NPLObject.BeforeDestruction;
 begin
-  if RefCount <> 0 then
+  if fRefCount <> 0 then
     System.RunError(2);
 end;
 
-class function NPLInterfacedObject.NewInstance : TObject;
+class function NPLObject.NewInstance : TObject;
 begin
   result := inherited NewInstance;
-  NPLInterfacedObject(result).FRefCount := 1;
-end;
-
-function NPLInterfacedObject._AddRef : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
-begin
-  result := InterlockedIncrement(FRefCount);
-end;
-
-function NPLInterfacedObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
-begin
-  result := InterlockedDecrement(FRefCount);
-  if result = 0 then
-    Destroy;
+  NPLObject(result).fRefCount := 1;
 end;
 
 constructor NPLException.create;
@@ -1513,6 +1500,27 @@ begin
   fValue := aValue;
 end;
 
+class function NPLBoolean.toString(b : boolean) : string;
+begin
+  if b then
+    result := 'true'
+  else result := 'false';
+end;
+
+function NPLBoolean.toString : string;
+begin
+  if fValue then
+    result := 'true'
+  else result := 'false';
+end;
+
+function NPLBoolean.hashCode : int;
+begin
+  if fValue then
+    result := 1231
+  else result := 1237;
+end;
+
 function NPLBoolean.equals(obj : TObject) : boolean;
 begin
   result := false;
@@ -1521,6 +1529,45 @@ begin
   if not (obj is NPLBoolean) then
     exit;
   result := fValue=NPLBoolean(obj).fValue;
+end;
+
+function NPLBoolean.compareTo(b : {$IFDEF GENERICS}NPLBoolean{$ELSE}NPLObject{$ENDIF}) : int;
+begin
+  if b=NIL then
+    raise NilPointerException.create;
+
+  {$IFNDEF GENERICS}
+  if not (b is NPLBoolean) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLBoolean.compare(self.fValue, NPLBoolean(b).fValue);
+end;
+
+class function NPLBoolean.compare(x, y : boolean) : int;
+begin
+  if x = y then
+    result := 0
+  else
+  if x then
+    result := 1
+  else
+    result := -1;
+end;
+
+constructor NPLCharacter.create(aValue : char);
+begin
+  fValue := aValue;
+end;
+
+function NPLCharacter.equals(obj : TObject) : boolean;
+begin
+  result := false;
+  if obj=NIL then
+    exit;
+  if not (obj is NPLCharacter) then
+    exit;
+  result := fValue=NPLCharacter(obj).fValue;
 end;
 
 constructor NPLString.create(aValue : string);
@@ -1536,21 +1583,6 @@ begin
   if not (obj is NPLString) then
     exit;
   result := fValue=NPLString(obj).fValue;
-end;
-
-constructor NPLChar.create(aValue : char);
-begin
-  fValue := aValue;
-end;
-
-function NPLChar.equals(obj : TObject) : boolean;
-begin
-  result := false;
-  if obj=NIL then
-    exit;
-  if not (obj is NPLChar) then
-    exit;
-  result := fValue=NPLChar(obj).fValue;
 end;
 
 end.

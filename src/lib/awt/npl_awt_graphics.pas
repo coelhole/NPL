@@ -56,7 +56,7 @@ type
     procedure fillRect(x, y, width, height : int);
   end;
 
-  GraphicContext=class(NPLInterfacedObject,AWTGraphics)
+  GraphicContext=class(NPLObject,AWTGraphics)
   private
     fHWnd : HWND;
     fDC : HDC;

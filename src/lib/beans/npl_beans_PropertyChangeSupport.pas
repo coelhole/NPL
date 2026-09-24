@@ -341,14 +341,14 @@ end;
 procedure PropertyChangeSupport.firePropertyChange(const propertyName : string; oldValue, newValue : char);
 var
   evt : PropertyChangeEvent;
-  oldChar, newChar : NPLChar;
+  oldChar, newChar : NPLCharacter;
 begin
   if oldValue = newValue then
     exit;
 
-  oldChar := NPLChar.create(oldValue);
+  oldChar := NPLCharacter.create(oldValue);
   try
-    newChar := NPLChar.create(newValue);
+    newChar := NPLCharacter.create(newValue);
     try
       evt := PropertyChangeEvent.create(fSource, propertyName, oldChar, newChar);
       try
