@@ -38,7 +38,7 @@
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLDouble = class(<a class="normal" href="npl.NPLNumber.html">NPLNumber</a>, <a class="normal" href="npl.Comparable.generic.html">Comparable&lt;NPLDouble&gt;</a>)</code></p>
+<code>type NPLDouble = class(<a class="normal" href="npl.NPLNumber.html">NPLNumber</a>, <a class="normal" href="npl.Comparable.html">Comparable</a>)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
@@ -57,15 +57,23 @@
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLDouble.html#compareTo-NPLDouble-">compareTo</a></strong>(anotherDouble : <a href="npl.NPLDouble.html">NPLDouble</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLDouble.html#compareTo-NPLObject-">compareTo</a></strong>(anotherDouble : <a href="npl.NPLObject.html">NPLObject</a>) : <a href="npl.html#int">int</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLDouble.html#isInfinite">isInfinite</a></strong>: boolean; overload;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLDouble.html#isNaN">isNaN</a></strong>: boolean; overload;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLDouble.html#isInfinite">isInfinite</a></strong>: boolean; overload;</code></td>
+</tr>
+<tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLDouble.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; override;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLDouble.html#isNaN-double-">isNaN</a></strong>(v : double) : boolean; overload;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -116,7 +124,15 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="compareTo-NPLDouble-"></span><code>function <strong>compareTo</strong>(anotherDouble : <a href="npl.NPLDouble.html">NPLDouble</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><span id="compareTo-NPLObject-"></span><code>function <strong>compareTo</strong>(anotherDouble : <a href="npl.NPLObject.html">NPLObject</a>) : <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isNaN"></span><code>function <strong>isNaN</strong>: boolean; overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -133,6 +149,14 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="hashCode"></span><code>function <strong>hashCode</strong>: <a href="npl.html#int">int</a>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="isNaN-double-"></span><code>class function <strong>isNaN</strong>(v : double) : boolean; overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

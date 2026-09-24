@@ -416,8 +416,10 @@ type
     constructor create(aValue : double);
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;    
+    function isNaN : boolean; overload;
     function isInfinite : boolean; overload;
     function hashCode : int; override;
+    class function isNaN(v : double) : boolean; overload;
     class function isInfinite(v : double) : boolean; overload;
     class function doubleToLongBits(value : double) : long;
     class function doubleToRawLongBits(value : double) : long;
@@ -1436,6 +1438,11 @@ begin
   result := NPLDouble.compare(self.fValue.doubleValue, NPLDouble(anotherDouble).fValue.doubleValue);
 end;
 
+function NPLDouble.isNaN : boolean;
+begin
+  result := isNaN(fValue.doubleValue);
+end;
+
 function NPLDouble.isInfinite : boolean;
 begin
   result := isInfinite(fValue.doubleValue);
@@ -1447,6 +1454,14 @@ var
 begin
   bits := doubleToLongBits(fValue.doubleValue);
   result := int(bits xor (bits shr 32));
+end;
+
+class function NPLDouble.isNaN(v : double) : boolean;
+var
+  bits: long;
+begin
+  bits := doubleToRawLongBits(v);
+  result := ((bits and $7FF0000000000000) = $7FF0000000000000) and ((bits and $000FFFFFFFFFFFFF) <> 0);
 end;
 
 class function NPLDouble.isInfinite(v : double) : boolean;
