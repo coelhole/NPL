@@ -39,6 +39,7 @@ var tipuesearch = {"pages": [
      {"title": "npl.StringIndexOutOfBoundsException.create", "text": "    ", "tags": "", "url": "npl.StringIndexOutOfBoundsException.html#create-int-"},
      {"title": "npl.NumberFormatException", "text": "   ", "tags": "", "url": "npl.NumberFormatException.html"},
      {"title": "npl.UnsupportedOperationException", "text": "   ", "tags": "", "url": "npl.UnsupportedOperationException.html"},
+     {"title": "npl.Autodestroyable", "text": "   ", "tags": "", "url": "npl.Autodestroyable.html"},
      {"title": "npl.Comparable", "text": "   ", "tags": "", "url": "npl.Comparable.generic.html"},
      {"title": "npl.Comparable.compareTo", "text": "    ", "tags": "", "url": "npl.Comparable.generic.html#compareTo-T-"},
      {"title": "npl.NPLNumber", "text": "   ", "tags": "", "url": "npl.NPLNumber.html"},

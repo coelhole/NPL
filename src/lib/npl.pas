@@ -265,6 +265,10 @@ type
 
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
+  Autodestroyable = interface
+    ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
+  end;
+
   (*
     https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/lang/Comparable.java @html(<br>)
     https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html @html(<br>)
@@ -578,6 +582,10 @@ end;
 function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
   result := InterlockedDecrement(fRefCount);
+
+  if result = 0 then
+    if self.ClassType.GetInterfaceEntry(Autodestroyable) <> nil then
+      Destroy;
 end;
 
 procedure NPLObject.AfterConstruction;
