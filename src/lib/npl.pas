@@ -237,7 +237,10 @@ type
 
   NPLInterfacedClass = class of NPLInterfacedObject;
 
-  NPLException=class(Exception);
+  NPLException=class(Exception)
+  public
+    constructor create; overload;
+  end;
 
   NPLExceptionClass = class of NPLException;
 
@@ -272,6 +275,10 @@ type
 
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
+  (*
+    https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/lang/Comparable.java @html(<br>)
+    https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html @html(<br>)
+  *)
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface
     ['{6EBC1ADC-027E-4B7B-AA27-88D8F2D1CC17}']
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
@@ -303,7 +310,9 @@ type
     constructor create(aValue : sbyte);
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
+    function toString : string; overload; override;
     function hashCode : int; override;
+    class function toString(b : sbyte) : string; overload;
     class function compare(x, y : sbyte) : int;
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
   end;
@@ -315,7 +324,9 @@ type
     constructor create(aValue : short);
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
+    function toString : string; overload; override;
     function hashCode : int; override;
+    class function toString(s : short) : string; overload;
     class function compare(x, y : short) : int;
     class function reverseBytes(i : short) : short;
     property value : short read fValue.shortValue write fValue.shortValue;
@@ -330,6 +341,7 @@ type
     constructor create(aValue : int);
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
+    function toString : string; overload; override;
     function hashCode : int; override;
     class function toString(i, radix : int) : string; overload;
     class function toString(i : int) : string; overload;
@@ -353,11 +365,19 @@ type
   NPLIntegerClass = class of NPLInteger;
 
   NPLLong = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLLong>{$ELSE}Comparable{$ENDIF})
+  private
+    class function toUnsignedString(i : long; shift : int) : string;
   public
     constructor create(aValue : long);
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
+    function toString : string; overload; override;
     function hashCode : int; override;
+    class function toString(i : long; radix : int) : string; overload;
+    class function toString(i : long) : string; overload;
+    class function toHexString(i : long) : string;
+    class function toOctalString(i : long) : string;
+    class function toBinaryString(i : long) : string;
     class function compare(x, y : long) : int;
     class function highestOneBit(i : long) : long;
     class function lowestOneBit(i : long) : long;
@@ -453,6 +473,7 @@ uses
   ,npl_Double
   ,npl_Float
   ,npl_Integer
+  ,npl_Long
   ,npl_misc_DoubleConsts
   ,npl_misc_FloatConsts
   ,typInfo
@@ -589,6 +610,11 @@ begin
     Destroy;
 end;
 
+constructor NPLException.create;
+begin
+  create('');
+end;
+
 constructor StringIndexOutOfBoundsException.create(index : int);
 begin
   inherited createFmt('String index out of range: %d',[index]);
@@ -642,7 +668,7 @@ end;
 function NPLSByte.compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherByte=NIL then
-    raise NilPointerException.create('anotherByte');
+    raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
   if not (anotherByte is NPLSByte) then
@@ -652,9 +678,19 @@ begin
   result := NPLSByte.compare(self.fValue.sbyteValue, NPLSByte(anotherByte).fValue.sbyteValue);
 end;
 
+function NPLSByte.toString : string;
+begin
+  result := NPLInteger.toString(int(fValue.sbyteValue));
+end;
+
 function NPLSByte.hashCode : int;
 begin
   result := int(fValue.sbyteValue);
+end;
+
+class function NPLSByte.toString(b : sbyte) : string;
+begin
+  result := NPLInteger.toString(int(b), 10);
 end;
 
 class function NPLSByte.compare(x, y : sbyte) : int;
@@ -680,7 +716,7 @@ end;
 function NPLShort.compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherShort=NIL then
-    raise NilPointerException.create('anotherShort');
+    raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
   if not (anotherShort is NPLShort) then
@@ -690,9 +726,19 @@ begin
   result := NPLShort.compare(self.fValue.shortValue, NPLShort(anotherShort).fValue.shortValue);
 end;
 
+function NPLShort.toString : string;
+begin
+  result := NPLInteger.toString(int(fValue.shortValue));
+end;
+
 function NPLShort.hashCode : int;
 begin
   result := int(fValue.shortValue);
+end;
+
+class function NPLShort.toString(s : short) : string;
+begin
+  result := NPLInteger.toString(int(s), 10);
 end;
 
 class function NPLShort.compare(x, y : short) : int;
@@ -723,7 +769,7 @@ end;
 function NPLInteger.compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherInteger=NIL then
-    raise NilPointerException.create('anotherInteger');
+    raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
   if not (anotherInteger is NPLInteger) then
@@ -731,6 +777,11 @@ begin
   {$ENDIF}
 
   result := NPLInteger.compare(self.fValue.intValue, NPLInteger(anotherInteger).fValue.intValue);
+end;
+
+function NPLInteger.toString : string;
+begin
+  result := toString(fValue.intValue);
 end;
 
 function NPLInteger.hashCode : int;
@@ -760,11 +811,11 @@ begin
     i := -i;
 
   while i <= -radix do begin
-    buf[charPos] := digits[-(i mod radix)];
+    buf[charPos] := npl_Integer.digits[-(i mod radix)];
     dec(charPos);
     i := i div radix;
   end;
-  buf[charPos] := digits[-i];
+  buf[charPos] := npl_Integer.digits[-i];
 
   if negative then begin
     dec(charPos);
@@ -804,7 +855,7 @@ begin
   mask := radix - 1;
   repeat
     dec(charPos);
-    buf[charPos] := digits[i and mask];
+    buf[charPos] := npl_Integer.digits[i and mask];
     i := i shr shift;
   until i = 0;
   result := string(copy(buf, charPos, 32-charPos));
@@ -988,7 +1039,7 @@ end;
 function NPLLong.compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherLong=NIL then
-    raise NilPointerException.create('anotherLong');
+    raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
   if not (anotherLong is NPLLong) then
@@ -998,9 +1049,100 @@ begin
   result := NPLLong.compare(self.fValue.longValue, NPLLong(anotherLong).fValue.longValue);
 end;
 
+function NPLLong.toString : string;
+begin
+  result := toString(fValue.longValue);
+end;
+
 function NPLLong.hashCode : int;
 begin
   result := int(fValue.longValue xor (fValue.longValue shr 32));
+end;
+
+class function NPLLong.toString(i : long; radix : int) : string;
+var
+  buf : chararr;
+  charPos : int;
+  negative : boolean;
+begin
+  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+    radix := 10;
+
+  if radix = 10 then begin
+    result := toString(i);
+    exit;
+  end;
+
+  setLength(buf, 65);
+  charPos := 64;
+  negative := (i < 0);
+
+  if not negative then
+    i := -i;
+
+  while i <= -radix do begin
+    buf[charPos] := npl_Integer.digits[int(-(i mod radix))];
+    dec(charPos);
+    i := i div radix;
+  end;
+  buf[charPos] := npl_Integer.digits[int(-i)];
+
+  if negative then begin
+    dec(charPos);
+    buf[charPos] := '-';
+  end;
+
+  result := string(copy(buf, charPos, 65-charPos));
+end;
+
+class function NPLLong.toHexString(i : long) : string;
+begin
+  result := toUnsignedString(i, 4);
+end;
+
+class function NPLLong.toOctalString(i : long) : string;
+begin
+  result := toUnsignedString(i, 3);
+end;
+
+class function NPLLong.toBinaryString(i : long) : string;
+begin
+  result := toUnsignedString(i, 1);
+end;
+
+class function NPLLong.toUnsignedString(i : long; shift : int) : string;
+var
+  buf : chararr;
+  charPos, radix : int;
+  mask : long;
+begin
+  setLength(buf, 64);
+  charPos := 64;
+  radix := 1 shl shift;
+  mask := radix - 1;
+  repeat
+    dec(charPos);
+    buf[charPos] := npl_Integer.digits[int(i and mask)];
+    i := i shr shift;
+  until (i = 0);
+  result := string(copy(buf, charPos, 64-charPos));
+end;
+
+class function NPLLong.toString(i : long) : string;
+var
+  size : int;
+  buf : chararr;
+begin
+  if i = npl_Long.MIN_VALUE then begin
+    result := '-9223372036854775808';
+    exit;
+  end;
+  if i < 0 then
+    size := npl_Long.stringSize(-i) + 1
+  else size := npl_Long.stringSize(i);
+  setLength(buf, size);
+  npl_Long.getChars(i, size, buf);
+  result := string(buf);
 end;
 
 class function NPLLong.compare(x, y : long) : int;
@@ -1184,7 +1326,7 @@ end;
 function NPLFloat.compareTo(anotherFloat : {$IFDEF GENERICS}NPLFloat{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherFloat=NIL then
-    raise NilPointerException.create('anotherFloat');
+    raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
   if not (anotherFloat is NPLFloat) then
@@ -1289,7 +1431,7 @@ end;
 function NPLDouble.compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherDouble=NIL then
-    raise NilPointerException.create('anotherDouble');
+    raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
   if not (anotherDouble is NPLDouble) then
