@@ -265,7 +265,12 @@ type
 
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
-  Autodestroyable = interface
+  AutoCloseable = interface
+    ['{5011DC3E-F6FA-46FF-A143-015AB5D78A9E}']
+    procedure close;
+  end;
+
+  AutoDestroyable = interface
     ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
   end;
 
@@ -585,9 +590,12 @@ function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
   result := InterlockedDecrement(fRefCount);
 
-  if result = 0 then
-    if self.ClassType.GetInterfaceEntry(Autodestroyable) <> nil then
-      Destroy;
+  if result = 0 then begin
+    if self.classType.getInterfaceEntry(AutoCloseable) <> nil then
+      ; //TODO
+    if self.classType.getInterfaceEntry(AutoDestroyable) <> nil then
+      destroy;
+  end;
 end;
 
 procedure NPLObject.AfterConstruction;
