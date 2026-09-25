@@ -473,6 +473,18 @@ type
 
   NPLStringClass = class of NPLString;
 
+  NObject     = NPLObject;      NClass          = NPLClass;
+  NNumber     = NPLNumber;      NNumberClass    = NPLNumberClass;
+  NByte       = NPLSByte;       NByteClass      = NPLSByteClass;
+  NShort      = NPLShort;       NShortClass     = NPLShortClass;
+  NInteger    = NPLInteger;     NIntegerClass   = NPLIntegerClass;
+  NLong       = NPLLong;        NLongClass      = NPLLongClass;
+  NFloat      = NPLFloat;       NFloatClass     = NPLFloatClass;
+  NDouble     = NPLDouble;      NDoubleClass    = NPLDoubleClass;
+  NBoolean    = NPLBoolean;     NBooleanClass   = NPLBooleanClass;
+  NCharacter  = NPLCharacter;   NCharacterClass = NPLCharacterClass;
+  //NString     = NPLString;
+
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
 
@@ -598,20 +610,25 @@ var
 begin
   AutoCloaseableEntry := obj.getInterfaceEntry(AutoCloseable);
   if AutoCloaseableEntry <> nil then begin
-    AutoCloseableInstancePtr := Pointer(Integer(obj) + AutoCloaseableEntry^.IOffset);
+    AutoCloseableInstancePtr := Pointer(nint(obj) + AutoCloaseableEntry^.IOffset);
     AutoCloseableVTablePtr := PPointer(AutoCloseableInstancePtr)^;
-    ClosePointer := PPointer(Integer(AutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
+    ClosePointer := PPointer(nint(AutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
     @Close := ClosePointer;
     Close(AutoCloseableInstancePtr);
   end;
 end;
 function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
+var
+  isAutoDestroyable : boolean;
 begin
   result := InterlockedDecrement(fRefCount);
 
   if result = 0 then begin
-    checkAutoCloseable(self);  
-    if self.classType.getInterfaceEntry(AutoDestroyable) <> nil then
+    isAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
+    try checkAutoCloseable(self); except
+      // ???   
+    end;
+    if isAutoDestroyable then
       destroy;
   end;
 end;

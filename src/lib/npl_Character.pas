@@ -3,7 +3,8 @@ unit npl_Character;
 interface
 
 uses
-  npl;
+  npl
+  ;
 
 const
   MIN_RADIX : int = 2;
