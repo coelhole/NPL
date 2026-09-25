@@ -586,13 +586,31 @@ begin
   result := InterlockedIncrement(fRefCount);
 end;
 
+type
+  CloseProc = procedure(const aSelf: Pointer);
+procedure checkAutoCloseable(obj : TObject);
+var
+  AutoCloaseableEntry : PInterfaceEntry;
+  AutoCloseableInstancePtr : Pointer;
+  AutoCloseableVTablePtr : Pointer;
+  ClosePointer : Pointer;
+  Close : CloseProc;
+begin
+  AutoCloaseableEntry := obj.getInterfaceEntry(AutoCloseable);
+  if AutoCloaseableEntry <> nil then begin
+    AutoCloseableInstancePtr := Pointer(Integer(obj) + AutoCloaseableEntry^.IOffset);
+    AutoCloseableVTablePtr := PPointer(AutoCloseableInstancePtr)^;
+    ClosePointer := PPointer(Integer(AutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
+    @Close := ClosePointer;
+    Close(AutoCloseableInstancePtr);
+  end;
+end;
 function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 begin
   result := InterlockedDecrement(fRefCount);
 
   if result = 0 then begin
-    if self.classType.getInterfaceEntry(AutoCloseable) <> nil then
-      ; //TODO
+    checkAutoCloseable(self);  
     if self.classType.getInterfaceEntry(AutoDestroyable) <> nil then
       destroy;
   end;
