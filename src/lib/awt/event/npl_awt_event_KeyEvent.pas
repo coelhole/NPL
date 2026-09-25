@@ -223,30 +223,30 @@ type
     fScancode : long;
     fExtendedKeyCode : long;
     constructor create(source : AWTComponent; id : int; when : long; modifiers : int;
-                    keyCode : int; keyChar : nchar; keyLocation : int; isProxyActive : boolean); overload;
+                    keyCode : int; keyChar : uchar; keyLocation : int; isProxyActive : boolean); overload;
     procedure setNewModifiers;
     procedure setOldModifiers;
   protected
     //
     fKeyCode : int;
-    fKeyChar : nchar;
+    fKeyChar : uchar;
     fKeyLocation : int;
   public
     constructor create(source : AWTComponent; id : int; when : long; modifiers : int;
-      keyCode : int; keyChar : nchar; keyLocation : int); overload; virtual;
+      keyCode : int; keyChar : uchar; keyLocation : int); overload; virtual;
     constructor create(source : AWTComponent; id : int; when : long; modifiers : int;
-      keyCode : int; keyChar : nchar); overload; virtual;
+      keyCode : int; keyChar : uchar); overload; virtual;
     constructor create(source : AWTComponent; id : int; when : long; modifiers : int;
       keyCode : int); overload; {$IFDEF DELPHI6UPORFPC}deprecated;{$ENDIF}
     function getKeyCode : int; virtual;
     procedure setKeyCode(keyCode : int); virtual;
-    function getKeyChar : nchar; virtual;
-    procedure setKeyChar(keyChar : nchar); virtual;
+    function getKeyChar : uchar; virtual;
+    procedure setKeyChar(keyChar : uchar); virtual;
     procedure setModifiers(modifiers : int); {$IFDEF DELPHI6UPORFPC}deprecated;{$ENDIF}
     function getKeyLocation : int; virtual;
     function isActionKey : boolean; virtual;
-    class function getKeyText(keyCode : int) : nstring;
-    class function getKeyModifiersText(modifiers : int) : nstring;
+    class function getKeyText(keyCode : int) : ustring;
+    class function getKeyModifiersText(modifiers : int) : ustring;
   end;
 
 implementation
@@ -258,7 +258,7 @@ uses
   ;
 
 constructor KeyEvent.create(source : AWTComponent; id : int; when : long; modifiers : int;
-  keyCode : int; keyChar : nchar; keyLocation : int; isProxyActive : boolean);
+  keyCode : int; keyChar : uchar; keyLocation : int; isProxyActive : boolean);
 begin
   create(source, id, when, modifiers, keyCode, keyChar, keyLocation);
   fIsProxyActive := isProxyActive;
@@ -307,7 +307,7 @@ begin
 end;
 
 constructor KeyEvent.create(source : AWTComponent; id : int; when : long; modifiers : int;
-  keyCode : int; keyChar : nchar; keyLocation : int);
+  keyCode : int; keyChar : uchar; keyLocation : int);
 begin
   inherited create(source, id, when, modifiers);
 
@@ -341,7 +341,7 @@ begin
 end;
 
 constructor KeyEvent.create(source : AWTComponent; id : int; when : long; modifiers : int;
-  keyCode : int; keyChar : nchar);
+  keyCode : int; keyChar : uchar);
 begin
   create(source, id, when, modifiers, keyCode, keyChar, KEY_LOCATION_UNKNOWN);
 end;
@@ -349,7 +349,7 @@ end;
 constructor KeyEvent.create(source : AWTComponent; id : int; when : long; modifiers : int;
   keyCode : int);
 begin
-  create(source, id, when, modifiers, keyCode, nchar(keyCode));
+  create(source, id, when, modifiers, keyCode, uchar(keyCode));
 end;
 
 function KeyEvent.getKeyCode : int;
@@ -362,12 +362,12 @@ begin
   fKeyCode := keyCode;
 end;
 
-function KeyEvent.getKeyChar : nchar;
+function KeyEvent.getKeyChar : uchar;
 begin
   result := fKeyChar;
 end;
 
-procedure KeyEvent.setKeyChar(keyChar : nchar);
+procedure KeyEvent.setKeyChar(keyChar : uchar);
 begin
   fKeyChar := keyChar;
 end;
@@ -386,16 +386,16 @@ begin
   result := fKeyLocation;
 end;
 
-class function KeyEvent.getKeyText(keyCode : int) : nstring;
+class function KeyEvent.getKeyText(keyCode : int) : ustring;
 var
-  numpad, unknown : nstring;
-  c : nchar;
+  numpad, unknown : ustring;
+  c : uchar;
 begin
   result := '';
 
   if ((keyCode >= VK_0) and (keyCode <= VK_9)) or
     ((keyCode >= VK_A) and (keyCode <= VK_Z)) then begin
-    result := nstring(nchar(keyCode));
+    result := ustring(uchar(keyCode));
     exit;
   end;
 
@@ -562,21 +562,21 @@ begin
 
   if (keyCode >= VK_NUMPAD0) and (keyCode <= VK_NUMPAD9) then begin
     numpad := Toolkit.getProperty('AWT.numpad', 'NumPad');
-    c := nchar(keyCode - VK_NUMPAD0 + int(nchar('0')));
-    result := nstring('') + numpad + nchar('-') + c;
+    c := uchar(keyCode - VK_NUMPAD0 + int(uchar('0')));
+    result := ustring('') + numpad + uchar('-') + c;
     exit;
   end;
 
   if (keyCode and $01000000) <> 0 then begin
-    result := nstring('') + nchar(keyCode xor $01000000);
+    result := ustring('') + uchar(keyCode xor $01000000);
     exit;
   end;
 
   unknown := Toolkit.getProperty('AWT.unknown', 'Unknown');
-  result := unknown + nstring(' keyCode: $') + nstring(lowerCase(intToHex(keyCode, 8)));
+  result := unknown + ustring(' keyCode: $') + ustring(lowerCase(intToHex(keyCode, 8)));
 end;
 
-class function KeyEvent.getKeyModifiersText(modifiers : int) : nstring;
+class function KeyEvent.getKeyModifiersText(modifiers : int) : ustring;
 var
   strm : TStringStream;
 begin

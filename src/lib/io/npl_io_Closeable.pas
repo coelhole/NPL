@@ -12,8 +12,7 @@ uses
 
 type
   Closeable = interface(AutoCloseable)
-    ['{BA01AE88-B1E2-4501-8326-CE789D9D6C72}']
-    procedure close;
+    ['{5B3B0F6D-D808-40E1-B43B-D1EB65582D67}']
   end;
 
 implementation

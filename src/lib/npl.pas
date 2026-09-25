@@ -71,14 +71,17 @@ type
 {$endif FPC}
 {$endif DELPHI5OROLDER}
 
-{$ifdef DELPHI5OROLDER}
 const
+{$ifdef DELPHI5OROLDER}
   S_OK = 0;
   S_FALSE = $00000001;
   E_NOINTERFACE = HRESULT($80004002);
   E_UNEXPECTED = HRESULT($8000FFFF);
   E_NOTIMPL = HRESULT($80004001);
 {$endif DELPHI5OROLDER}
+  LF = #10;
+  CRLF = #13#10;
+  EOL = {$IFDEF WINDOWS}CRLF{$ELSE}LF{$ENDIF};
 
 type
   bool    = boolean;
@@ -111,8 +114,6 @@ type
   sstring = shortstring;
   wchar   = widechar;
   wstring = widestring;
-  nchar   = wchar;
-  nstring = wstring;
 {$IFDEF CPU64}
   nint    = int64;
   {$IFDEF FPC}
@@ -126,13 +127,11 @@ type
 {$ENDIF}
 
   //array types
+  chararr     = array of char;
+  wchararr    = array of wchar;
   sstringarr  = array of shortstring;
   stringarr   = array of string;
   wstringarr  = array of wstring;
-  nstringarr  = array of nstring;
-  chararr     = array of char;
-  wchararr    = array of wchar;
-  nchararr    = array of nchar;
   booleanarr  = array of boolean;
   boolarr     = array of bool;
   int8arr     = array of int8;
@@ -167,6 +166,13 @@ type
   real48arr   = array of real48;
   nintarr     = array of nint;
   nuintarr    = array of nuint;
+
+  //NPL char & string types
+  uchar           = widechar;
+  ustring         = widestring;
+  nchar           = type word;
+  nchararr        = array of nchar;
+  nrawstring      = type nchararr;
 
   basetype = (
     t_sbyte,
@@ -483,7 +489,7 @@ type
   NDouble     = NPLDouble;      NDoubleClass    = NPLDoubleClass;
   NBoolean    = NPLBoolean;     NBooleanClass   = NPLBooleanClass;
   NCharacter  = NPLCharacter;   NCharacterClass = NPLCharacterClass;
-  //NString     = NPLString;
+  NString     = NPLString;      NStringClass    = NPLStringClass;
 
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
