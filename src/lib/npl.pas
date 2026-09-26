@@ -289,16 +289,16 @@ type
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
 
-  NPLNumber     = class;
-  NPLSByte      = class;
-  NPLShort      = class;
-  NPLInteger    = class;
-  NPLLong       = class;
-  NPLFloat      = class;
-  NPLDouble     = class;
-  NPLBoolean    = class;
-  NPLCharacter  = class;
-  NPLString     = class;
+  NPLNumber         = class;
+  NPLSByte          = class;
+  NPLShort          = class;
+  NPLInteger        = class;
+  NPLLong           = class;
+  NPLFloat          = class;
+  NPLDouble         = class;
+  NPLBoolean        = class;
+  NPLANSICharacter  = class;
+  NPLString         = class;
 
   NPLNumber = class(NPLObject)
   private
@@ -457,16 +457,32 @@ type
 
   NPLBooleanClass = class of NPLBoolean;
 
-  NPLCharacter = class(NPLObject)
+  NPLANSICharacter = class(NPLObject,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLANSICharacter>{$ELSE}Comparable{$ENDIF})
   private
     fValue : char;
   public
     constructor create(aValue : char);
+    class function toString(c : char) : string; overload;
+    class function compare(x, y : char) : int;
+    class function isDigit(code : int) : boolean; overload;
+    class function isDigit(ch : char) : boolean; overload;
+    class function isASCIILetter(code : int) : boolean; overload;
+    class function isASCIILetter(ch : char) : boolean; overload;
+    class function isASCIILetterOrDigit(code : int) : boolean; overload;
+    class function isASCIILetterOrDigit(ch : char) : boolean; overload;
+    class function digit(code : int; radix : int) : int; overload;
+    class function digit(ch : char; radix : int) : int; overload;
+    function hashCode : int; override;
     function equals(obj : TObject) : boolean; override;
+    function toString : string; overload; override;
+    function compareTo(c : {$IFDEF GENERICS}NPLANSICharacter{$ELSE}NPLObject{$ENDIF}) : int;
+    function isDigit : boolean; overload;
+    function isASCIILetter : boolean; overload;
+    function isASCIILetterOrDigit : boolean; overload;
     property value : char read fValue write fValue;
   end;
 
-  NPLCharacterClass = class of NPLCharacter;
+  NPLANSICharacterClass = class of NPLANSICharacter;
 
   NPLString = class(NPLObject)
   private
@@ -479,17 +495,17 @@ type
 
   NPLStringClass = class of NPLString;
 
-  NObject     = NPLObject;      NClass          = NPLClass;
-  NNumber     = NPLNumber;      NNumberClass    = NPLNumberClass;
-  NByte       = NPLSByte;       NByteClass      = NPLSByteClass;
-  NShort      = NPLShort;       NShortClass     = NPLShortClass;
-  NInteger    = NPLInteger;     NIntegerClass   = NPLIntegerClass;
-  NLong       = NPLLong;        NLongClass      = NPLLongClass;
-  NFloat      = NPLFloat;       NFloatClass     = NPLFloatClass;
-  NDouble     = NPLDouble;      NDoubleClass    = NPLDoubleClass;
-  NBoolean    = NPLBoolean;     NBooleanClass   = NPLBooleanClass;
-  NCharacter  = NPLCharacter;   NCharacterClass = NPLCharacterClass;
-  NString     = NPLString;      NStringClass    = NPLStringClass;
+  NObject         = NPLObject;        NClass              = NPLClass;
+  NNumber         = NPLNumber;        NNumberClass        = NPLNumberClass;
+  NByte           = NPLSByte;         NByteClass          = NPLSByteClass;
+  NShort          = NPLShort;         NShortClass         = NPLShortClass;
+  NInteger        = NPLInteger;       NIntegerClass       = NPLIntegerClass;
+  NLong           = NPLLong;          NLongClass          = NPLLongClass;
+  NFloat          = NPLFloat;         NFloatClass         = NPLFloatClass;
+  NDouble         = NPLDouble;        NDoubleClass        = NPLDoubleClass;
+  NBoolean        = NPLBoolean;       NBooleanClass       = NPLBooleanClass;
+  NANSICharacter  = NPLANSICharacter; NANSICharacterClass = NPLANSICharacterClass;
+  NString         = NPLString;        NStringClass        = NPLStringClass;
 
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
@@ -631,9 +647,7 @@ begin
 
   if result = 0 then begin
     isAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
-    try checkAutoCloseable(self); except
-      // ???   
-    end;
+    checkAutoCloseable(self);
     if isAutoDestroyable then
       destroy;
   end;
@@ -1627,19 +1641,107 @@ begin
     result := -1;
 end;
 
-constructor NPLCharacter.create(aValue : char);
+constructor NPLANSICharacter.create(aValue : char);
 begin
   fValue := aValue;
 end;
 
-function NPLCharacter.equals(obj : TObject) : boolean;
+function NPLANSICharacter.hashCode : int;
+begin
+  result := int(fValue);
+end;
+
+function NPLANSICharacter.equals(obj : TObject) : boolean;
 begin
   result := false;
   if obj=NIL then
     exit;
-  if not (obj is NPLCharacter) then
+  if not (obj is NPLANSICharacter) then
     exit;
-  result := fValue=NPLCharacter(obj).fValue;
+  result := fValue=NPLANSICharacter(obj).fValue;
+end;
+
+function NPLANSICharacter.toString : string;
+begin
+  result := toString(fValue);
+end;
+
+function NPLANSICharacter.compareTo(c : {$IFDEF GENERICS}NPLANSICharacter{$ELSE}NPLObject{$ENDIF}) : int;
+begin
+  if c=NIL then
+    raise NilPointerException.create;
+
+  {$IFNDEF GENERICS}
+  if not (c is NPLANSICharacter) then
+    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+  {$ENDIF}
+
+  result := NPLANSICharacter.compare(self.fValue, NPLANSICharacter(c).fValue);
+end;
+
+function NPLANSICharacter.isDigit : boolean;
+begin
+  result := isDigit(fValue);
+end;
+
+function NPLANSICharacter.isASCIILetter : boolean;
+begin
+  result := isASCIILetter(fValue);
+end;
+
+function NPLANSICharacter.isASCIILetterOrDigit : boolean;
+begin
+  result := isASCIILetterOrDigit(fValue);
+end;
+
+class function NPLANSICharacter.toString(c : char) : string;
+begin
+  result := string(c);
+end;
+
+class function NPLANSICharacter.compare(x, y : char) : int;
+begin
+  result := int(x) - int(y);
+end;
+
+class function NPLANSICharacter.isDigit(code : int) : boolean;
+begin
+    result := ((code > 47) and (code < 58));
+end;
+
+class function NPLANSICharacter.isDigit(ch : char) : boolean;
+begin
+  result := isDigit(int(ch));
+end;
+
+class function NPLANSICharacter.isASCIILetter(code : int) : boolean;
+begin
+  result := ((code > 64) and (code < 91)) or ((code > 96) and (code < 123));
+end;
+
+class function NPLANSICharacter.isASCIILetter(ch : char) : boolean;
+begin
+  result := isASCIILetter(int(ch));
+end;
+
+class function NPLANSICharacter.isASCIILetterOrDigit(code : int) : boolean;
+begin
+  result := ((code > 47) and (code < 58)) or ((code > 64) and (code < 91)) or ((code > 96) and (code < 123));
+end;
+
+class function NPLANSICharacter.isASCIILetterOrDigit(ch : char) : boolean;
+begin
+  result := isASCIILetterOrDigit(int(ch));
+end;
+
+class function NPLANSICharacter.digit(code : int; radix : int) : int;
+begin
+  //
+end;
+
+class function NPLANSICharacter.digit(ch : char; radix : int) : int;
+begin
+  result := digit(int(ch), radix);
 end;
 
 constructor NPLString.create(aValue : string);
