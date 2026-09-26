@@ -8,7 +8,7 @@ uses
   ;
 
 type
-  ObjectOutput = interface(DataOutputAutoCloseable)
+  ObjectOutput = interface(DataOutput)
     procedure writeObject(obj : NObject);
     procedure flush;
   end;

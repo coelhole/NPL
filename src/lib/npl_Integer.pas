@@ -99,7 +99,7 @@ var
   i : int;
 begin
   i := 0;
-  while(true) do begin
+  while true do begin
     if x <= sizeTable[i] then
       break;
     inc(i);

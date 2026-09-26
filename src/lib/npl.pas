@@ -472,6 +472,7 @@ type
     class function isASCIILetterOrDigit(ch : char) : boolean; overload;
     class function digit(code : int; radix : int) : int; overload;
     class function digit(ch : char; radix : int) : int; overload;
+    class function forDigit(digit, radix : int) : char;    
     function hashCode : int; override;
     function equals(obj : TObject) : boolean; override;
     function toString : string; overload; override;
@@ -1736,12 +1737,42 @@ end;
 
 class function NPLANSICharacter.digit(code : int; radix : int) : int;
 begin
-  //
+  result := -1;
+  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+    exit;
+  if not (((code > 47) and (code < 58)) or ((code > 64) and (code < 91)) or ((code > 96) and (code < 123))) then
+    exit;
+  if (code > 64) and (code < 91) then
+    code := code + 32;
+  if radix < 11 then begin
+    if code > (47+radix) then
+      exit;
+    result := code - 48;
+  end else begin
+    if code > (86+radix) then
+      exit;
+    if (code > 47) and (code < 58) then
+      result := code - 48
+    else result := code - 87;
+  end;
 end;
 
 class function NPLANSICharacter.digit(ch : char; radix : int) : int;
 begin
   result := digit(int(ch), radix);
+end;
+
+class function NPLANSICharacter.forDigit(digit, radix : int) : char;
+begin
+  result := #0;
+
+  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+    exit;
+
+  if (digit >= radix) or (digit < 0) then
+    exit;
+
+  result := npl_Integer.digits[digit];
 end;
 
 constructor NPLString.create(aValue : string);

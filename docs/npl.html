@@ -32,7 +32,7 @@
 <div class="container-fluid py-3 px-4">
 <h1 class="unit">Unit npl</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Uses">Uses</a></div><div class="one_section"><a class="section" href="#PasDoc-Classes">Classes, Interfaces, Objects and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-FuncsProcs">Functions and Procedures</a></div><div class="one_section"><a class="section" href="#PasDoc-Types">Types</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Uses">Uses</a></div><div class="one_section"><a class="section" href="#PasDoc-Classes">Classes, Interfaces, Objects and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-FuncsProcs">Functions and Procedures</a></div><div class="one_section"><a class="section" href="#PasDoc-Types">Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Constants">Constants</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Uses"></span><h2 class="uses">Uses</h2>
 <ul class="useslist"><li>classes</li><li>SysUtils</li><li>Windows</li></ul><h2 class="overview">Overview</h2>
@@ -127,7 +127,7 @@
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
-<td class="itemname">Class&nbsp;<a class="bold" href="npl.NPLCharacter.html"><code>NPLCharacter</code></a></td>
+<td class="itemname">Class&nbsp;<a class="bold" href="npl.NPLANSICharacter.html"><code>NPLANSICharacter</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list">
@@ -225,16 +225,16 @@
 <td class="itemcode"><code><strong><a href="npl.html#wstring">wstring</a></strong> = widestring;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#nchar">nchar</a></strong>   = <a href="npl.html#wchar">wchar</a>;</code></td>
-</tr>
-<tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#nstring">nstring</a></strong> = <a href="npl.html#wstring">wstring</a>;</code></td>
-</tr>
-<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#nint">nint</a></strong>    = <a href="npl.html#int32">int32</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#nuint">nuint</a></strong>   = <a href="npl.html#uint32">uint32</a>;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#chararr">chararr</a></strong>     = array of char;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#wchararr">wchararr</a></strong>    = array of <a href="npl.html#wchar">wchar</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#sstringarr">sstringarr</a></strong>  = array of shortstring;</code></td>
@@ -244,18 +244,6 @@
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#wstringarr">wstringarr</a></strong>  = array of <a href="npl.html#wstring">wstring</a>;</code></td>
-</tr>
-<tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#nstringarr">nstringarr</a></strong>  = array of <a href="npl.html#nstring">nstring</a>;</code></td>
-</tr>
-<tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#chararr">chararr</a></strong>     = array of char;</code></td>
-</tr>
-<tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#wchararr">wchararr</a></strong>    = array of <a href="npl.html#wchar">wchar</a>;</code></td>
-</tr>
-<tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#nchararr">nchararr</a></strong>    = array of <a href="npl.html#nchar">nchar</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#booleanarr">booleanarr</a></strong>  = array of boolean;</code></td>
@@ -360,124 +348,157 @@
 <td class="itemcode"><code><strong><a href="npl.html#nuintarr">nuintarr</a></strong>    = array of <a href="npl.html#nuint">nuint</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#uchar">uchar</a></strong>           = widechar;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ustring">ustring</a></strong>         = widestring;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#nchar">nchar</a></strong> = type word;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#nchararr">nchararr</a></strong>        = array of <a href="npl.html#nchar">nchar</a>;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#nrawstring">nrawstring</a></strong> = type <a href="npl.html#nchararr">nchararr</a>;</code></td>
+</tr>
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#basetype">basetype</a></strong> = (...);</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLClass">NPLClass</a></strong> = class of <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLExceptionClass">NPLExceptionClass</a></strong> = class of <a href="npl.NPLException.html">NPLException</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NilPointerExceptionClass">NilPointerExceptionClass</a></strong> = class of <a href="npl.NilPointerException.html">NilPointerException</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#IllegalArgumentExceptionClass">IllegalArgumentExceptionClass</a></strong> = class of <a href="npl.IllegalArgumentException.html">IllegalArgumentException</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#IndexOutOfBoundsExceptionClass">IndexOutOfBoundsExceptionClass</a></strong> = class of <a href="npl.IndexOutOfBoundsException.html">IndexOutOfBoundsException</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#ArrayIndexOutOfBoundsExceptionClass">ArrayIndexOutOfBoundsExceptionClass</a></strong> = class of <a href="npl.ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#StringIndexOutOfBoundsExceptionClass">StringIndexOutOfBoundsExceptionClass</a></strong> = class of <a href="npl.StringIndexOutOfBoundsException.html">StringIndexOutOfBoundsException</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NumberFormatExceptionClass">NumberFormatExceptionClass</a></strong> = class of <a href="npl.NumberFormatException.html">NumberFormatException</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#UnsupportedOperationExceptionClass">UnsupportedOperationExceptionClass</a></strong> = class of <a href="npl.UnsupportedOperationException.html">UnsupportedOperationException</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLNumberClass">NPLNumberClass</a></strong> = class of <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLSByteClass">NPLSByteClass</a></strong> = class of <a href="npl.NPLSByte.html">NPLSByte</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLShortClass">NPLShortClass</a></strong> = class of <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLIntegerClass">NPLIntegerClass</a></strong> = class of <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLLongClass">NPLLongClass</a></strong> = class of <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLFloatClass">NPLFloatClass</a></strong> = class of <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
+<tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLDoubleClass">NPLDoubleClass</a></strong> = class of <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
 </tr>
-<tr class="list visibility-published">
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLBooleanClass">NPLBooleanClass</a></strong> = class of <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NPLCharacterClass">NPLCharacterClass</a></strong> = class of <a href="npl.NPLCharacter.html">NPLCharacter</a>;</code></td>
-</tr>
 <tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#NPLANSICharacterClass">NPLANSICharacterClass</a></strong> = class of <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
+</tr>
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#NPLStringClass">NPLStringClass</a></strong> = class of <a href="npl.NPLString.html">NPLString</a>;</code></td>
 </tr>
-<tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NObject">NObject</a></strong>     = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
-</tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NClass">NClass</a></strong>          = <a href="npl.html#NPLClass">NPLClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NObject">NObject</a></strong>         = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NNumber">NNumber</a></strong>     = <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NClass">NClass</a></strong>              = <a href="npl.html#NPLClass">NPLClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NNumberClass">NNumberClass</a></strong>    = <a href="npl.html#NPLNumberClass">NPLNumberClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NNumber">NNumber</a></strong>         = <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NByte">NByte</a></strong>       = <a href="npl.NPLSByte.html">NPLSByte</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NNumberClass">NNumberClass</a></strong>        = <a href="npl.html#NPLNumberClass">NPLNumberClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NByteClass">NByteClass</a></strong>      = <a href="npl.html#NPLSByteClass">NPLSByteClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NByte">NByte</a></strong>           = <a href="npl.NPLSByte.html">NPLSByte</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NShort">NShort</a></strong>      = <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NByteClass">NByteClass</a></strong>          = <a href="npl.html#NPLSByteClass">NPLSByteClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NShortClass">NShortClass</a></strong>     = <a href="npl.html#NPLShortClass">NPLShortClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NShort">NShort</a></strong>          = <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NInteger">NInteger</a></strong>    = <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NShortClass">NShortClass</a></strong>         = <a href="npl.html#NPLShortClass">NPLShortClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NIntegerClass">NIntegerClass</a></strong>   = <a href="npl.html#NPLIntegerClass">NPLIntegerClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NInteger">NInteger</a></strong>        = <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NLong">NLong</a></strong>       = <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NIntegerClass">NIntegerClass</a></strong>       = <a href="npl.html#NPLIntegerClass">NPLIntegerClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NLongClass">NLongClass</a></strong>      = <a href="npl.html#NPLLongClass">NPLLongClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NLong">NLong</a></strong>           = <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NFloat">NFloat</a></strong>      = <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NLongClass">NLongClass</a></strong>          = <a href="npl.html#NPLLongClass">NPLLongClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NFloatClass">NFloatClass</a></strong>     = <a href="npl.html#NPLFloatClass">NPLFloatClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NFloat">NFloat</a></strong>          = <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NDouble">NDouble</a></strong>     = <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NFloatClass">NFloatClass</a></strong>         = <a href="npl.html#NPLFloatClass">NPLFloatClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NDoubleClass">NDoubleClass</a></strong>    = <a href="npl.html#NPLDoubleClass">NPLDoubleClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NDouble">NDouble</a></strong>         = <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NBoolean">NBoolean</a></strong>    = <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NDoubleClass">NDoubleClass</a></strong>        = <a href="npl.html#NPLDoubleClass">NPLDoubleClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NBooleanClass">NBooleanClass</a></strong>   = <a href="npl.html#NPLBooleanClass">NPLBooleanClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NBoolean">NBoolean</a></strong>        = <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NCharacter">NCharacter</a></strong>  = <a href="npl.NPLCharacter.html">NPLCharacter</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NBooleanClass">NBooleanClass</a></strong>       = <a href="npl.html#NPLBooleanClass">NPLBooleanClass</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#NCharacterClass">NCharacterClass</a></strong> = <a href="npl.html#NPLCharacterClass">NPLCharacterClass</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NANSICharacter">NANSICharacter</a></strong>  = <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#NANSICharacterClass">NANSICharacterClass</a></strong> = <a href="npl.html#NPLANSICharacterClass">NPLANSICharacterClass</a>;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#NString">NString</a></strong>         = <a href="npl.NPLString.html">NPLString</a>;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#NStringClass">NStringClass</a></strong>        = <a href="npl.html#NPLStringClass">NPLStringClass</a>;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Constants"></span><h3 class="summary">Constants</h3>
+<table class="summary wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#LF">LF</a></strong> = #10;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#CRLF">CRLF</a></strong> = #13#10;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#EOL">EOL</a></strong> = <a href="npl.html#CRLF">CRLF</a>;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -487,9 +508,7 @@
 <td class="itemcode"><span id="signedRightShift-int-int-"></span><code>function <strong>signedRightShift</strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr><td colspan="1">
-<p>
-NString = NPLString;</p>
-</td></tr>
+<p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
@@ -504,9 +523,7 @@ NString = NPLString;</p>
 <td class="itemcode"><span id="bool"></span><code><strong>bool</strong>    = boolean;</code></td>
 </tr>
 <tr><td colspan="1">
-<p>
-copiado da unit SynCommon.pas (projeto mORMot: <a href="https://github.com/synopse/mormot">https://github.com/synopse/mormot</a>)</p>
-</td></tr>
+<p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
@@ -685,20 +702,6 @@ copiado da unit SynCommon.pas (projeto mORMot: <a href="https://github.com/synop
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="nchar"></span><code><strong>nchar</strong>   = <a href="npl.html#wchar">wchar</a>;</code></td>
-</tr>
-<tr><td colspan="1">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-published wide_list">
-<tr class="list visibility-published">
-<td class="itemcode"><span id="nstring"></span><code><strong>nstring</strong> = <a href="npl.html#wstring">wstring</a>;</code></td>
-</tr>
-<tr><td colspan="1">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-published wide_list">
-<tr class="list visibility-published">
 <td class="itemcode"><span id="nint"></span><code><strong>nint</strong>    = <a href="npl.html#int32">int32</a>;</code></td>
 </tr>
 <tr><td colspan="1">
@@ -713,12 +716,26 @@ copiado da unit SynCommon.pas (projeto mORMot: <a href="https://github.com/synop
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="sstringarr"></span><code><strong>sstringarr</strong>  = array of shortstring;</code></td>
+<td class="itemcode"><span id="chararr"></span><code><strong>chararr</strong>     = array of char;</code></td>
 </tr>
 <tr><td colspan="1">
 <p>
 array types</p>
 </td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="wchararr"></span><code><strong>wchararr</strong>    = array of <a href="npl.html#wchar">wchar</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="sstringarr"></span><code><strong>sstringarr</strong>  = array of shortstring;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
@@ -730,34 +747,6 @@ array types</p>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
 <td class="itemcode"><span id="wstringarr"></span><code><strong>wstringarr</strong>  = array of <a href="npl.html#wstring">wstring</a>;</code></td>
-</tr>
-<tr><td colspan="1">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-published wide_list">
-<tr class="list visibility-published">
-<td class="itemcode"><span id="nstringarr"></span><code><strong>nstringarr</strong>  = array of <a href="npl.html#nstring">nstring</a>;</code></td>
-</tr>
-<tr><td colspan="1">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-published wide_list">
-<tr class="list visibility-published">
-<td class="itemcode"><span id="chararr"></span><code><strong>chararr</strong>     = array of char;</code></td>
-</tr>
-<tr><td colspan="1">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-published wide_list">
-<tr class="list visibility-published">
-<td class="itemcode"><span id="wchararr"></span><code><strong>wchararr</strong>    = array of <a href="npl.html#wchar">wchar</a>;</code></td>
-</tr>
-<tr><td colspan="1">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-published wide_list">
-<tr class="list visibility-published">
-<td class="itemcode"><span id="nchararr"></span><code><strong>nchararr</strong>    = array of <a href="npl.html#nchar">nchar</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -1002,6 +991,43 @@ array types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
+<td class="itemcode"><span id="uchar"></span><code><strong>uchar</strong>           = widechar;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+NPL char &amp; string types</p>
+</td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ustring"></span><code><strong>ustring</strong>         = widestring;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="nchar"></span><code><strong>nchar</strong> = type word;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="nchararr"></span><code><strong>nchararr</strong>        = array of <a href="npl.html#nchar">nchar</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="nrawstring"></span><code><strong>nrawstring</strong> = type <a href="npl.html#nchararr">nchararr</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
 <td class="itemcode"><span id="basetype"></span><code><strong>basetype</strong> = (...);</code></td>
 </tr>
 <tr><td colspan="1">
@@ -1163,7 +1189,7 @@ array types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NPLCharacterClass"></span><code><strong>NPLCharacterClass</strong> = class of <a href="npl.NPLCharacter.html">NPLCharacter</a>;</code></td>
+<td class="itemcode"><span id="NPLANSICharacterClass"></span><code><strong>NPLANSICharacterClass</strong> = class of <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -1177,140 +1203,178 @@ array types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NObject"></span><code><strong>NObject</strong>     = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
+<td class="itemcode"><span id="NObject"></span><code><strong>NObject</strong>         = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NClass"></span><code><strong>NClass</strong>          = <a href="npl.html#NPLClass">NPLClass</a>;</code></td>
+<td class="itemcode"><span id="NClass"></span><code><strong>NClass</strong>              = <a href="npl.html#NPLClass">NPLClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NNumber"></span><code><strong>NNumber</strong>     = <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
+<td class="itemcode"><span id="NNumber"></span><code><strong>NNumber</strong>         = <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NNumberClass"></span><code><strong>NNumberClass</strong>    = <a href="npl.html#NPLNumberClass">NPLNumberClass</a>;</code></td>
+<td class="itemcode"><span id="NNumberClass"></span><code><strong>NNumberClass</strong>        = <a href="npl.html#NPLNumberClass">NPLNumberClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NByte"></span><code><strong>NByte</strong>       = <a href="npl.NPLSByte.html">NPLSByte</a>;</code></td>
+<td class="itemcode"><span id="NByte"></span><code><strong>NByte</strong>           = <a href="npl.NPLSByte.html">NPLSByte</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NByteClass"></span><code><strong>NByteClass</strong>      = <a href="npl.html#NPLSByteClass">NPLSByteClass</a>;</code></td>
+<td class="itemcode"><span id="NByteClass"></span><code><strong>NByteClass</strong>          = <a href="npl.html#NPLSByteClass">NPLSByteClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NShort"></span><code><strong>NShort</strong>      = <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
+<td class="itemcode"><span id="NShort"></span><code><strong>NShort</strong>          = <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NShortClass"></span><code><strong>NShortClass</strong>     = <a href="npl.html#NPLShortClass">NPLShortClass</a>;</code></td>
+<td class="itemcode"><span id="NShortClass"></span><code><strong>NShortClass</strong>         = <a href="npl.html#NPLShortClass">NPLShortClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NInteger"></span><code><strong>NInteger</strong>    = <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
+<td class="itemcode"><span id="NInteger"></span><code><strong>NInteger</strong>        = <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NIntegerClass"></span><code><strong>NIntegerClass</strong>   = <a href="npl.html#NPLIntegerClass">NPLIntegerClass</a>;</code></td>
+<td class="itemcode"><span id="NIntegerClass"></span><code><strong>NIntegerClass</strong>       = <a href="npl.html#NPLIntegerClass">NPLIntegerClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NLong"></span><code><strong>NLong</strong>       = <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
+<td class="itemcode"><span id="NLong"></span><code><strong>NLong</strong>           = <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NLongClass"></span><code><strong>NLongClass</strong>      = <a href="npl.html#NPLLongClass">NPLLongClass</a>;</code></td>
+<td class="itemcode"><span id="NLongClass"></span><code><strong>NLongClass</strong>          = <a href="npl.html#NPLLongClass">NPLLongClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NFloat"></span><code><strong>NFloat</strong>      = <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
+<td class="itemcode"><span id="NFloat"></span><code><strong>NFloat</strong>          = <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NFloatClass"></span><code><strong>NFloatClass</strong>     = <a href="npl.html#NPLFloatClass">NPLFloatClass</a>;</code></td>
+<td class="itemcode"><span id="NFloatClass"></span><code><strong>NFloatClass</strong>         = <a href="npl.html#NPLFloatClass">NPLFloatClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NDouble"></span><code><strong>NDouble</strong>     = <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
+<td class="itemcode"><span id="NDouble"></span><code><strong>NDouble</strong>         = <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NDoubleClass"></span><code><strong>NDoubleClass</strong>    = <a href="npl.html#NPLDoubleClass">NPLDoubleClass</a>;</code></td>
+<td class="itemcode"><span id="NDoubleClass"></span><code><strong>NDoubleClass</strong>        = <a href="npl.html#NPLDoubleClass">NPLDoubleClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NBoolean"></span><code><strong>NBoolean</strong>    = <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
+<td class="itemcode"><span id="NBoolean"></span><code><strong>NBoolean</strong>        = <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NBooleanClass"></span><code><strong>NBooleanClass</strong>   = <a href="npl.html#NPLBooleanClass">NPLBooleanClass</a>;</code></td>
+<td class="itemcode"><span id="NBooleanClass"></span><code><strong>NBooleanClass</strong>       = <a href="npl.html#NPLBooleanClass">NPLBooleanClass</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NCharacter"></span><code><strong>NCharacter</strong>  = <a href="npl.NPLCharacter.html">NPLCharacter</a>;</code></td>
+<td class="itemcode"><span id="NANSICharacter"></span><code><strong>NANSICharacter</strong>  = <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="NCharacterClass"></span><code><strong>NCharacterClass</strong> = <a href="npl.html#NPLCharacterClass">NPLCharacterClass</a>;</code></td>
+<td class="itemcode"><span id="NANSICharacterClass"></span><code><strong>NANSICharacterClass</strong> = <a href="npl.html#NPLANSICharacterClass">NPLANSICharacterClass</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="NString"></span><code><strong>NString</strong>         = <a href="npl.NPLString.html">NPLString</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="NStringClass"></span><code><strong>NStringClass</strong>        = <a href="npl.html#NPLStringClass">NPLStringClass</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<h3 class="detail">Constants</h3>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="LF"></span><code><strong>LF</strong> = #10;</code></td>
+</tr>
+<tr><td colspan="1">
+<p>
+copiado da unit SynCommon.pas (projeto mORMot: <a href="https://github.com/synopse/mormot">https://github.com/synopse/mormot</a>)</p>
+</td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="CRLF"></span><code><strong>CRLF</strong> = #13#10;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="EOL"></span><code><strong>EOL</strong> = <a href="npl.html#CRLF">CRLF</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>

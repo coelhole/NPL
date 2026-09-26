@@ -8,7 +8,7 @@ uses
   ;
 
 type
-  ObjectInput = interface(DataInputAutoCloseable)
+  ObjectInput = interface(DataInput)
     ['{74620994-0409-4A49-BCF4-35FD17ECE9B7}']
     function readObject : NObject;
     function read : int; overload;

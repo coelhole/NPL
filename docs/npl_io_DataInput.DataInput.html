@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>npl_awt_event_InputEvent: Class InputEvent</title>
+<title>npl_io_DataInput: Interface DataInput</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="PasDoc 1.0.4">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -30,116 +30,93 @@
 </li></ul></div></div>
 <main class="pasdoc-content content">
 <div class="container-fluid py-3 px-4">
-<span id="InputEvent"></span><h1 class="cio">Class InputEvent</h1>
+<span id="DataInput"></span><h1 class="cio">Interface DataInput</h1>
 <div class="sections">
-<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-Fields">Fields</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div></div>
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a href="npl_awt_event_InputEvent.html">npl_awt_event_InputEvent</a></p>
+<a href="npl_io_DataInput.html">npl_io_DataInput</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type InputEvent = class(<a class="normal" href="npl_awt_event_ComponentEvent.ComponentEvent.html">ComponentEvent</a>)</code></p>
+<code>type DataInput = interface(IInterface)</code></p>
 <h2 class="description">Description</h2>
-<p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">TObject</li>
-<li class="ancestor"><a class="normal" href="npl.NPLObject.html">NPLObject</a></li>
-<li class="ancestor"><a class="normal" href="npl_util_EventObject.EventObject.html">EventObject</a></li>
-<li class="ancestor"><a class="normal" href="npl_awt_AWTEvent.AWTEvent.html">AWTEvent</a></li>
-<li class="ancestor"><a class="normal" href="npl_awt_event_ComponentEvent.ComponentEvent.html">ComponentEvent</a></li>
-<li class="thisitem">InputEvent</li></ul><h2 class="overview">Overview</h2>
-<span id="PasDoc-Fields"></span><h3 class="summary">Fields</h3>
-<table class="summary wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code><strong><a href="npl_awt_event_InputEvent.InputEvent.html#fWhen">fWhen</a></strong>: <a href="npl.html#long">long</a>;</code></td>
-</tr>
-<tr class="list2 visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><code><strong><a href="npl_awt_event_InputEvent.InputEvent.html#fModifiers">fModifiers</a></strong>: <a href="npl.html#int">int</a>;</code></td>
-</tr>
-</table>
+<p class="nodescription">This item has no description.</p><h6 class="description_section">Attributes</h6>
+<dl class="attributes">
+  <dt>GUID['{319C76F7-F31C-4AB6-B6E0-06CBAFBDE107}']</dt>
+  <dd></dd>
+</dl>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">IInterface</li>
+<li class="thisitem">DataInput</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
-<tr class="list visibility-private">
-<td class="visibility"><span class="badge vis-private">Private</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getButtonDownMasks">getButtonDownMasks</a></strong>: <a href="npl.html#intarr">intarr</a>;</code></td>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataInput.DataInput.html#readFully-sbytearr-">readFully</a></strong>(b : <a href="npl.html#sbytearr">sbytearr</a>); overload;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>constructor <strong><a href="npl_awt_event_InputEvent.InputEvent.html#create-AWTComponent-int-long-int-">create</a></strong>(source : <a href="npl_awt_Component.AWTComponent.html">AWTComponent</a>; id : <a href="npl.html#int">int</a>; when : <a href="npl.html#long">long</a>; modifiers : <a href="npl.html#int">int</a>); virtual;</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataInput.DataInput.html#readFully-sbytearr-int-int-">readFully</a></strong>(b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>); overload;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isShiftDown">isShiftDown</a></strong>: boolean; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#skipBytes-int-">skipBytes</a></strong>(n : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isControlDown">isControlDown</a></strong>: boolean; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readBoolean">readBoolean</a></strong>: boolean;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isMetaDown">isMetaDown</a></strong>: boolean; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readByte">readByte</a></strong>: <a href="npl.html#sbyte">sbyte</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isAltDown">isAltDown</a></strong>: boolean; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readUnsignedByte">readUnsignedByte</a></strong>: <a href="npl.html#ubyte">ubyte</a>;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isAltGraphDown">isAltGraphDown</a></strong>: boolean; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readShort">readShort</a></strong>: <a href="npl.html#short">short</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getWhen">getWhen</a></strong>: <a href="npl.html#long">long</a>; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readUnsignedShort">readUnsignedShort</a></strong>: <a href="npl.html#ushort">ushort</a>;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getModifiers">getModifiers</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readChar">readChar</a></strong>: <a href="npl.html#nchar">nchar</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getModifiersEx">getModifiersEx</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readInt">readInt</a></strong>: <a href="npl.html#int">int</a>;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_awt_event_InputEvent.InputEvent.html#consume">consume</a></strong>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readLong">readLong</a></strong>: <a href="npl.html#long">long</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#isConsumed">isConsumed</a></strong>: boolean; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readFloat">readFloat</a></strong>: <a href="npl.html#float">float</a>;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getMaskForButton-int-">getMaskForButton</a></strong>(button : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_DataInput.DataInput.html#readDouble">readDouble</a></strong>: double;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>class function <strong><a href="npl_awt_event_InputEvent.InputEvent.html#getModifiersExText-int-">getModifiersExText</a></strong>(modifiers : <a href="npl.html#int">int</a>) : <a href="npl.html#ustring">ustring</a>;</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataInput.DataInput.html#readLine-NString-">readLine</a></strong>(out line : <a href="npl.html#NString">NString</a>);</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataInput.DataInput.html#readUTF-NString-">readUTF</a></strong>(out utfstr : <a href="npl.html#NString">NString</a>);</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
-<h3 class="detail">Fields</h3>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="fWhen"></span><code><strong>fWhen</strong>: <a href="npl.html#long">long</a>;</code></td>
-</tr>
-<tr><td colspan="2">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
-<table class="detail visibility-protected wide_list">
-<tr class="list visibility-protected">
-<td class="visibility"><span class="badge vis-protected">Protected</span></td>
-<td class="itemcode"><span id="fModifiers"></span><code><strong>fModifiers</strong>: <a href="npl.html#int">int</a>;</code></td>
-</tr>
-<tr><td colspan="2">
-<p class="nodescription">This item has no description.</p></td></tr>
-</table>
 <h3 class="detail">Methods</h3>
-<table class="detail visibility-private wide_list">
-<tr class="list visibility-private">
-<td class="visibility"><span class="badge vis-private">Private</span></td>
-<td class="itemcode"><span id="getButtonDownMasks"></span><code>class function <strong>getButtonDownMasks</strong>: <a href="npl.html#intarr">intarr</a>;</code></td>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="readFully-sbytearr-"></span><code>procedure <strong>readFully</strong>(b : <a href="npl.html#sbytearr">sbytearr</a>); overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -147,7 +124,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="create-AWTComponent-int-long-int-"></span><code>constructor <strong>create</strong>(source : <a href="npl_awt_Component.AWTComponent.html">AWTComponent</a>; id : <a href="npl.html#int">int</a>; when : <a href="npl.html#long">long</a>; modifiers : <a href="npl.html#int">int</a>); virtual;</code></td>
+<td class="itemcode"><span id="readFully-sbytearr-int-int-"></span><code>procedure <strong>readFully</strong>(b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>); overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -155,7 +132,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="isShiftDown"></span><code>function <strong>isShiftDown</strong>: boolean; virtual;</code></td>
+<td class="itemcode"><span id="skipBytes-int-"></span><code>function <strong>skipBytes</strong>(n : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -163,7 +140,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="isControlDown"></span><code>function <strong>isControlDown</strong>: boolean; virtual;</code></td>
+<td class="itemcode"><span id="readBoolean"></span><code>function <strong>readBoolean</strong>: boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -171,7 +148,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="isMetaDown"></span><code>function <strong>isMetaDown</strong>: boolean; virtual;</code></td>
+<td class="itemcode"><span id="readByte"></span><code>function <strong>readByte</strong>: <a href="npl.html#sbyte">sbyte</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -179,7 +156,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="isAltDown"></span><code>function <strong>isAltDown</strong>: boolean; virtual;</code></td>
+<td class="itemcode"><span id="readUnsignedByte"></span><code>function <strong>readUnsignedByte</strong>: <a href="npl.html#ubyte">ubyte</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -187,7 +164,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="isAltGraphDown"></span><code>function <strong>isAltGraphDown</strong>: boolean; virtual;</code></td>
+<td class="itemcode"><span id="readShort"></span><code>function <strong>readShort</strong>: <a href="npl.html#short">short</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -195,7 +172,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="getWhen"></span><code>function <strong>getWhen</strong>: <a href="npl.html#long">long</a>; virtual;</code></td>
+<td class="itemcode"><span id="readUnsignedShort"></span><code>function <strong>readUnsignedShort</strong>: <a href="npl.html#ushort">ushort</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -203,7 +180,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="getModifiers"></span><code>function <strong>getModifiers</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><span id="readChar"></span><code>function <strong>readChar</strong>: <a href="npl.html#nchar">nchar</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -211,7 +188,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="getModifiersEx"></span><code>function <strong>getModifiersEx</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><span id="readInt"></span><code>function <strong>readInt</strong>: <a href="npl.html#int">int</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -219,7 +196,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="consume"></span><code>procedure <strong>consume</strong>; override;</code></td>
+<td class="itemcode"><span id="readLong"></span><code>function <strong>readLong</strong>: <a href="npl.html#long">long</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -227,7 +204,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="isConsumed"></span><code>function <strong>isConsumed</strong>: boolean; override;</code></td>
+<td class="itemcode"><span id="readFloat"></span><code>function <strong>readFloat</strong>: <a href="npl.html#float">float</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -235,7 +212,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="getMaskForButton-int-"></span><code>class function <strong>getMaskForButton</strong>(button : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
+<td class="itemcode"><span id="readDouble"></span><code>function <strong>readDouble</strong>: double;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -243,7 +220,15 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="getModifiersExText-int-"></span><code>class function <strong>getModifiersExText</strong>(modifiers : <a href="npl.html#int">int</a>) : <a href="npl.html#ustring">ustring</a>;</code></td>
+<td class="itemcode"><span id="readLine-NString-"></span><code>procedure <strong>readLine</strong>(out line : <a href="npl.html#NString">NString</a>);</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="readUTF-NString-"></span><code>procedure <strong>readUTF</strong>(out utfstr : <a href="npl.html#NString">NString</a>);</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
