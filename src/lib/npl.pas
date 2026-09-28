@@ -325,6 +325,8 @@ type
     function toString : string; overload; override;
     function hashCode : int; override;
     class function toString(b : sbyte) : string; overload;
+    class function parseByte(const s : string; radix : int) : sbyte; overload;
+    class function parseByte(const s : string) : sbyte; overload;
     class function compare(x, y : sbyte) : int;
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
   end;
@@ -339,6 +341,8 @@ type
     function toString : string; overload; override;
     function hashCode : int; override;
     class function toString(s : short) : string; overload;
+    class function parseShort(const s : string; radix : int) : short; overload;
+    class function parseShort(const s : string) : short; overload;
     class function compare(x, y : short) : int;
     class function reverseBytes(i : short) : short;
     property value : short read fValue.shortValue write fValue.shortValue;
@@ -360,8 +364,8 @@ type
     class function toHexString(i : int) : string;
     class function toOctalString(i : int) : string;
     class function toBinaryString(i : int) : string;
-    class function parseInt(s : string; radix : int) : int; overload;
-    class function parseInt(s : string) : int; overload;
+    class function parseInt(const s : string; radix : int) : int; overload;
+    class function parseInt(const s : string) : int; overload;
     class function compare(x, y : int) : int;
     class function highestOneBit(i : int) : int;
     class function lowestOneBit(i : int) : int;
@@ -392,6 +396,8 @@ type
     class function toHexString(i : long) : string;
     class function toOctalString(i : long) : string;
     class function toBinaryString(i : long) : string;
+    class function parseLong(const s : string; radix : int) : long; overload;
+    class function parseLong(const s : string) : long; overload;
     class function compare(x, y : long) : int;
     class function highestOneBit(i : long) : long;
     class function lowestOneBit(i : long) : long;
@@ -526,6 +532,8 @@ uses
   ,npl_Long
   ,npl_misc_DoubleConsts
   ,npl_misc_FloatConsts
+  ,npl_SByte
+  ,npl_Short
   ,typInfo
   ;
 
@@ -764,6 +772,21 @@ begin
   result := NPLInteger.toString(int(b), 10);
 end;
 
+class function NPLSByte.parseByte(const s : string; radix : int) : sbyte;
+var
+  i : int;
+begin
+  i := NPLInteger.parseInt(s, radix);
+  if (i < npl_SByte.MIN_VALUE) or (i > npl_SByte.MAX_VALUE) then
+    raise NumberFormatException.createFmt('Value out of range. Value:''%s'' Radix:%d',[s,radix]);
+  result := sbyte(i);
+end;
+
+class function NPLSByte.parseByte(const s : string) : sbyte;
+begin
+  result := parseByte(s, 10);
+end;
+
 class function NPLSByte.compare(x, y : sbyte) : int;
 begin
   result := x-y;
@@ -810,6 +833,21 @@ end;
 class function NPLShort.toString(s : short) : string;
 begin
   result := NPLInteger.toString(int(s), 10);
+end;
+
+class function NPLShort.parseShort(const s : string; radix : int) : short;
+var
+  i : int;
+begin
+  i := NPLInteger.parseInt(s, radix);
+  if (i < npl_Short.MIN_VALUE) or (i > npl_Short.MAX_VALUE) then
+    raise NumberFormatException.CreateFmt('Value out of range. Value:''%s'' Radix:%d',[s,radix]);
+  result := short(i);
+end;
+
+class function NPLShort.parseShort(const s : string) : short;
+begin
+  result := parseShort(s, 10);
 end;
 
 class function NPLShort.compare(x, y : short) : int;
@@ -947,7 +985,7 @@ begin
   result := toUnsignedString(i, 1);
 end;
 
-class function NPLInteger.parseInt(s : string; radix : int) : int;
+class function NPLInteger.parseInt(const s : string; radix : int) : int;
 var
   negative : boolean;
   i, len, limit, multmin, digit : int;
@@ -995,7 +1033,7 @@ begin
     result := - result;
 end;
 
-class function NPLInteger.parseInt(s : string) : int;
+class function NPLInteger.parseInt(const s : string) : int;
 begin
   result := parseInt(s,10);
 end;
@@ -1267,6 +1305,60 @@ begin
   setLength(buf, size);
   npl_Long.getChars(i, size, buf);
   result := string(buf);
+end;
+
+class function NPLLong.parseLong(const s : string; radix : int) : long;
+var
+  negative : boolean;
+  i, len, digit : int;
+  limit, multmin : long;
+  firstChar : char;
+begin
+  if s = '' then
+    raise NumberFormatException.create;
+  if radix < npl_Character.MIN_RADIX then
+    raise NumberFormatException.CreateFmt('radix %d less than npl_Character.MIN_RADIX',[radix]);
+  if radix > npl_Character.MAX_RADIX then
+    raise NumberFormatException.CreateFmt('radix %d greater than npl_Character.MAX_RADIX',[radix]);
+  result := 0;
+  negative := false;
+  i := 1;
+  len := length(s);
+  limit := -npl_Long.MAX_VALUE;
+  if len>0 then begin
+    firstChar := s[1];
+    if firstChar < '0' then begin
+      if firstChar = '-' then begin
+        negative := true;
+        limit := npl_Long.MIN_VALUE;
+      end else
+      if firstChar <> '+' then
+        raise NumberFormatException.forInputString(s);
+      if len = 1 then
+        raise NumberFormatException.forInputString(s);
+      inc(i);
+    end;
+    multmin := limit div radix;
+    while i <= len do begin
+      digit := NPLANSICharacter.digit(s[i],radix);
+      inc(i);
+      if digit < 0 then
+        raise NumberFormatException.forInputString(s);
+      if result < multmin then
+        raise NumberFormatException.forInputString(s);
+      result := result * radix;
+      if result < limit+digit then
+        raise NumberFormatException.forInputString(s);
+      result := result - digit;
+    end;
+  end else raise NumberFormatException.forInputString(s);
+  if not negative then
+    result := - result;
+end;
+
+class function NPLLong.parseLong(const s : string) : long;
+begin
+  result := parseLong(s, 10);
 end;
 
 class function NPLLong.compare(x, y : long) : int;
