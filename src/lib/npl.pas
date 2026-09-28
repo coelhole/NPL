@@ -263,7 +263,10 @@ type
 
   StringIndexOutOfBoundsExceptionClass = class of StringIndexOutOfBoundsException;
 
-  NumberFormatException = class(IllegalArgumentException);
+  NumberFormatException = class(IllegalArgumentException)
+  public
+    class function forInputString(s : string) : NumberFormatException;
+  end;
 
   NumberFormatExceptionClass = class of NumberFormatException;
 
@@ -357,6 +360,8 @@ type
     class function toHexString(i : int) : string;
     class function toOctalString(i : int) : string;
     class function toBinaryString(i : int) : string;
+    class function parseInt(s : string; radix : int) : int; overload;
+    class function parseInt(s : string) : int; overload;
     class function compare(x, y : int) : int;
     class function highestOneBit(i : int) : int;
     class function lowestOneBit(i : int) : int;
@@ -681,6 +686,11 @@ begin
   inherited createFmt('String index out of range: %d',[index]);
 end;
 
+class function NumberFormatException.forInputString(s : string) : NumberFormatException;
+begin
+  result := NumberFormatException.CreateFmt('For input string: ''%s''',[s]);
+end;
+
 function NPLNumber.sbyteValue : sbyte;
 begin
   result := fValue.sbyteValue;
@@ -935,6 +945,59 @@ end;
 class function NPLInteger.toBinaryString(i : int) : string;
 begin
   result := toUnsignedString(i, 1);
+end;
+
+class function NPLInteger.parseInt(s : string; radix : int) : int;
+var
+  negative : boolean;
+  i, len, limit, multmin, digit : int;
+  firstChar : char;
+begin
+  if s = '' then
+    raise NumberFormatException.create;
+  if radix < npl_Character.MIN_RADIX then
+    raise NumberFormatException.CreateFmt('radix %d less than npl_Character.MIN_RADIX',[radix]);
+  if radix > npl_Character.MAX_RADIX then
+    raise NumberFormatException.CreateFmt('radix %d greater than npl_Character.MAX_RADIX',[radix]);
+  result := 0;
+  negative := false;
+  i := 1;
+  len := length(s);
+  limit := -npl_Integer.MAX_VALUE;
+  if len>0 then begin
+    firstChar := s[1];
+    if firstChar < '0' then begin
+      if firstChar = '-' then begin
+        negative := true;
+        limit := npl_Integer.MIN_VALUE;
+      end else
+      if firstChar <> '+' then
+        raise NumberFormatException.forInputString(s);
+      if len = 1 then
+        raise NumberFormatException.forInputString(s);
+      inc(i);
+    end;
+    multmin := limit div radix;
+    while i <= len do begin
+      digit := NPLANSICharacter.digit(s[i],radix);
+      inc(i);
+      if digit < 0 then
+        raise NumberFormatException.forInputString(s);
+      if result < multmin then
+        raise NumberFormatException.forInputString(s);
+      result := result * radix;
+      if result < limit+digit then
+        raise NumberFormatException.forInputString(s);
+      result := result - digit;
+    end;
+  end else raise NumberFormatException.forInputString(s);
+  if not negative then
+    result := - result;
+end;
+
+class function NPLInteger.parseInt(s : string) : int;
+begin
+  result := parseInt(s,10);
 end;
 
 class function NPLInteger.compare(x, y : int) : int;
