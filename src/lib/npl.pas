@@ -1170,9 +1170,15 @@ begin
   if nm.startsWith('-', index) or nm.startsWith('+', index) then
     raise NumberFormatException.create('Sign character in wrong position');
 
-  result := NPLInteger.parseInt(nm.substring(index), radix);
-  if negative then
-    result := -result;
+  try
+    result := NPLInteger.parseInt(nm.substring(index), radix);
+    if negative then
+      result := -result;
+  except on e : NumberFormatException do
+    if negative then
+      result := NPLInteger.parseInt('-' + nm.substring(index), radix)
+    else result := NPLInteger.parseInt(nm.substring(index), radix);
+  end;
 end;
 
 class function NPLInteger.decode(const nm : string) : int;
@@ -1556,9 +1562,15 @@ begin
   if nm.startsWith('-', index) or nm.startsWith('+', index) then
     raise NumberFormatException.create('Sign character in wrong position');
 
-  result := NPLLong.parseLong(nm.substring(index), radix);
-  if negative then
-    result := -result;
+  try
+    result := NPLLong.parseLong(nm.substring(index), radix);
+    if negative then
+      result := -result;
+  except on e : NumberFormatException do
+    if negative then
+      result := NPLLong.parseLong('-' + nm.substring(index), radix)
+    else result := NPLLong.parseLong(nm.substring(index), radix);
+  end;
 end;
 
 class function NPLLong.decode(const nm : string) : long;
