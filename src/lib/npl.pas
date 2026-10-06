@@ -473,13 +473,17 @@ type
   private
     fValue : boolean;
   public
-    constructor create(aValue : boolean);
+    constructor create(aValue : boolean); overload;
+    constructor create(const s : string); overload;
+    constructor create(s : NPLANSIString); overload;
     class function toString(b : boolean) : string; overload;
     function toString : string; overload; override;
     function hashCode : int; override;
     function equals(obj : TObject) : boolean; override;
     function compareTo(b : {$IFDEF GENERICS}NPLBoolean{$ELSE}NPLObject{$ENDIF}) : int;
     class function compare(x, y : boolean) : int;
+    class function toBoolean(const name : string) : boolean; overload;
+    class function toBoolean(name : NPLANSIString) : boolean; overload;
     property value : boolean read fValue write fValue;
   end;
 
@@ -1158,7 +1162,7 @@ begin
   end else if nm.startsWith('#', index) or nm.startsWith('$', index) then begin
     inc(index);
     radix := 16;
-  end else if nm.startsWith('0', index) and (nm.length > 1 + index) then begin
+  end else if nm.startsWith('0', index) and (nm.length > index) then begin
     inc(index);
     radix := 8;
   end;
@@ -1950,6 +1954,16 @@ begin
   fValue := aValue;
 end;
 
+constructor NPLBoolean.create(const s : string);
+begin
+  fValue := toBoolean(s);
+end;
+
+constructor NPLBoolean.create(s : NPLANSIString);
+begin
+  fValue := toBoolean(s);
+end;
+
 class function NPLBoolean.toString(b : boolean) : string;
 begin
   if b then
@@ -2003,6 +2017,16 @@ begin
     result := 1
   else
     result := -1;
+end;
+
+class function NPLBoolean.toBoolean(const name : string) : boolean;
+begin
+  result := lowercase(trim(name)) = 'true';
+end;
+
+class function NPLBoolean.toBoolean(name : NPLANSIString) : boolean;
+begin
+  result := toBoolean(name.toString);
 end;
 
 constructor NPLANSICharacter.create(aValue : char);
