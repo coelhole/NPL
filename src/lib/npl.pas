@@ -7,7 +7,7 @@ interface
 uses
   classes
   ,SysUtils
-  ,Windows
+  {$IFDEF WINDOWS},Windows{$ENDIF}
   ;
 
 //copiado da unit SynCommon.pas (projeto mORMot: https://github.com/synopse/mormot) 
@@ -320,7 +320,9 @@ type
 
   NPLSByte = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLSByte>{$ELSE}Comparable{$ENDIF})
   public
-    constructor create(aValue : sbyte);
+    constructor create(aValue : sbyte); overload;
+    constructor create(const s : string); overload;
+    constructor create(s : NPLANSIString); overload;
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
@@ -328,6 +330,8 @@ type
     class function toString(b : sbyte) : string; overload;
     class function parseByte(const s : string; radix : int) : sbyte; overload;
     class function parseByte(const s : string) : sbyte; overload;
+    class function decode(nm : NPLANSIString) : sbyte; overload;
+    class function decode(const nm : string) : sbyte; overload;
     class function compare(x, y : sbyte) : int;
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
   end;
@@ -336,7 +340,9 @@ type
 
   NPLShort = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLShort>{$ELSE}Comparable{$ENDIF})
   public
-    constructor create(aValue : short);
+    constructor create(aValue : short); overload;
+    constructor create(const s : string); overload;
+    constructor create(s : NPLANSIString); overload;
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
@@ -344,6 +350,8 @@ type
     class function toString(s : short) : string; overload;
     class function parseShort(const s : string; radix : int) : short; overload;
     class function parseShort(const s : string) : short; overload;
+    class function decode(nm : NPLANSIString) : short; overload;
+    class function decode(const nm : string) : short; overload;
     class function compare(x, y : short) : int;
     class function reverseBytes(i : short) : short;
     property value : short read fValue.shortValue write fValue.shortValue;
@@ -355,7 +363,9 @@ type
   private
     class function toUnsignedString(i, shift : int) : string;
   public
-    constructor create(aValue : int);
+    constructor create(aValue : int); overload;
+    constructor create(const s : string); overload;
+    constructor create(s : NPLANSIString); overload;
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
@@ -389,7 +399,9 @@ type
   private
     class function toUnsignedString(i : long; shift : int) : string;
   public
-    constructor create(aValue : long);
+    constructor create(aValue : long); overload;
+    constructor create(const s : string); overload;
+    constructor create(s : NPLANSIString); overload;
     function equals(obj : TObject) : boolean; override;
     function compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
@@ -401,6 +413,8 @@ type
     class function toBinaryString(i : long) : string;
     class function parseLong(const s : string; radix : int) : long; overload;
     class function parseLong(const s : string) : long; overload;
+    class function decode(nm : NPLANSIString) : long; overload;
+    class function decode(const nm : string) : long; overload;
     class function compare(x, y : long) : int;
     class function highestOneBit(i : long) : long;
     class function lowestOneBit(i : long) : long;
@@ -752,6 +766,16 @@ begin
   fValue.sbyteValue := aValue;
 end;
 
+constructor NPLSByte.create(const s : string);
+begin
+  fValue.sbyteValue := decode(s);
+end;
+
+constructor NPLSByte.create(s : NPLANSIString);
+begin
+  fValue.sbyteValue := decode(s);
+end;
+
 function NPLSByte.equals(obj : TObject) : boolean;
 begin
   result := false;
@@ -805,6 +829,21 @@ begin
   result := parseByte(s, 10);
 end;
 
+class function NPLSByte.decode(nm : NPLANSIString) : sbyte;
+begin
+  result := decode(nm.toString);
+end;
+
+class function NPLSByte.decode(const nm : string) : sbyte;
+var
+  i : int;
+begin
+  i := NPLInteger.decode(nm);
+  if (i < npl_SByte.MIN_VALUE) or (i > npl_SByte.MAX_VALUE) then
+    raise NumberFormatException.createFmt('Value %d out of range from input ''%s''',[i,nm]);
+  result := sbyte(i);
+end;
+
 class function NPLSByte.compare(x, y : sbyte) : int;
 begin
   result := x-y;
@@ -813,6 +852,16 @@ end;
 constructor NPLShort.create(aValue : short);
 begin
   fValue.shortValue := aValue;
+end;
+
+constructor NPLShort.create(const s : string);
+begin
+  fValue.shortValue := decode(s);
+end;
+
+constructor NPLShort.create(s : NPLANSIString);
+begin
+  fValue.shortValue := decode(s);
 end;
 
 function NPLShort.equals(obj : TObject) : boolean;
@@ -868,6 +917,21 @@ begin
   result := parseShort(s, 10);
 end;
 
+class function NPLShort.decode(nm : NPLANSIString) : short;
+begin
+  result := decode(nm.toString);
+end;
+
+class function NPLShort.decode(const nm : string) : short;
+var
+  i : int;
+begin
+  i := NPLInteger.decode(nm);
+  if (i < npl_Short.MIN_VALUE) or (i > npl_Short.MAX_VALUE) then
+    raise NumberFormatException.createFmt('Value %d out of range from input ''%s''',[i,nm]);
+  result := short(i);
+end;
+
 class function NPLShort.compare(x, y : short) : int;
 begin
   result := x-y;
@@ -881,6 +945,16 @@ end;
 constructor NPLInteger.create(aValue : int);
 begin
   fValue.intValue := aValue;
+end;
+
+constructor NPLInteger.create(const s : string);
+begin
+  fValue.intValue := decode(s);
+end;
+
+constructor NPLInteger.create(s : NPLANSIString);
+begin
+  fValue.intValue := decode(s);
 end;
 
 function NPLInteger.equals(obj : TObject) : boolean;
@@ -1259,6 +1333,16 @@ begin
   fValue.longValue := aValue;
 end;
 
+constructor NPLLong.create(const s : string);
+begin
+  fValue.longValue := decode(s);
+end;
+
+constructor NPLLong.create(s : NPLANSIString);
+begin
+  fValue.longValue := decode(s);
+end;
+
 function NPLLong.equals(obj : TObject) : boolean;
 begin
   result := false;
@@ -1430,6 +1514,59 @@ end;
 class function NPLLong.parseLong(const s : string) : long;
 begin
   result := parseLong(s, 10);
+end;
+
+class function NPLLong.decode(nm : NPLANSIString) : long;
+var
+  radix, index : int;
+  negative : boolean;
+  firstChar : char;
+begin
+  radix := 10;
+  index := 1;
+  negative := false;
+
+  if nm.length = 0 then
+    raise NumberFormatException.create('Zero length string');
+  firstChar := nm.charAt(1);
+  // Handle sign, if present
+  if firstChar = '-' then begin
+    negative := true;
+    inc(index);
+  end else
+  if firstChar = '+' then
+    inc(index);
+
+  // Handle radix specifier, if present
+  if nm.startsWith('0x', index) or nm.startsWith('0X', index) then begin
+    inc(index,2);
+    radix := 16;
+  end else if nm.startsWith('#', index) or nm.startsWith('$', index) then begin
+    inc(index);
+    radix := 16;
+  end else if nm.startsWith('0', index) and (nm.length > 1 + index) then begin
+    inc(index);
+    radix := 8;
+  end;
+
+  if nm.startsWith('-', index) or nm.startsWith('+', index) then
+    raise NumberFormatException.create('Sign character in wrong position');
+
+  result := NPLLong.parseLong(nm.substring(index), radix);
+  if negative then
+    result := -result;
+end;
+
+class function NPLLong.decode(const nm : string) : long;
+var
+  nmstr : NANSIString;
+begin
+  nmstr := NANSIString.create(nm);
+  try
+    result := decode(nmstr);
+  finally
+    nmstr.free;
+  end;
 end;
 
 class function NPLLong.compare(x, y : long) : int;
