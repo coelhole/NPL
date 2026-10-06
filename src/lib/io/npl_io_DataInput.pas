@@ -22,8 +22,8 @@ type
     function readLong : long;
     function readFloat : float;
     function readDouble : double;
-    procedure readLine(out line : NString);
-    procedure readUTF(out utfstr : NString);
+    procedure readLine(out line : string);
+    procedure readUTF(out utfstr : string);
   end;
 
 implementation

@@ -134,6 +134,7 @@ type
   wstringarr  = array of wstring;
   booleanarr  = array of boolean;
   boolarr     = array of bool;
+  bytearr     = array of byte;
   int8arr     = array of int8;
   int16arr    = array of int16;
   int32arr    = array of int32;
@@ -301,7 +302,7 @@ type
   NPLDouble         = class;
   NPLBoolean        = class;
   NPLANSICharacter  = class;
-  NPLString         = class;
+  NPLANSIString     = class;
 
   NPLNumber = class(NPLObject)
   private
@@ -366,6 +367,8 @@ type
     class function toBinaryString(i : int) : string;
     class function parseInt(const s : string; radix : int) : int; overload;
     class function parseInt(const s : string) : int; overload;
+    class function decode(nm : NPLANSIString) : int; overload;
+    class function decode(const nm : string) : int; overload;
     class function compare(x, y : int) : int;
     class function highestOneBit(i : int) : int;
     class function lowestOneBit(i : int) : int;
@@ -496,16 +499,31 @@ type
 
   NPLANSICharacterClass = class of NPLANSICharacter;
 
-  NPLString = class(NPLObject)
+  NPLANSIString = class(NPLObject)
   private
     fValue : string;
+  protected
+    procedure getChars(var dst : chararr; dstBegin : int); overload;
   public
-    constructor create(aValue : string);
+    constructor create(const original : string); overload;
+    constructor create(value : chararr); overload;
+    constructor create(value : chararr; offset, count : int); overload;
+    constructor create(value : bytearr); overload;
+    constructor create(value : bytearr; offset, count : int); overload;
     function equals(obj : TObject) : boolean; override;
+    function toString : string; override;
+    function length : int;
+    function isEmpty : boolean;
+    function charAt(index : int) : char;
+    procedure getChars(srcBegin, srcEnd : int; var dst : chararr; dstBegin : int); overload;
+    function startsWith(const prefix : string; toffset : int = 1) : boolean;
+    function endsWith(const suffix : string) : boolean;
+    function substring(beginIndex : int) : string; overload;
+    function substring(beginIndex, endIndex : int) : string; overload;
     property value : string read fValue write fValue;
   end;
 
-  NPLStringClass = class of NPLString;
+  NPLANSIStringClass = class of NPLANSIString;
 
   NObject         = NPLObject;        NClass              = NPLClass;
   NNumber         = NPLNumber;        NNumberClass        = NPLNumberClass;
@@ -517,7 +535,7 @@ type
   NDouble         = NPLDouble;        NDoubleClass        = NPLDoubleClass;
   NBoolean        = NPLBoolean;       NBooleanClass       = NPLBooleanClass;
   NANSICharacter  = NPLANSICharacter; NANSICharacterClass = NPLANSICharacterClass;
-  NString         = NPLString;        NStringClass        = NPLStringClass;
+  NANSIString     = NPLANSIString;    NANSIStringClass    = NPLANSIStringClass;
 
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
@@ -1036,6 +1054,59 @@ end;
 class function NPLInteger.parseInt(const s : string) : int;
 begin
   result := parseInt(s,10);
+end;
+
+class function NPLInteger.decode(nm : NPLANSIString) : int;
+var
+  radix, index : int;
+  negative : boolean;
+  firstChar : char;
+begin
+  radix := 10;
+  index := 1;
+  negative := false;
+
+  if nm.length = 0 then
+    raise NumberFormatException.create('Zero length string');
+  firstChar := nm.charAt(1);
+  // Handle sign, if present
+  if firstChar = '-' then begin
+    negative := true;
+    inc(index);
+  end else
+  if firstChar = '+' then
+    inc(index);
+
+  // Handle radix specifier, if present
+  if nm.startsWith('0x', index) or nm.startsWith('0X', index) then begin
+    inc(index,2);
+    radix := 16;
+  end else if nm.startsWith('#', index) or nm.startsWith('$', index) then begin
+    inc(index);
+    radix := 16;
+  end else if nm.startsWith('0', index) and (nm.length > 1 + index) then begin
+    inc(index);
+    radix := 8;
+  end;
+
+  if nm.startsWith('-', index) or nm.startsWith('+', index) then
+    raise NumberFormatException.create('Sign character in wrong position');
+
+  result := NPLInteger.parseInt(nm.substring(index), radix);
+  if negative then
+    result := -result;
+end;
+
+class function NPLInteger.decode(const nm : string) : int;
+var
+  nmstr : NANSIString;
+begin
+  nmstr := NANSIString.create(nm);
+  try
+    result := decode(nmstr);
+  finally
+    nmstr.free;
+  end;
 end;
 
 class function NPLInteger.compare(x, y : int) : int;
@@ -1930,19 +2001,128 @@ begin
   result := npl_Integer.digits[digit];
 end;
 
-constructor NPLString.create(aValue : string);
+constructor NPLANSIString.create(const original : string);
 begin
-  fValue := aValue;
+  fValue := original;
 end;
 
-function NPLString.equals(obj : TObject) : boolean;
+constructor NPLANSIString.create(value : chararr);
+begin
+  fValue := string(value);
+end;
+
+constructor NPLANSIString.create(value : chararr; offset, count : int);
+begin
+  fValue := string(copy(value, offset, count));
+end;
+
+constructor NPLANSIString.create(value : bytearr);
+begin
+  create(chararr(value));
+end;
+
+constructor NPLANSIString.create(value : bytearr; offset, count : int);
+begin
+  create(chararr(value), offset, count);
+end;
+
+function NPLANSIString.equals(obj : TObject) : boolean;
 begin
   result := false;
   if obj=NIL then
     exit;
-  if not (obj is NPLString) then
+  if not (obj is NPLANSIString) then
     exit;
-  result := fValue=NPLString(obj).fValue;
+  result := fValue=NPLANSIString(obj).fValue;
+end;
+
+function NPLANSIString.toString : string;
+begin
+  result := fValue;
+end;
+
+function NPLANSIString.length : int;
+begin
+  result := System.length(fValue);
+end;
+
+function NPLANSIString.isEmpty : boolean;
+begin
+  result := System.length(fValue) = 0;
+end;
+
+function NPLANSIString.charAt(index : int) : char;
+begin
+  if (index < 1) or (index > System.length(fValue)) then
+    raise StringIndexOutOfBoundsException.create(index);
+  result := fValue[index];
+end;
+
+procedure NPLANSIString.getChars(var dst : chararr; dstBegin : int);
+begin
+  if dstBegin < 0 then
+    raise ArrayIndexOutOfBoundsException.create;
+  if dstBegin+System.length(fValue)-1>=System.length(dst) then
+    raise ArrayIndexOutOfBoundsException.create;
+  if fValue<>'' then
+    move(fValue[1],dst[dstBegin],System.length(fValue));
+end;
+
+procedure NPLANSIString.getChars(srcBegin, srcEnd : int; var dst : chararr; dstBegin : int);
+begin
+  if srcBegin < 1 then
+    raise StringIndexOutOfBoundsException.create(srcBegin);
+  if srcEnd > System.length(fValue) then
+    raise StringIndexOutOfBoundsException.create(srcEnd);
+  if srcBegin > srcEnd then
+    raise StringIndexOutOfBoundsException.create(srcEnd - srcBegin);
+  if dstBegin < 0 then
+    raise ArrayIndexOutOfBoundsException.create;
+  if dstBegin+srcEnd-srcBegin>=System.length(dst) then
+    raise ArrayIndexOutOfBoundsException.create;
+  move(fValue[srcBegin],dst[dstBegin],srcEnd-srcBegin+1);
+end;
+
+function NPLANSIString.startsWith(const prefix : string; toffset : int = 1) : boolean;
+var
+  ta : chararr;
+  po, pc : int;
+begin
+  result := false;
+  ta := chararr(fValue);
+  pc := System.length(prefix);
+  if (toffset < 1) or (toffset > System.length(fValue) - pc + 1) then
+    exit;
+  for po := 0 to pc-1 do
+    if ta[toffset + po - 1] <> prefix[po + 1] then
+      exit;
+  result := true;
+end;
+
+function NPLANSIString.endsWith(const suffix : string) : boolean;
+begin
+  result := startsWith(suffix, System.length(fValue) - System.length(suffix) + 1);
+end;
+
+function NPLANSIString.substring(beginIndex : int) : string;
+begin
+  result := substring(beginIndex,System.length(fValue));
+end;
+
+function NPLANSIString.substring(beginIndex, endIndex : int) : string;
+var
+  ca : chararr;
+begin
+  if beginIndex < 1 then
+    raise StringIndexOutOfBoundsException.create(beginIndex);
+  if endIndex > System.length(fValue) then
+    raise StringIndexOutOfBoundsException.create(endIndex);
+  if beginIndex > endIndex then
+    raise StringIndexOutOfBoundsException.create(endIndex - beginIndex);
+  setLength(ca,endIndex-beginIndex+1);
+  getChars(beginIndex,endIndex,ca,0);
+  result := string(ca);
+  setLength(ca,0);
 end;
 
 end.

@@ -20,9 +20,9 @@ type
       procedure writeLong(v : long);
       procedure writeFloat(v : float);
       procedure writeDouble(v : double);
-      procedure writeBytes(s : NString);
-      procedure writeChars(s : NString);
-      procedure writeUTF(s : NString);
+      procedure writeBytes(s : string);
+      procedure writeChars(s : string);
+      procedure writeUTF(s : string);
   end;
 
 implementation
