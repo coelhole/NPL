@@ -1548,7 +1548,7 @@ begin
   end else if nm.startsWith('#', index) or nm.startsWith('$', index) then begin
     inc(index);
     radix := 16;
-  end else if nm.startsWith('0', index) and (nm.length > 1 + index) then begin
+  end else if nm.startsWith('0', index) and (nm.length > index) then begin
     inc(index);
     radix := 8;
   end;
