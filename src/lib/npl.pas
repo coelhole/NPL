@@ -1,6 +1,8 @@
 unit npl;
 
-//compiladores-alvo: FPC 2.6.0+ (plataformas: Windows/Unix 32/64-bits) e Delphi 4-7 (plataformas: Windows 32-bits)
+// compiladores-alvo:
+// - FPC 2.6.0+ (plataformas: Windows/Unix 32/64-bits)
+// - Delphi 4-7 (plataformas: Windows 32-bits)
 {$I npl.inc}
 
 interface
@@ -106,13 +108,13 @@ type
   uint8   = byte;
   uint16  = word;
   uint32  = cardinal;
-  sbyte   = type shortint;
+  sbyte   = shortint;
   ubyte   = byte;
-  short   = type smallint;
+  short   = smallint;
   ushort  = word;
-  int     = type int32;
+  int     = int32;
   uint    = uint32;
-  long    = type int64;
+  long    = int64;
 {$IFDEF FPC}
   ulong   = uint64;
 {$ELSE}
@@ -120,7 +122,7 @@ type
 {$ENDIF}
   dword   = cardinal;
   money   = currency;
-  float   = type single;
+  float   = single;
   decimal = extended;
   sstring = shortstring;
   wchar   = widechar;
@@ -180,11 +182,11 @@ type
   nuintarr    = array of nuint;
 
   //NPL char & string types
-  uchar           = widechar;
-  ustring         = widestring;
-  nchar           = type word;
-  nchararr        = array of nchar;
-  nrawstring      = type nchararr;
+  uchar       = widechar;
+  ustring     = widestring;
+  nchar       = type word;
+  nchararr    = array of nchar;
+  nrawstring  = type nchararr;
 
   basetype = (
     t_sbyte,
@@ -536,8 +538,10 @@ type
     constructor create(const original : ansistring); overload;
     constructor create(value : chararr); overload;
     constructor create(value : chararr; offset, count : int); overload;
-    constructor create(value : bytearr); overload;
-    constructor create(value : bytearr; offset, count : int); overload;
+    constructor create(value : ubytearr); overload;
+    constructor create(value : ubytearr; offset, count : int); overload;
+    constructor create(value : sbytearr); overload;
+    constructor create(value : sbytearr; offset, count : int); overload;
     function equals(obj : TObject) : boolean; override;
     function toString : string; override;
     function length : int;
@@ -2220,12 +2224,22 @@ begin
   fValue := ansistring(copy(value, offset, count));
 end;
 
-constructor NPLANSIString.create(value : bytearr);
+constructor NPLANSIString.create(value : ubytearr);
 begin
   create(chararr(value));
 end;
 
-constructor NPLANSIString.create(value : bytearr; offset, count : int);
+constructor NPLANSIString.create(value : ubytearr; offset, count : int);
+begin
+  create(chararr(value), offset, count);
+end;
+
+constructor NPLANSIString.create(value : sbytearr);
+begin
+  create(chararr(value));
+end;
+
+constructor NPLANSIString.create(value : sbytearr; offset, count : int);
 begin
   create(chararr(value), offset, count);
 end;
