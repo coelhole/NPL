@@ -503,16 +503,16 @@ type
     class function compare(x, y : char) : int;
     class function isDigit(code : int) : boolean; overload;
     class function isDigit(ch : char) : boolean; overload;
-    class function isASCIILetter(code : int) : boolean; overload;
+    class function isASCIILetter(codePoint : int) : boolean; overload;
     class function isASCIILetter(ch : char) : boolean; overload;
-    class function isASCIILetterOrDigit(code : int) : boolean; overload;
+    class function isASCIILetterOrDigit(codePoint : int) : boolean; overload;
     class function isASCIILetterOrDigit(ch : char) : boolean; overload;
-    class function digit(code : int; radix : int) : int; overload;
+    class function digit(codePoint : int; radix : int) : int; overload;
     class function digit(ch : char; radix : int) : int; overload;
     class function forDigit(digit, radix : int) : char;
-    class function isWhitespace(code : int) : boolean; overload;
+    class function isWhitespace(codePoint : int) : boolean; overload;
     class function isWhitespace(ch : char) : boolean; overload;
-    class function isISOControl(code : int) : boolean; overload;
+    class function isISOControl(codePoint : int) : boolean; overload;
     class function isISOControl(ch : char) : boolean; overload;
     function hashCode : int; override;
     function equals(obj : TObject) : boolean; override;
@@ -528,11 +528,11 @@ type
 
   NPLANSIString = class(NPLObject)
   private
-    fValue : string;
+    fValue : ansistring;
   protected
     procedure getChars(var dst : chararr; dstBegin : int); overload;
   public
-    constructor create(const original : string); overload;
+    constructor create(const original : ansistring); overload;
     constructor create(value : chararr); overload;
     constructor create(value : chararr; offset, count : int); overload;
     constructor create(value : bytearr); overload;
@@ -543,12 +543,12 @@ type
     function isEmpty : boolean;
     function charAt(index : int) : char;
     procedure getChars(srcBegin, srcEnd : int; var dst : chararr; dstBegin : int); overload;
-    function regionMatches(toffset : int; const other : string; ooffset, len : int) : boolean;
-    function startsWith(const prefix : string; toffset : int = 1) : boolean;
-    function endsWith(const suffix : string) : boolean;
-    function substring(beginIndex : int) : string; overload;
-    function substring(beginIndex, endIndex : int) : string; overload;
-    property value : string read fValue write fValue;
+    function regionMatches(toffset : int; const other : ansistring; ooffset, len : int) : boolean;
+    function startsWith(const prefix : ansistring; toffset : int = 1) : boolean;
+    function endsWith(const suffix : ansistring) : boolean;
+    function substring(beginIndex : int) : ansistring; overload;
+    function substring(beginIndex, endIndex : int) : ansistring; overload;
+    property value : ansistring read fValue write fValue;
   end;
 
   NPLANSIStringClass = class of NPLANSIString;
@@ -2124,9 +2124,9 @@ begin
   result := isDigit(int(ch));
 end;
 
-class function NPLANSICharacter.isASCIILetter(code : int) : boolean;
+class function NPLANSICharacter.isASCIILetter(codePoint : int) : boolean;
 begin
-  result := ((code > 64) and (code < 91)) or ((code > 96) and (code < 123));
+  result := ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123));
 end;
 
 class function NPLANSICharacter.isASCIILetter(ch : char) : boolean;
@@ -2134,9 +2134,9 @@ begin
   result := isASCIILetter(int(ch));
 end;
 
-class function NPLANSICharacter.isASCIILetterOrDigit(code : int) : boolean;
+class function NPLANSICharacter.isASCIILetterOrDigit(codePoint : int) : boolean;
 begin
-  result := ((code > 47) and (code < 58)) or ((code > 64) and (code < 91)) or ((code > 96) and (code < 123));
+  result := ((codePoint > 47) and (codePoint < 58)) or ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123));
 end;
 
 class function NPLANSICharacter.isASCIILetterOrDigit(ch : char) : boolean;
@@ -2144,25 +2144,25 @@ begin
   result := isASCIILetterOrDigit(int(ch));
 end;
 
-class function NPLANSICharacter.digit(code : int; radix : int) : int;
+class function NPLANSICharacter.digit(codePoint : int; radix : int) : int;
 begin
   result := -1;
   if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
     exit;
-  if not (((code > 47) and (code < 58)) or ((code > 64) and (code < 91)) or ((code > 96) and (code < 123))) then
+  if not (((codePoint > 47) and (codePoint < 58)) or ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123))) then
     exit;
-  if (code > 64) and (code < 91) then
-    code := code + 32;
+  if (codePoint > 64) and (codePoint < 91) then
+    codePoint := codePoint + 32;
   if radix < 11 then begin
-    if code > (47+radix) then
+    if codePoint > (47+radix) then
       exit;
-    result := code - 48;
+    result := codePoint - 48;
   end else begin
-    if code > (86+radix) then
+    if codePoint > (86+radix) then
       exit;
-    if (code > 47) and (code < 58) then
-      result := code - 48
-    else result := code - 87;
+    if (codePoint > 47) and (codePoint < 58) then
+      result := codePoint - 48
+    else result := codePoint - 87;
   end;
 end;
 
@@ -2184,9 +2184,9 @@ begin
   result := npl_Integer.digits[digit];
 end;
 
-class function NPLANSICharacter.isWhitespace(code : int) : boolean;
+class function NPLANSICharacter.isWhitespace(codePoint : int) : boolean;
 begin
-  result := ((code>8) and (code<14)) or ((code>27) and (code<33));
+  result := ((codePoint>8) and (codePoint<14)) or ((codePoint>27) and (codePoint<33));
 end;
 
 class function NPLANSICharacter.isWhitespace(ch : char) : boolean;
@@ -2194,9 +2194,9 @@ begin
   result := isWhitespace(int(ch));
 end;
 
-class function NPLANSICharacter.isISOControl(code : int) : boolean;
+class function NPLANSICharacter.isISOControl(codePoint : int) : boolean;
 begin
-  result := ((code>=0) and (code<32)) or (code=127);
+  result := ((codePoint>=0) and (codePoint<32)) or (codePoint=127);
 end;
 
 class function NPLANSICharacter.isISOControl(ch : char) : boolean;
@@ -2204,19 +2204,19 @@ begin
   result := isISOControl(int(ch));
 end;
 
-constructor NPLANSIString.create(const original : string);
+constructor NPLANSIString.create(const original : ansistring);
 begin
   fValue := original;
 end;
 
 constructor NPLANSIString.create(value : chararr);
 begin
-  fValue := string(value);
+  fValue := ansistring(value);
 end;
 
 constructor NPLANSIString.create(value : chararr; offset, count : int);
 begin
-  fValue := string(copy(value, offset, count));
+  fValue := ansistring(copy(value, offset, count));
 end;
 
 constructor NPLANSIString.create(value : bytearr);
@@ -2286,7 +2286,7 @@ begin
   move(fValue[srcBegin],dst[dstBegin],srcEnd-srcBegin+1);
 end;
 
-function NPLANSIString.regionMatches(toffset : int; const other : string; ooffset, len : int) : boolean;
+function NPLANSIString.regionMatches(toffset : int; const other : ansistring; ooffset, len : int) : boolean;
 begin
   result := false;
 
@@ -2304,7 +2304,7 @@ begin
   result := true;
 end;
 
-function NPLANSIString.startsWith(const prefix : string; toffset : int = 1) : boolean;
+function NPLANSIString.startsWith(const prefix : ansistring; toffset : int = 1) : boolean;
 var
   po, pc : int;
 begin
@@ -2318,17 +2318,17 @@ begin
   result := true;
 end;
 
-function NPLANSIString.endsWith(const suffix : string) : boolean;
+function NPLANSIString.endsWith(const suffix : ansistring) : boolean;
 begin
   result := startsWith(suffix, System.length(fValue) - System.length(suffix) + 1);
 end;
 
-function NPLANSIString.substring(beginIndex : int) : string;
+function NPLANSIString.substring(beginIndex : int) : ansistring;
 begin
   result := substring(beginIndex,System.length(fValue));
 end;
 
-function NPLANSIString.substring(beginIndex, endIndex : int) : string;
+function NPLANSIString.substring(beginIndex, endIndex : int) : ansistring;
 var
   ca : chararr;
 begin
@@ -2340,7 +2340,7 @@ begin
     raise StringIndexOutOfBoundsException.create(endIndex - beginIndex);
   setLength(ca,endIndex-beginIndex+1);
   getChars(beginIndex,endIndex,ca,0);
-  result := string(ca);
+  result := ansistring(ca);
   setLength(ca,0);
 end;
 
