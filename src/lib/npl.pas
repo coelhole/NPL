@@ -501,7 +501,7 @@ type
     constructor create(aValue : char);
     class function toString(c : char) : string; overload;
     class function compare(x, y : char) : int;
-    class function isDigit(code : int) : boolean; overload;
+    class function isDigit(codePoint : int) : boolean; overload;
     class function isDigit(ch : char) : boolean; overload;
     class function isASCIILetter(codePoint : int) : boolean; overload;
     class function isASCIILetter(ch : char) : boolean; overload;
@@ -2114,9 +2114,9 @@ begin
   result := int(x) - int(y);
 end;
 
-class function NPLANSICharacter.isDigit(code : int) : boolean;
+class function NPLANSICharacter.isDigit(codePoint : int) : boolean;
 begin
-    result := ((code > 47) and (code < 58));
+    result := ((codePoint > 47) and (codePoint < 58));
 end;
 
 class function NPLANSICharacter.isDigit(ch : char) : boolean;
@@ -2290,7 +2290,7 @@ function NPLANSIString.regionMatches(toffset : int; const other : ansistring; oo
 begin
   result := false;
 
-  if (ooffset < 1) or (toffset < 1) or (toffset-1 > System.length(fValue)-len) or (ooffset-1 > System.length(other)-len) then
+  if (ooffset < 1) or (toffset < 1) or (len < 0) or (toffset-1 > System.length(fValue)-len) or (ooffset-1 > System.length(other)-len) then
     exit;
 
   while len > 0 do begin
