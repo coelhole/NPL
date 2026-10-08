@@ -1,5 +1,6 @@
 unit npl;
 
+//compiladores-alvo: FPC 2.6.0+ (plataformas: Windows/Unix 32/64-bits) e Delphi 4-7 (plataformas: Windows 32-bits)
 {$I npl.inc}
 
 interface
