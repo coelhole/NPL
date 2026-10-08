@@ -139,6 +139,17 @@ type
   nuint   = uint32;
 {$ENDIF}
 
+  ASCIICodePoint            = 0   ..  127;
+  LowerASCIILetterCodePoint = 97  ..  122;
+  LowerASCIILetter          = 'a' ..  'z';
+  UpperASCIILetterCodePoint = 65  ..  90;
+  UpperASCIILetter          = 'A' ..  'Z';
+  ASCIIDigitCodePoint       = 48  ..  57;
+  ASCIIDigit                = '0' ..  '9';
+  ASCIICodePoints           = set of  ASCIICodePoint;
+  ANSICharCodePoint         = 0   ..  255;
+  ANSICharCodePoints        = set of  ANSICharCodePoint;
+
   //array types
   chararr     = array of char;
   wchararr    = array of wchar;
@@ -503,6 +514,10 @@ type
   public
     constructor create(aValue : char);
     class function toString(c : char) : string; overload;
+    class function isLowerCase(codePoint : int) : boolean; overload;
+    class function isLowerCase(ch : char) : boolean; overload;
+    class function isUpperCase(codePoint : int) : boolean; overload;
+    class function isUpperCase(ch : char) : boolean; overload;
     class function compare(x, y : char) : int;
     class function isDigit(codePoint : int) : boolean; overload;
     class function isDigit(ch : char) : boolean; overload;
@@ -510,6 +525,8 @@ type
     class function isASCIILetter(ch : char) : boolean; overload;
     class function isASCIILetterOrDigit(codePoint : int) : boolean; overload;
     class function isASCIILetterOrDigit(ch : char) : boolean; overload;
+    class function isLetter(codePoint : int) : boolean; overload;
+    class function isLetter(ch : char) : boolean; overload;
     class function digit(codePoint : int; radix : int) : int; overload;
     class function digit(ch : char; radix : int) : int; overload;
     class function forDigit(digit, radix : int) : char;
@@ -626,6 +643,21 @@ begin
         (long($FFFFFFFFFFFFFFFF) shl (64 - bits));
   end;
 end;
+
+var
+  UpperANSILetterCodePoints : ANSICharCodePoints =
+    [Low(UpperASCIILetterCodePoint)..High(UpperASCIILetterCodePoint)] +
+    [138,140,142,159,192..214,216..222]  //extended ASCII
+  ;
+  LowerANSILetterCodePoints : ANSICharCodePoints =
+    [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
+    [131,154,156,158,170,181,186,223..246,248..255]  //extended ASCII
+  ;
+  ANSILetterCodePoints : ANSICharCodePoints =
+    [Low(UpperASCIILetterCodePoint)..High(UpperASCIILetterCodePoint)] +
+    [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
+    [131,138,140,142,154,156,158,159,170,181,186,192..214,216..246,248..255]  //extended ASCII
+  ;
 
 class function NPLObject.unitName : ansistring;
 var
@@ -2109,9 +2141,39 @@ begin
   result := isASCIILetterOrDigit(fValue);
 end;
 
+class function NPLANSICharacter.isLetter(codePoint : int) : boolean;
+begin
+  result := codePoint in ANSILetterCodePoints;
+end;
+
+class function NPLANSICharacter.isLetter(ch : char) : boolean;
+begin
+  result := isLetter(int(ch));
+end;
+
 class function NPLANSICharacter.toString(c : char) : string;
 begin
   result := string(c);
+end;
+
+class function NPLANSICharacter.isLowerCase(codePoint : int) : boolean;
+begin
+  result := codePoint in LowerANSILetterCodePoints; 
+end;
+
+class function NPLANSICharacter.isLowerCase(ch : char) : boolean;
+begin
+  result := isLowerCase(int(ch));
+end;
+
+class function NPLANSICharacter.isUpperCase(codePoint : int) : boolean;
+begin
+  result := codePoint in UpperANSILetterCodePoints;
+end;
+
+class function NPLANSICharacter.isUpperCase(ch : char) : boolean;
+begin
+  result := isUpperCase(int(ch));
 end;
 
 class function NPLANSICharacter.compare(x, y : char) : int;
