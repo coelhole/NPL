@@ -103,17 +103,21 @@
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#startsWith-string-int-">startsWith</a></strong>(const prefix : string; toffset : <a href="npl.html#int">int</a> = 1) : boolean;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#regionMatches-int-string-int-int-">regionMatches</a></strong>(toffset : <a href="npl.html#int">int</a>; const other : string; ooffset, len : <a href="npl.html#int">int</a>) : boolean;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#endsWith-string-">endsWith</a></strong>(const suffix : string) : boolean;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#startsWith-string-int-">startsWith</a></strong>(const prefix : string; toffset : <a href="npl.html#int">int</a> = 1) : boolean;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#substring-int-">substring</a></strong>(beginIndex : <a href="npl.html#int">int</a>) : string; overload;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#endsWith-string-">endsWith</a></strong>(const suffix : string) : boolean;</code></td>
 </tr>
 <tr class="list2 visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#substring-int-">substring</a></strong>(beginIndex : <a href="npl.html#int">int</a>) : string; overload;</code></td>
+</tr>
+<tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLANSIString.html#substring-int-int-">substring</a></strong>(beginIndex, endIndex : <a href="npl.html#int">int</a>) : string; overload;</code></td>
 </tr>
@@ -228,6 +232,14 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="getChars-int-int-chararr-int-"></span><code>procedure <strong>getChars</strong>(srcBegin, srcEnd : <a href="npl.html#int">int</a>; var dst : <a href="npl.html#chararr">chararr</a>; dstBegin : <a href="npl.html#int">int</a>); overload;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="regionMatches-int-string-int-int-"></span><code>function <strong>regionMatches</strong>(toffset : <a href="npl.html#int">int</a>; const other : string; ooffset, len : <a href="npl.html#int">int</a>) : boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

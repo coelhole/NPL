@@ -7,7 +7,10 @@ interface
 uses
   classes
   ,SysUtils
-  {$IFDEF WINDOWS},Windows{$ENDIF}
+  {$IFDEF WINDOWS}
+  ,Windows
+  {$ENDIF}
+  ,npl_io_Closeable
   ;
 
 //copiado da unit SynCommon.pas (projeto mORMot: https://github.com/synopse/mormot) 
@@ -79,8 +82,15 @@ const
   E_UNEXPECTED = HRESULT($8000FFFF);
   E_NOTIMPL = HRESULT($80004001);
 {$endif DELPHI5OROLDER}
-  LF = #10;
-  CRLF = #13#10;
+  NUL = #0;
+  BEL = #7;
+  BS  = #8;
+  HT  = #9;
+  LF  = #10;
+  VT  = #11;
+  FF  = #12;
+  CR  = #13;
+  CRLF = CR+LF;
   EOL = {$IFDEF WINDOWS}CRLF{$ELSE}LF{$ENDIF};
 
 type
@@ -275,19 +285,14 @@ type
 
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
-  AutoCloseable = interface
-    ['{5011DC3E-F6FA-46FF-A143-015AB5D78A9E}']
-    procedure close;
+  AutoCloseable = interface(Closeable)
+    ['{63DD1A1E-681B-4661-B163-29F81EB23C13}']
   end;
 
   AutoDestroyable = interface
     ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
   end;
 
-  (*
-    https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/lang/Comparable.java @html(<br>)
-    https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html @html(<br>)
-  *)
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface
     ['{6EBC1ADC-027E-4B7B-AA27-88D8F2D1CC17}']
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
@@ -504,7 +509,11 @@ type
     class function isASCIILetterOrDigit(ch : char) : boolean; overload;
     class function digit(code : int; radix : int) : int; overload;
     class function digit(ch : char; radix : int) : int; overload;
-    class function forDigit(digit, radix : int) : char;    
+    class function forDigit(digit, radix : int) : char;
+    class function isWhitespace(code : int) : boolean; overload;
+    class function isWhitespace(ch : char) : boolean; overload;
+    class function isISOControl(code : int) : boolean; overload;
+    class function isISOControl(ch : char) : boolean; overload;
     function hashCode : int; override;
     function equals(obj : TObject) : boolean; override;
     function toString : string; overload; override;
@@ -534,6 +543,7 @@ type
     function isEmpty : boolean;
     function charAt(index : int) : char;
     procedure getChars(srcBegin, srcEnd : int; var dst : chararr; dstBegin : int); overload;
+    function regionMatches(toffset : int; const other : string; ooffset, len : int) : boolean;
     function startsWith(const prefix : string; toffset : int = 1) : boolean;
     function endsWith(const suffix : string) : boolean;
     function substring(beginIndex : int) : string; overload;
@@ -2163,7 +2173,7 @@ end;
 
 class function NPLANSICharacter.forDigit(digit, radix : int) : char;
 begin
-  result := #0;
+  result := NUL;
 
   if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
     exit;
@@ -2172,6 +2182,26 @@ begin
     exit;
 
   result := npl_Integer.digits[digit];
+end;
+
+class function NPLANSICharacter.isWhitespace(code : int) : boolean;
+begin
+  result := ((code>8) and (code<14)) or ((code>27) and (code<33));
+end;
+
+class function NPLANSICharacter.isWhitespace(ch : char) : boolean;
+begin
+  result := isWhitespace(int(ch));
+end;
+
+class function NPLANSICharacter.isISOControl(code : int) : boolean;
+begin
+  result := ((code>=0) and (code<32)) or (code=127);
+end;
+
+class function NPLANSICharacter.isISOControl(ch : char) : boolean;
+begin
+  result := isISOControl(int(ch));
 end;
 
 constructor NPLANSIString.create(const original : string);
@@ -2256,18 +2286,34 @@ begin
   move(fValue[srcBegin],dst[dstBegin],srcEnd-srcBegin+1);
 end;
 
+function NPLANSIString.regionMatches(toffset : int; const other : string; ooffset, len : int) : boolean;
+begin
+  result := false;
+
+  if (ooffset < 1) or (toffset < 1) or (toffset-1 > System.length(fValue)-len) or (ooffset-1 > System.length(other)-len) then
+    exit;
+
+  while len > 0 do begin
+    dec(len);
+    if fValue[toffset] <> other[ooffset] then
+      exit;
+    inc(toffset);
+    inc(ooffset);
+  end;
+
+  result := true;
+end;
+
 function NPLANSIString.startsWith(const prefix : string; toffset : int = 1) : boolean;
 var
-  ta : chararr;
   po, pc : int;
 begin
   result := false;
-  ta := chararr(fValue);
   pc := System.length(prefix);
   if (toffset < 1) or (toffset > System.length(fValue) - pc + 1) then
     exit;
-  for po := 0 to pc-1 do
-    if ta[toffset + po - 1] <> prefix[po + 1] then
+  for po := 1 to pc do
+    if fValue[toffset + po - 1] <> prefix[po] then
       exit;
   result := true;
 end;

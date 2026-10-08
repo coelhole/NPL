@@ -61,7 +61,7 @@ var
   sign : char;
 begin
   charPos := index;
-  sign := #0;
+  sign := NUL;
 
   if i < 0 then begin
     sign := '-';
@@ -88,7 +88,7 @@ begin
       break;
   end;
 
-  if sign <> #0 then begin
+  if sign <> NUL then begin
     dec(charPos);
     buf[charPos] := sign;
   end;

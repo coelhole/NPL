@@ -35,7 +35,7 @@
 <div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Uses">Uses</a></div><div class="one_section"><a class="section" href="#PasDoc-Classes">Classes, Interfaces, Objects and Records</a></div><div class="one_section"><a class="section" href="#PasDoc-FuncsProcs">Functions and Procedures</a></div><div class="one_section"><a class="section" href="#PasDoc-Types">Types</a></div><div class="one_section"><a class="section" href="#PasDoc-Constants">Constants</a></div></div>
 <span id="PasDoc-Description"></span><h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Uses"></span><h2 class="uses">Uses</h2>
-<ul class="useslist"><li>classes</li><li>SysUtils</li><li>Windows</li></ul><h2 class="overview">Overview</h2>
+<ul class="useslist"><li>classes</li><li>SysUtils</li><li>Windows</li><li><a href="npl_io_Closeable.html">npl_io_Closeable</a></li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Classes"></span><h3 class="cio">Classes, Interfaces, Objects and Records</h3>
 <table class="classestable wide_list">
 <tr class="listheader">
@@ -92,7 +92,7 @@
 </tr>
 <tr class="list">
 <td class="itemname">Interface&nbsp;<a class="bold" href="npl.Comparable.html"><code>Comparable</code></a></td>
-<td class="itemdesc"><a href="https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/lang/Comparable.java">https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/lang/Comparable.java</a> <br> <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html">https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html</a> <br></td>
+<td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.NPLNumber.html"><code>NPLNumber</code></a></td>
@@ -495,12 +495,33 @@
 <span id="PasDoc-Constants"></span><h3 class="summary">Constants</h3>
 <table class="summary wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#LF">LF</a></strong> = #10;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#NUL">NUL</a></strong> = #0;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#CRLF">CRLF</a></strong> = #13#10;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#BEL">BEL</a></strong> = #7;</code></td>
 </tr>
 <tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#BS">BS</a></strong>  = #8;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#HT">HT</a></strong>  = #9;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#LF">LF</a></strong>  = #10;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#VT">VT</a></strong>  = #11;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#FF">FF</a></strong>  = #12;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#CR">CR</a></strong>  = #13;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#CRLF">CRLF</a></strong> = <a href="npl.html#CR">CR</a>+<a href="npl.html#LF">LF</a>;</code></td>
+</tr>
+<tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#EOL">EOL</a></strong> = <a href="npl.html#CRLF">CRLF</a>;</code></td>
 </tr>
 </table>
@@ -1368,7 +1389,7 @@ NPL char &amp; string types</p>
 <h3 class="detail">Constants</h3>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="LF"></span><code><strong>LF</strong> = #10;</code></td>
+<td class="itemcode"><span id="NUL"></span><code><strong>NUL</strong> = #0;</code></td>
 </tr>
 <tr><td colspan="1">
 <p>
@@ -1377,7 +1398,56 @@ copiado da unit SynCommon.pas (projeto mORMot: <a href="https://github.com/synop
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="CRLF"></span><code><strong>CRLF</strong> = #13#10;</code></td>
+<td class="itemcode"><span id="BEL"></span><code><strong>BEL</strong> = #7;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="BS"></span><code><strong>BS</strong>  = #8;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="HT"></span><code><strong>HT</strong>  = #9;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="LF"></span><code><strong>LF</strong>  = #10;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="VT"></span><code><strong>VT</strong>  = #11;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="FF"></span><code><strong>FF</strong>  = #12;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="CR"></span><code><strong>CR</strong>  = #13;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="CRLF"></span><code><strong>CRLF</strong> = <a href="npl.html#CR">CR</a>+<a href="npl.html#LF">LF</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>

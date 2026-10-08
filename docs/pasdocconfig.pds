@@ -76,7 +76,7 @@ Item_5=..\src\lib\misc
 Item_6=..\src\lib\io
 
 [Files]
-Count=41
+Count=42
 Item_0=..\src\lib\awt\event\npl_awt_event_ComponentEvent.pas
 Item_1=..\src\lib\awt\event\npl_awt_event_ComponentListener.pas
 Item_2=..\src\lib\awt\event\npl_awt_event_InputEvent.pas
@@ -115,9 +115,10 @@ Item_34=..\src\lib\npl_Short.pas
 Item_35=..\src\lib\npl_util.pas
 Item_36=..\src\lib\npl_utils.pas
 Item_37=..\src\lib\npl_windows.pas
-Item_38=..\src\lib\util\npl_util_EventListener.pas
-Item_39=..\src\lib\util\npl_util_EventObject.pas
-Item_40=..\src\lib\util\npl_util_Iterator.pas
+Item_38=..\src\lib\util\npl_util_Comparator.pas
+Item_39=..\src\lib\util\npl_util_EventListener.pas
+Item_40=..\src\lib\util\npl_util_EventObject.pas
+Item_41=..\src\lib\util\npl_util_Iterator.pas
 
 [AdditionalFiles]
 Count=0
