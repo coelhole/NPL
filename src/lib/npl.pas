@@ -569,7 +569,7 @@ type
     function charAt(index : int) : char;
     procedure getChars(srcBegin, srcEnd : int; var dst : chararr; dstBegin : int); overload;
     function regionMatches(toffset : int; const other : ansistring; ooffset, len : int) : boolean;
-    function startsWith(const prefix : ansistring; toffset : int = 1) : boolean;
+    function startsWith(const prefix : ansistring; toffset : int = 0) : boolean;
     function endsWith(const suffix : ansistring) : boolean;
     function substring(beginIndex : int) : ansistring; overload;
     function substring(beginIndex, endIndex : int) : ansistring; overload;
@@ -1145,7 +1145,7 @@ begin
     raise NumberFormatException.CreateFmt('radix %d greater than npl_Character.MAX_RADIX',[radix]);
   result := 0;
   negative := false;
-  i := 1;
+  i := 0;
   len := length(s);
   limit := -npl_Integer.MAX_VALUE;
   if len>0 then begin
@@ -1162,8 +1162,8 @@ begin
       inc(i);
     end;
     multmin := limit div radix;
-    while i <= len do begin
-      digit := NPLANSICharacter.digit(s[i],radix);
+    while i < len do begin
+      digit := NPLANSICharacter.digit(s[i+1],radix);
       inc(i);
       if digit < 0 then
         raise NumberFormatException.forInputString(s);
@@ -1191,12 +1191,12 @@ var
   firstChar : char;
 begin
   radix := 10;
-  index := 1;
+  index := 0;
   negative := false;
 
   if nm.length = 0 then
     raise NumberFormatException.create('Zero length string');
-  firstChar := nm.charAt(1);
+  firstChar := nm.charAt(0);
   // Handle sign, if present
   if firstChar = '-' then begin
     negative := true;
@@ -1212,7 +1212,7 @@ begin
   end else if nm.startsWith('#', index) or nm.startsWith('$', index) then begin
     inc(index);
     radix := 16;
-  end else if nm.startsWith('0', index) and (nm.length > index) then begin
+  end else if nm.startsWith('0', index) and (nm.length > 1 + index) then begin
     inc(index);
     radix := 8;
   end;
@@ -1588,7 +1588,7 @@ begin
 
   if nm.length = 0 then
     raise NumberFormatException.create('Zero length string');
-  firstChar := nm.charAt(1);
+  firstChar := nm.charAt(0);
   // Handle sign, if present
   if firstChar = '-' then begin
     negative := true;
@@ -2351,24 +2351,28 @@ end;
 
 function NPLANSIString.charAt(index : int) : char;
 begin
-  if (index < 1) or (index > System.length(fValue)) then
+  if (index < 0) or (index >= System.length(fValue)) then
     raise StringIndexOutOfBoundsException.create(index);
-  result := fValue[index];
+  result := fValue[index+1];
 end;
 
 procedure NPLANSIString.getChars(var dst : chararr; dstBegin : int);
+var
+  slen : int;
 begin
   if dstBegin < 0 then
     raise ArrayIndexOutOfBoundsException.create;
-  if dstBegin+System.length(fValue)-1>=System.length(dst) then
-    raise ArrayIndexOutOfBoundsException.create;
-  if fValue<>'' then
-    move(fValue[1],dst[dstBegin],System.length(fValue));
+  if fValue='' then
+    exit;
+  slen := System.length(fValue);
+  if dstBegin+slen>System.length(dst) then
+    setLength(dst,dstBegin+slen);
+  move(fValue[1],dst[dstBegin],slen);
 end;
 
 procedure NPLANSIString.getChars(srcBegin, srcEnd : int; var dst : chararr; dstBegin : int);
 begin
-  if srcBegin < 1 then
+  if srcBegin < 0 then
     raise StringIndexOutOfBoundsException.create(srcBegin);
   if srcEnd > System.length(fValue) then
     raise StringIndexOutOfBoundsException.create(srcEnd);
@@ -2376,9 +2380,11 @@ begin
     raise StringIndexOutOfBoundsException.create(srcEnd - srcBegin);
   if dstBegin < 0 then
     raise ArrayIndexOutOfBoundsException.create;
-  if dstBegin+srcEnd-srcBegin>=System.length(dst) then
-    raise ArrayIndexOutOfBoundsException.create;
-  move(fValue[srcBegin],dst[dstBegin],srcEnd-srcBegin+1);
+  if fValue='' then
+    exit;
+  if dstBegin+srcEnd-srcBegin>System.length(dst) then
+    setLength(dst,dstBegin+srcEnd-srcBegin);
+  move(fValue[srcBegin+1],dst[dstBegin],srcEnd-srcBegin);
 end;
 
 function NPLANSIString.regionMatches(toffset : int; const other : ansistring; ooffset, len : int) : boolean;
@@ -2399,23 +2405,23 @@ begin
   result := true;
 end;
 
-function NPLANSIString.startsWith(const prefix : ansistring; toffset : int = 1) : boolean;
+function NPLANSIString.startsWith(const prefix : ansistring; toffset : int = 0) : boolean;
 var
   po, pc : int;
 begin
   result := false;
   pc := System.length(prefix);
-  if (toffset < 1) or (toffset > System.length(fValue) - pc + 1) then
+  if (toffset < 0) or (toffset > System.length(fValue) - pc) then
     exit;
   for po := 1 to pc do
-    if fValue[toffset + po - 1] <> prefix[po] then
+    if fValue[toffset + po] <> prefix[po] then
       exit;
   result := true;
 end;
 
 function NPLANSIString.endsWith(const suffix : ansistring) : boolean;
 begin
-  result := startsWith(suffix, System.length(fValue) - System.length(suffix) + 1);
+  result := startsWith(suffix, System.length(fValue) - System.length(suffix));
 end;
 
 function NPLANSIString.substring(beginIndex : int) : ansistring;
@@ -2427,13 +2433,12 @@ function NPLANSIString.substring(beginIndex, endIndex : int) : ansistring;
 var
   ca : chararr;
 begin
-  if beginIndex < 1 then
+  if beginIndex < 0 then
     raise StringIndexOutOfBoundsException.create(beginIndex);
   if endIndex > System.length(fValue) then
     raise StringIndexOutOfBoundsException.create(endIndex);
   if beginIndex > endIndex then
     raise StringIndexOutOfBoundsException.create(endIndex - beginIndex);
-  setLength(ca,endIndex-beginIndex+1);
   getChars(beginIndex,endIndex,ca,0);
   result := ansistring(ca);
   setLength(ca,0);
