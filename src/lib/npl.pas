@@ -1537,7 +1537,7 @@ begin
     raise NumberFormatException.CreateFmt('radix %d greater than npl_Character.MAX_RADIX',[radix]);
   result := 0;
   negative := false;
-  i := 1;
+  i := 0;
   len := length(s);
   limit := -npl_Long.MAX_VALUE;
   if len>0 then begin
@@ -1554,8 +1554,8 @@ begin
       inc(i);
     end;
     multmin := limit div radix;
-    while i <= len do begin
-      digit := NPLANSICharacter.digit(s[i],radix);
+    while i < len do begin
+      digit := NPLANSICharacter.digit(s[i+1],radix);
       inc(i);
       if digit < 0 then
         raise NumberFormatException.forInputString(s);
@@ -1583,7 +1583,7 @@ var
   firstChar : char;
 begin
   radix := 10;
-  index := 1;
+  index := 0;
   negative := false;
 
   if nm.length = 0 then
@@ -1604,7 +1604,7 @@ begin
   end else if nm.startsWith('#', index) or nm.startsWith('$', index) then begin
     inc(index);
     radix := 16;
-  end else if nm.startsWith('0', index) and (nm.length > index) then begin
+  end else if nm.startsWith('0', index) and (nm.length > 1 + index) then begin
     inc(index);
     radix := 8;
   end;
@@ -2388,15 +2388,22 @@ begin
 end;
 
 function NPLANSIString.regionMatches(toffset : int; const other : ansistring; ooffset, len : int) : boolean;
+var
+  slen, olen : long;
 begin
   result := false;
 
-  if (ooffset < 1) or (toffset < 1) or (len < 0) or (toffset-1 > System.length(fValue)-len) or (ooffset-1 > System.length(other)-len) then
+  if (ooffset < 0) or (toffset < 0) or (len < 0) then
+    exit;
+
+  slen := System.length(fValue);
+  olen := System.length(other);
+  if (toffset > slen-len) or (ooffset > olen-len) then
     exit;
 
   while len > 0 do begin
     dec(len);
-    if fValue[toffset] <> other[ooffset] then
+    if fValue[toffset+1] <> other[ooffset+1] then
       exit;
     inc(toffset);
     inc(ooffset);
