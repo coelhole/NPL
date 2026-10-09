@@ -1359,13 +1359,30 @@ begin
 end;
 
 class function NPLInteger.rotateLeft(i, distance : int) : int;
+var
+  shift : int;
 begin
-  result := (i shl distance) or (i shr -distance);
+  shift := distance mod 32;
+  if distance>0 then
+     result := (i shl shift) or (i shr (32-shift))
+  else
+  if distance<0 then
+     result := (i shr shift) or (i shl (32-shift))
+  else result := i;
 end;
 
+
 class function NPLInteger.rotateRight(i, distance : int) : int;
+var
+  shift : int;
 begin
-  result := (i shr distance) or (i shl -distance);
+  shift := distance mod 32;
+  if distance>0 then
+     result := (i shr shift) or (i shl (32-shift))
+  else
+  if distance<0 then
+     result := (i shl shift) or (i shr (32-shift))
+  else result := i;
 end;
 
 class function NPLInteger.reverse(i : int) : int;
@@ -1767,13 +1784,29 @@ begin
 end;
 
 class function NPLLong.rotateLeft(i : long; distance : int) : long;
+var
+  shift : int;
 begin
-  result := (i shl distance) or (i shr -distance);
+  shift := distance mod 64;
+  if distance>0 then
+     result := (i shl shift) or (i shr (64-shift))
+  else
+  if distance<0 then
+     result := (i shr shift) or (i shl (64-shift))
+  else result := i;
 end;
 
 class function NPLLong.rotateRight(i : long; distance : int) : long;
+var
+  shift : int;
 begin
-  result := (i shr distance) or (i shl -distance);
+  shift := distance mod 64;
+  if distance>0 then
+     result := (i shr shift) or (i shl (64-shift))
+  else
+  if distance<0 then
+     result := (i shl shift) or (i shr (64-shift))
+  else result := i;
 end;
 
 class function NPLLong.reverse(i : long) : long;

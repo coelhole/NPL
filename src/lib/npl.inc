@@ -72,4 +72,5 @@
   {$IFDEF VER3_2}	{ Free Pascal Compiler 3.2.x }
     {$DEFINE GENERICS}
   {$ENDIF}
+  {$ASSERTIONS ON}
 {$ENDIF}
