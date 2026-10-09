@@ -180,25 +180,25 @@
 <td class="itemcode"><code><strong><a href="npl.html#uint32">uint32</a></strong>  = cardinal;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#sbyte">sbyte</a></strong> = type shortint;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#sbyte">sbyte</a></strong>   = shortint;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#ubyte">ubyte</a></strong>   = byte;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#short">short</a></strong> = type smallint;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#short">short</a></strong>   = smallint;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#ushort">ushort</a></strong>  = word;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#int">int</a></strong> = type <a href="npl.html#int32">int32</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#int">int</a></strong>     = <a href="npl.html#int32">int32</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#uint">uint</a></strong>    = <a href="npl.html#uint32">uint32</a>;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#long">long</a></strong> = type int64;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#long">long</a></strong>    = int64;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#ulong">ulong</a></strong>   = uint64;</code></td>
@@ -210,7 +210,7 @@
 <td class="itemcode"><code><strong><a href="npl.html#money">money</a></strong>   = currency;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#float">float</a></strong> = type single;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#float">float</a></strong>   = single;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#decimal">decimal</a></strong> = extended;</code></td>
@@ -229,6 +229,36 @@
 </tr>
 <tr class="list2 visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#nuint">nuint</a></strong>   = <a href="npl.html#uint32">uint32</a>;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ASCIICodePoint">ASCIICodePoint</a></strong>            = 0   ..  127;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#LowerASCIILetterCodePoint">LowerASCIILetterCodePoint</a></strong> = 97  ..  122;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#LowerASCIILetter">LowerASCIILetter</a></strong>          = 'a' ..  'z';</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#UpperASCIILetterCodePoint">UpperASCIILetterCodePoint</a></strong> = 65  ..  90;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#UpperASCIILetter">UpperASCIILetter</a></strong>          = 'A' ..  'Z';</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ASCIIDigitCodePoint">ASCIIDigitCodePoint</a></strong>       = 48  ..  57;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ASCIIDigit">ASCIIDigit</a></strong>                = '0' ..  '9';</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ASCIICodePoints">ASCIICodePoints</a></strong>           = set of  <a href="npl.html#ASCIICodePoint">ASCIICodePoint</a>;</code></td>
+</tr>
+<tr class="list visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ANSICharCodePoint">ANSICharCodePoint</a></strong>         = 0   ..  255;</code></td>
+</tr>
+<tr class="list2 visibility-published">
+<td class="itemcode"><code><strong><a href="npl.html#ANSICharCodePoints">ANSICharCodePoints</a></strong>        = set of  <a href="npl.html#ANSICharCodePoint">ANSICharCodePoint</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#chararr">chararr</a></strong>     = array of char;</code></td>
@@ -351,16 +381,16 @@
 <td class="itemcode"><code><strong><a href="npl.html#nuintarr">nuintarr</a></strong>    = array of <a href="npl.html#nuint">nuint</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#uchar">uchar</a></strong>           = widechar;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#uchar">uchar</a></strong>       = widechar;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#ustring">ustring</a></strong>         = widestring;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#ustring">ustring</a></strong>     = widestring;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#nchar">nchar</a></strong> = type word;</code></td>
 </tr>
 <tr class="list2 visibility-published">
-<td class="itemcode"><code><strong><a href="npl.html#nchararr">nchararr</a></strong>        = array of <a href="npl.html#nchar">nchar</a>;</code></td>
+<td class="itemcode"><code><strong><a href="npl.html#nchararr">nchararr</a></strong>    = array of <a href="npl.html#nchar">nchar</a>;</code></td>
 </tr>
 <tr class="list visibility-published">
 <td class="itemcode"><code><strong><a href="npl.html#nrawstring">nrawstring</a></strong> = type <a href="npl.html#nchararr">nchararr</a>;</code></td>
@@ -621,7 +651,7 @@
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="sbyte"></span><code><strong>sbyte</strong> = type shortint;</code></td>
+<td class="itemcode"><span id="sbyte"></span><code><strong>sbyte</strong>   = shortint;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -635,7 +665,7 @@
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="short"></span><code><strong>short</strong> = type smallint;</code></td>
+<td class="itemcode"><span id="short"></span><code><strong>short</strong>   = smallint;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -649,7 +679,7 @@
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="int"></span><code><strong>int</strong> = type <a href="npl.html#int32">int32</a>;</code></td>
+<td class="itemcode"><span id="int"></span><code><strong>int</strong>     = <a href="npl.html#int32">int32</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -663,7 +693,7 @@
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="long"></span><code><strong>long</strong> = type int64;</code></td>
+<td class="itemcode"><span id="long"></span><code><strong>long</strong>    = int64;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -691,7 +721,7 @@
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="float"></span><code><strong>float</strong> = type single;</code></td>
+<td class="itemcode"><span id="float"></span><code><strong>float</strong>   = single;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -734,6 +764,76 @@
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
 <td class="itemcode"><span id="nuint"></span><code><strong>nuint</strong>   = <a href="npl.html#uint32">uint32</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ASCIICodePoint"></span><code><strong>ASCIICodePoint</strong>            = 0   ..  127;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="LowerASCIILetterCodePoint"></span><code><strong>LowerASCIILetterCodePoint</strong> = 97  ..  122;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="LowerASCIILetter"></span><code><strong>LowerASCIILetter</strong>          = 'a' ..  'z';</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="UpperASCIILetterCodePoint"></span><code><strong>UpperASCIILetterCodePoint</strong> = 65  ..  90;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="UpperASCIILetter"></span><code><strong>UpperASCIILetter</strong>          = 'A' ..  'Z';</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ASCIIDigitCodePoint"></span><code><strong>ASCIIDigitCodePoint</strong>       = 48  ..  57;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ASCIIDigit"></span><code><strong>ASCIIDigit</strong>                = '0' ..  '9';</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ASCIICodePoints"></span><code><strong>ASCIICodePoints</strong>           = set of  <a href="npl.html#ASCIICodePoint">ASCIICodePoint</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ANSICharCodePoint"></span><code><strong>ANSICharCodePoint</strong>         = 0   ..  255;</code></td>
+</tr>
+<tr><td colspan="1">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-published wide_list">
+<tr class="list visibility-published">
+<td class="itemcode"><span id="ANSICharCodePoints"></span><code><strong>ANSICharCodePoints</strong>        = set of  <a href="npl.html#ANSICharCodePoint">ANSICharCodePoint</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -1022,7 +1122,7 @@ array types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="uchar"></span><code><strong>uchar</strong>           = widechar;</code></td>
+<td class="itemcode"><span id="uchar"></span><code><strong>uchar</strong>       = widechar;</code></td>
 </tr>
 <tr><td colspan="1">
 <p>
@@ -1031,7 +1131,7 @@ NPL char &amp; string types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="ustring"></span><code><strong>ustring</strong>         = widestring;</code></td>
+<td class="itemcode"><span id="ustring"></span><code><strong>ustring</strong>     = widestring;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -1045,7 +1145,7 @@ NPL char &amp; string types</p>
 </table>
 <table class="detail visibility-published wide_list">
 <tr class="list visibility-published">
-<td class="itemcode"><span id="nchararr"></span><code><strong>nchararr</strong>        = array of <a href="npl.html#nchar">nchar</a>;</code></td>
+<td class="itemcode"><span id="nchararr"></span><code><strong>nchararr</strong>    = array of <a href="npl.html#nchar">nchar</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 <p class="nodescription">This item has no description.</p></td></tr>

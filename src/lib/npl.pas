@@ -514,6 +514,7 @@ type
   public
     constructor create(aValue : char);
     class function toString(c : char) : string; overload;
+    class function charCount(codePoint : int) : int;
     class function isLowerCase(codePoint : int) : boolean; overload;
     class function isLowerCase(ch : char) : boolean; overload;
     class function isUpperCase(codePoint : int) : boolean; overload;
@@ -530,6 +531,8 @@ type
     class function digit(codePoint : int; radix : int) : int; overload;
     class function digit(ch : char; radix : int) : int; overload;
     class function forDigit(digit, radix : int) : char;
+    class function isDefined(codePoint : int) : boolean; overload;
+    class function isDefined(ch : char) : boolean; overload;
     class function isWhitespace(codePoint : int) : boolean; overload;
     class function isWhitespace(ch : char) : boolean; overload;
     class function isISOControl(codePoint : int) : boolean; overload;
@@ -2156,6 +2159,11 @@ begin
   result := string(c);
 end;
 
+class function NPLANSICharacter.charCount(codePoint : int) : int;
+begin
+  result := 1;
+end;
+
 class function NPLANSICharacter.isLowerCase(codePoint : int) : boolean;
 begin
   result := codePoint in LowerANSILetterCodePoints; 
@@ -2249,6 +2257,16 @@ begin
     exit;
 
   result := npl_Integer.digits[digit];
+end;
+
+class function NPLANSICharacter.isDefined(codePoint : int) : boolean;
+begin
+  result := (codePoint>=0) and (codePoint<=255);
+end;
+
+class function NPLANSICharacter.isDefined(ch : char) : boolean;
+begin
+  result := true;
 end;
 
 class function NPLANSICharacter.isWhitespace(codePoint : int) : boolean;
