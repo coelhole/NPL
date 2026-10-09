@@ -514,6 +514,7 @@ type
   public
     constructor create(aValue : char);
     class function toString(c : char) : string; overload;
+    class function isValidCodePoint(codePoint : int) : boolean;
     class function charCount(codePoint : int) : int;
     class function isLowerCase(codePoint : int) : boolean; overload;
     class function isLowerCase(ch : char) : boolean; overload;
@@ -528,6 +529,8 @@ type
     class function isASCIILetterOrDigit(ch : char) : boolean; overload;
     class function isLetter(codePoint : int) : boolean; overload;
     class function isLetter(ch : char) : boolean; overload;
+    class function isLetterOrDigit(codePoint : int) : boolean; overload;
+    class function isLetterOrDigit(ch : char) : boolean; overload;
     class function digit(codePoint : int; radix : int) : int; overload;
     class function digit(ch : char; radix : int) : int; overload;
     class function forDigit(digit, radix : int) : char;
@@ -661,6 +664,7 @@ var
     [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
     [131,138,140,142,154,156,158,159,170,181,186,192..214,216..246,248..255]  //extended ASCII
   ;
+  ANSIDigitCodePoints : ANSICharCodePoints = [Low(ASCIIDigitCodePoint)..High(ASCIIDigitCodePoint)];
 
 class function NPLObject.unitName : ansistring;
 var
@@ -2154,9 +2158,24 @@ begin
   result := isLetter(int(ch));
 end;
 
+class function NPLANSICharacter.isLetterOrDigit(codePoint : int) : boolean;
+begin
+  result := (codePoint in ANSILetterCodePoints) or (codePoint in ANSIDigitCodePoints);
+end;
+
+class function NPLANSICharacter.isLetterOrDigit(ch : char) : boolean;
+begin
+  result := isLetterOrDigit(int(ch));
+end;
+
 class function NPLANSICharacter.toString(c : char) : string;
 begin
   result := string(c);
+end;
+
+class function NPLANSICharacter.isValidCodePoint(codePoint : int) : boolean;
+begin
+  result := (codePoint>=0) and (codePoint<=255);
 end;
 
 class function NPLANSICharacter.charCount(codePoint : int) : int;
@@ -2380,7 +2399,7 @@ begin
     raise StringIndexOutOfBoundsException.create(srcEnd - srcBegin);
   if dstBegin < 0 then
     raise ArrayIndexOutOfBoundsException.create;
-  if fValue='' then
+  if (fValue='') or (srcEnd=srcBegin) then
     exit;
   if dstBegin+srcEnd-srcBegin>System.length(dst) then
     setLength(dst,dstBegin+srcEnd-srcBegin);
@@ -2448,7 +2467,6 @@ begin
     raise StringIndexOutOfBoundsException.create(endIndex - beginIndex);
   getChars(beginIndex,endIndex,ca,0);
   result := ansistring(ca);
-  setLength(ca,0);
 end;
 
 end.
