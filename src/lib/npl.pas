@@ -2,7 +2,7 @@ unit npl;
 
 // compiladores-alvo:
 // - FPC 2.6.0+ (plataformas: Windows/Unix 32/64-bits)
-// - Delphi 4-7 (plataformas: Windows 32-bits)
+// - Delphi 4-7 (plataformas: Windows 32-bits) [Interesse em versões modernas do Delphi? NENHUM!]
 {$I npl.inc}
 
 interface
@@ -239,18 +239,20 @@ type
 
 {$M+}
   NPLObject=class(TObject, {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF})
+  //Eis aqui nossa raiz da hierarquia de classes!
   protected
     fRefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF};
     function QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}HResult; virtual; stdcall;{$ENDIF}
     function _AddRef : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
     function _Release : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
   public
+    procedure Free; reintroduce;
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
     class function NewInstance : TObject; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
-    function equals(obj :TObject) : boolean; {$IFDEF FPC}override;{$ELSE}virtual;{$ENDIF}
+    function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce;{$ELSE}virtual;{$ENDIF}
     function hashCode : int; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
   end;
@@ -304,6 +306,9 @@ type
   end;
 
   AutoDestroyable = interface
+    //Interfaces servem primariamente para estabelecimento de contratos.
+    //Object Pascal, por influência de COM, amarrou interfaces ao gerenciamento de ciclo de vida.
+    //AutoDestroyable é nossa sugestão de desacoplar as coisas: (i) contrato é uma coisa; (ii) ciclo de vida é outra.
     ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
   end;
 
@@ -342,7 +347,7 @@ type
     constructor create(aValue : sbyte); overload;
     constructor create(const s : string); overload;
     constructor create(s : NPLANSIString); overload;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
@@ -362,7 +367,7 @@ type
     constructor create(aValue : short); overload;
     constructor create(const s : string); overload;
     constructor create(s : NPLANSIString); overload;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
@@ -385,7 +390,7 @@ type
     constructor create(aValue : int); overload;
     constructor create(const s : string); overload;
     constructor create(s : NPLANSIString); overload;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
@@ -421,7 +426,7 @@ type
     constructor create(aValue : long); overload;
     constructor create(const s : string); overload;
     constructor create(s : NPLANSIString); overload;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
@@ -453,7 +458,7 @@ type
   NPLFloat = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLFloat>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : float);
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherFloat : {$IFDEF GENERICS}NPLFloat{$ELSE}NPLObject{$ENDIF}) : int;
     function isNaN : boolean; overload;
     function isInfinite : boolean; overload;
@@ -472,7 +477,7 @@ type
   NPLDouble = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLDouble>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : double);
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;    
     function isNaN : boolean; overload;
     function isInfinite : boolean; overload;
@@ -498,7 +503,7 @@ type
     class function toString(b : boolean) : string; overload;
     function toString : string; overload; override;
     function hashCode : int; override;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function compareTo(b : {$IFDEF GENERICS}NPLBoolean{$ELSE}NPLObject{$ENDIF}) : int;
     class function compare(x, y : boolean) : int;
     class function toBoolean(const name : string) : boolean; overload;
@@ -541,7 +546,7 @@ type
     class function isISOControl(codePoint : int) : boolean; overload;
     class function isISOControl(ch : char) : boolean; overload;
     function hashCode : int; override;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function toString : string; overload; override;
     function compareTo(c : {$IFDEF GENERICS}NPLANSICharacter{$ELSE}NPLObject{$ENDIF}) : int;
     function isDigit : boolean; overload;
@@ -565,7 +570,7 @@ type
     constructor create(value : ubytearr; offset, count : int); overload;
     constructor create(value : sbytearr); overload;
     constructor create(value : sbytearr; offset, count : int); overload;
-    function equals(obj : TObject) : boolean; override;
+    function equals(obj : NPLObject) : boolean; override;
     function toString : string; override;
     function length : int;
     function isEmpty : boolean;
@@ -692,7 +697,7 @@ begin
     result:=concat(uname, '.', className);
 end;
 
-function NPLObject.equals(obj : TObject) : boolean;
+function NPLObject.equals(obj : NPLObject) : boolean;
 begin
   result:=obj=self;
 end;
@@ -711,6 +716,15 @@ begin
   result := qualifiedClassName + '@' + NPLInteger.toHexString(hashCode);
 end;
 
+procedure NPLObject.Free;
+//Que não se esqueçam do que estamos propondo com a NPL: NPLObject é a raiz da hierarquia de classes.
+//Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
+begin
+  InterlockedExchange(fRefCount,0);
+  if self <> nil then
+    destroy;
+end;
+
 function NPLObject.QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint;{$ELSE}HResult;{$ENDIF}
 begin
   if GetInterface(IID, Obj) then
@@ -726,7 +740,7 @@ end;
 
 type
   CloseProc = procedure(const aSelf: Pointer);
-procedure checkAutoCloseable(obj : TObject);
+procedure checkAutoCloseable(obj : NPLObject);
 var
   AutoCloaseableEntry : PInterfaceEntry;
   AutoCloseableInstancePtr : Pointer;
@@ -834,7 +848,7 @@ begin
   fValue.sbyteValue := decode(s);
 end;
 
-function NPLSByte.equals(obj : TObject) : boolean;
+function NPLSByte.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -922,7 +936,7 @@ begin
   fValue.shortValue := decode(s);
 end;
 
-function NPLShort.equals(obj : TObject) : boolean;
+function NPLShort.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -1015,7 +1029,7 @@ begin
   fValue.intValue := decode(s);
 end;
 
-function NPLInteger.equals(obj : TObject) : boolean;
+function NPLInteger.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -1362,27 +1376,28 @@ class function NPLInteger.rotateLeft(i, distance : int) : int;
 var
   shift : int;
 begin
-  shift := distance mod 32;
-  if distance>0 then
-     result := (i shl shift) or (i shr (32-shift))
-  else
-  if distance<0 then
-     result := (i shr shift) or (i shl (32-shift))
-  else result := i;
+  if distance>0 then begin
+    shift := distance mod 32;
+    result := (i shl shift) or (i shr (32-shift));
+  end else
+  if distance<0 then begin
+    shift := (-distance) mod 32;
+    result := (i shr shift) or (i shl (32-shift));
+  end else result := i;
 end;
-
 
 class function NPLInteger.rotateRight(i, distance : int) : int;
 var
   shift : int;
 begin
-  shift := distance mod 32;
-  if distance>0 then
-     result := (i shr shift) or (i shl (32-shift))
-  else
-  if distance<0 then
-     result := (i shl shift) or (i shr (32-shift))
-  else result := i;
+  if distance>0 then begin
+    shift := distance mod 32;
+    result := (i shr shift) or (i shl (32-shift));
+  end else
+  if distance<0 then begin
+    shift := (-distance) mod 32;  
+    result := (i shl shift) or (i shr (32-shift));
+  end else result := i;
 end;
 
 class function NPLInteger.reverse(i : int) : int;
@@ -1424,7 +1439,7 @@ begin
   fValue.longValue := decode(s);
 end;
 
-function NPLLong.equals(obj : TObject) : boolean;
+function NPLLong.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -1787,26 +1802,28 @@ class function NPLLong.rotateLeft(i : long; distance : int) : long;
 var
   shift : int;
 begin
-  shift := distance mod 64;
-  if distance>0 then
-     result := (i shl shift) or (i shr (64-shift))
-  else
-  if distance<0 then
-     result := (i shr shift) or (i shl (64-shift))
-  else result := i;
+  if distance>0 then begin
+    shift := distance mod 64;
+    result := (i shl shift) or (i shr (64-shift));
+  end else
+  if distance<0 then begin
+    shift := (-distance) mod 64;
+    result := (i shr shift) or (i shl (64-shift));
+  end else result := i;
 end;
 
 class function NPLLong.rotateRight(i : long; distance : int) : long;
 var
   shift : int;
 begin
-  shift := distance mod 64;
-  if distance>0 then
-     result := (i shr shift) or (i shl (64-shift))
-  else
-  if distance<0 then
-     result := (i shl shift) or (i shr (64-shift))
-  else result := i;
+  if distance>0 then begin
+    shift := distance mod 64;
+    result := (i shr shift) or (i shl (64-shift));
+  end else
+  if distance<0 then begin
+    shift := (-distance) mod 64;
+    result := (i shl shift) or (i shr (64-shift));
+  end else result := i;
 end;
 
 class function NPLLong.reverse(i : long) : long;
@@ -1840,7 +1857,7 @@ begin
   fValue.floatValue := aValue;
 end;
 
-function NPLFloat.equals(obj : TObject) : boolean;
+function NPLFloat.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -1945,7 +1962,7 @@ begin
   fValue.doubleValue := aValue;
 end;
 
-function NPLDouble.equals(obj : TObject) : boolean;
+function NPLDouble.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -2084,7 +2101,7 @@ begin
   else result := 1237;
 end;
 
-function NPLBoolean.equals(obj : TObject) : boolean;
+function NPLBoolean.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -2138,7 +2155,7 @@ begin
   result := int(fValue);
 end;
 
-function NPLANSICharacter.equals(obj : TObject) : boolean;
+function NPLANSICharacter.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
@@ -2376,7 +2393,7 @@ begin
   create(chararr(value), offset, count);
 end;
 
-function NPLANSIString.equals(obj : TObject) : boolean;
+function NPLANSIString.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
