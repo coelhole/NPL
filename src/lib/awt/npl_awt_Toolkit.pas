@@ -40,7 +40,7 @@ end;
 initialization
   Properties := TStringList.create;
   Properties.duplicates := dupIgnore;
-  Properties.loadFromFile('../resources/awt_pt_BR.properties');
+  Properties.loadFromFile('../../resources/awt_pt_BR.properties');
 finalization
   Properties.free;
 end.

@@ -76,9 +76,8 @@ data/
 output/
 teste/
 *.skincfg
-*.dpr
 *.lpi
-*.lpr
 *.lps
 *.ppu
 *.compiled
+*.dbg

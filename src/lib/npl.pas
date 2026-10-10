@@ -4,6 +4,9 @@ unit npl;
 // - FPC 2.6.0+ (plataformas: Windows/Unix 32/64-bits)
 // - Delphi 4-7 (plataformas: Windows 32-bits) [Interesse em versões modernas do Delphi? NENHUM!]
 {$I npl.inc}
+{$IFDEF DEBUG}
+  {$I debug.inc}
+{$ENDIF}
 
 interface
 
@@ -252,7 +255,7 @@ type
     class function NewInstance : TObject; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
-    function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce;{$ELSE}virtual;{$ENDIF}
+    function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
     function hashCode : int; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
   end;
@@ -720,9 +723,10 @@ procedure NPLObject.Free;
 //Que não se esqueçam do que estamos propondo com a NPL: NPLObject é a raiz da hierarquia de classes.
 //Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
 begin
-  InterlockedExchange(fRefCount,0);
-  if self <> nil then
+  if self <> nil then begin
+    InterlockedExchange(fRefCount,0);  
     destroy;
+  end;
 end;
 
 function NPLObject.QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint;{$ELSE}HResult;{$ENDIF}
@@ -2137,7 +2141,7 @@ end;
 
 class function NPLBoolean.toBoolean(const name : string) : boolean;
 begin
-  result := lowercase(trim(name)) = 'true';
+  result := lowercase(name) = 'true';
 end;
 
 class function NPLBoolean.toBoolean(name : NPLANSIString) : boolean;
