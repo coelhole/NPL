@@ -16,7 +16,6 @@ uses
   {$IFDEF WINDOWS}
   ,Windows
   {$ENDIF}
-  ,npl_io_Closeable
   ;
 
 //copiado da unit SynCommon.pas (projeto mORMot: https://github.com/synopse/mormot) 
@@ -240,19 +239,21 @@ type
       15: (wcharValue   : wchar);
   end;
 
+  NPLInterface = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
+
 {$M+}
-  NPLObject=class(TObject, {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF})
+  NPLObject=class(TObject, NPLInterface)
   //Eis aqui nossa raiz da hierarquia de classes!
   protected
-    fRefCount : {$IFDEF FPC}longint{$ELSE}Integer{$ENDIF};
-    function QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}HResult; virtual; stdcall;{$ENDIF}
-    function _AddRef : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
-    function _Release : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}Integer; virtual; stdcall;{$ENDIF}
+    fRefCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
+    function queryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out obj) : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}hresult; virtual; stdcall;{$ENDIF}
+    function _addRef : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}integer; virtual; stdcall;{$ENDIF}
+    function _release : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}integer; virtual; stdcall;{$ENDIF}
   public
-    procedure Free; reintroduce;
-    procedure AfterConstruction; override;
-    procedure BeforeDestruction; override;
-    class function NewInstance : TObject; override;
+    procedure free; reintroduce;
+    procedure afterConstruction; override;
+    procedure beforeDestruction; override;
+    class function newInstance : TObject; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
     function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
@@ -304,18 +305,19 @@ type
 
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
-  AutoCloseable = interface(Closeable)
+  AutoCloseable = interface(NPLInterface)
     ['{63DD1A1E-681B-4661-B163-29F81EB23C13}']
+    procedure close;
   end;
 
-  AutoDestroyable = interface
+  AutoDestroyable = interface(NPLInterface)
     //Interfaces servem primariamente para estabelecimento de contratos.
     //Object Pascal, por influência de COM, amarrou interfaces ao gerenciamento de ciclo de vida.
     //AutoDestroyable é nossa sugestão de desacoplar as coisas: (i) contrato é uma coisa; (ii) ciclo de vida é outra.
     ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
   end;
 
-  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface
+  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(NPLInterface)
     ['{6EBC1ADC-027E-4B7B-AA27-88D8F2D1CC17}']
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
@@ -721,7 +723,7 @@ begin
   result := qualifiedClassName + '@' + NPLInteger.toHexString(hashCode);
 end;
 
-procedure NPLObject.Free;
+procedure NPLObject.free;
 //Que não se esqueçam do que estamos propondo com a NPL: NPLObject é a raiz da hierarquia de classes.
 //Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
 begin
@@ -731,15 +733,15 @@ begin
   end;
 end;
 
-function NPLObject.QueryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out Obj) : {$IFDEF FPC}longint;{$ELSE}HResult;{$ENDIF}
+function NPLObject.queryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out obj) : {$IFDEF FPC}longint;{$ELSE}hresult;{$ENDIF}
 begin
-  if GetInterface(IID, Obj) then
+  if getInterface(IID, obj) then
     result := 0
   else
     result := E_NOINTERFACE;
 end;
 
-function NPLObject._AddRef : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
+function NPLObject._addRef : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
 begin
   result := InterlockedIncrement(fRefCount);
 end;
@@ -763,7 +765,7 @@ begin
     Close(AutoCloseableInstancePtr);
   end;
 end;
-function NPLObject._Release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
+function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}Integer;{$ENDIF}
 var
   isAutoDestroyable : boolean;
 begin
@@ -777,20 +779,20 @@ begin
   end;
 end;
 
-procedure NPLObject.AfterConstruction;
+procedure NPLObject.afterConstruction;
 begin
   InterlockedDecrement(fRefCount);
 end;
 
-procedure NPLObject.BeforeDestruction;
+procedure NPLObject.beforeDestruction;
 begin
   if fRefCount <> 0 then
     System.RunError(2);
 end;
 
-class function NPLObject.NewInstance : TObject;
+class function NPLObject.newInstance : TObject;
 begin
-  result := inherited NewInstance;
+  result := inherited newInstance;
   NPLObject(result).fRefCount := 1;
 end;
 
@@ -2245,7 +2247,7 @@ end;
 class function NPLANSICharacter.toChars(codePoint : int; dst : chararr; dstIndex : int) : int;
 begin
   result := 0;
-  if (codePoint<0) or (codePoint>255) then
+  if (codePoint<0) or (codePoint>255) or (dstIndex<0) then
     raise IllegalArgumentException.create;
   if dstIndex>=length(dst) then
     setLength(dst,dstIndex+1);

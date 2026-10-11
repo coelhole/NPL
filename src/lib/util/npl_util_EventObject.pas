@@ -1,7 +1,3 @@
-(*
-  https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/util/EventObject.java @html(<br>)
-  https://docs.oracle.com/javase/7/docs/api/java/util/EventObject.html
-*)
 unit npl_util_EventObject;
 
 interface

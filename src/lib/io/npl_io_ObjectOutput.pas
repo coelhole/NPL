@@ -9,8 +9,9 @@ uses
 
 type
   ObjectOutput = interface(DataOutput)
-    procedure writeObject(obj : NObject);
+    procedure writeObject(obj : NPLObject);
     procedure flush;
+    procedure close;
   end;
 
 implementation

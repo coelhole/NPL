@@ -16,7 +16,7 @@ type
 
   AWTImage = TBitmap;
 
-  AWTGraphics=interface
+  AWTGraphics=interface(NPLInterface)
   ['{D8237552-9268-40DE-BAA1-6A1A8861EE27}']
     function getBrushColor:AWTColor;
     function getBrushStyle:TBrushStyle;

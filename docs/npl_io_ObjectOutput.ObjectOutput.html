@@ -41,18 +41,22 @@
 <code>type ObjectOutput = interface(<a class="normal" href="npl_io_DataOutput.DataOutput.html">DataOutput</a>)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">IInterface</li>
+<ul class="hierarchy"><li class="ancestor"><a class="normal" href="npl.html#NPLInterface">NPLInterface</a></li>
 <li class="ancestor"><a class="normal" href="npl_io_DataOutput.DataOutput.html">DataOutput</a></li>
 <li class="thisitem">ObjectOutput</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_io_ObjectOutput.ObjectOutput.html#writeObject-NObject-">writeObject</a></strong>(obj : <a href="npl.html#NObject">NObject</a>);</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_ObjectOutput.ObjectOutput.html#writeObject-NPLObject-">writeObject</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>);</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>procedure <strong><a href="npl_io_ObjectOutput.ObjectOutput.html#flush">flush</a></strong>;</code></td>
+</tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_ObjectOutput.ObjectOutput.html#close">close</a></strong>;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -60,7 +64,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="writeObject-NObject-"></span><code>procedure <strong>writeObject</strong>(obj : <a href="npl.html#NObject">NObject</a>);</code></td>
+<td class="itemcode"><span id="writeObject-NPLObject-"></span><code>procedure <strong>writeObject</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>);</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -69,6 +73,14 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="flush"></span><code>procedure <strong>flush</strong>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="close"></span><code>procedure <strong>close</strong>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

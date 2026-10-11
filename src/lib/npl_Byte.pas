@@ -3,7 +3,8 @@ unit npl_Byte;
 interface
 
 uses
-  npl;
+  npl
+  ;
 
 const
   MIN_VALUE : sbyte = -128;

@@ -38,15 +38,10 @@
 <a href="npl_io_DataOutput.html">npl_io_DataOutput</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type DataOutput = interface(IInterface)</code></p>
+<code>type DataOutput = interface(<a class="normal" href="npl.html#NPLInterface">NPLInterface</a>)</code></p>
 <h2 class="description">Description</h2>
-<p class="nodescription">This item has no description.</p><h6 class="description_section">Attributes</h6>
-<dl class="attributes">
-  <dt>GUID['{B8B0FBAC-4D2B-4150-BF54-B6B0B6EC6219}']</dt>
-  <dd></dd>
-</dl>
-<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">IInterface</li>
+<p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor"><a class="normal" href="npl.html#NPLInterface">NPLInterface</a></li>
 <li class="thisitem">DataOutput</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
@@ -56,11 +51,11 @@
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#write-sbytearr-">write</a></strong>(b : <a href="npl.html#sbytearr">sbytearr</a>); overload;</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#write-sbytearr-">write</a></strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>); overload;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#write-sbytearr-int-int-">write</a></strong>(b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>); overload;</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#write-sbytearr-int-int-">write</a></strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>); overload;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -96,15 +91,15 @@
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#writeBytes-string-">writeBytes</a></strong>(s : string);</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#writeBytes-string-">writeBytes</a></strong>(var s : string);</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#writeChars-string-">writeChars</a></strong>(s : string);</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#writeChars-string-">writeChars</a></strong>(var s : string);</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#writeUTF-string-">writeUTF</a></strong>(s : string);</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_DataOutput.DataOutput.html#writeUTF-string-">writeUTF</a></strong>(var s : string);</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -115,12 +110,17 @@
 <td class="itemcode"><span id="write-int-"></span><code>procedure <strong>write</strong>(b : <a href="npl.html#int">int</a>); overload;</code></td>
 </tr>
 <tr><td colspan="2">
-<p class="nodescription">This item has no description.</p></td></tr>
+<p class="nodescription">This item has no description.</p><h6 class="description_section">Attributes</h6>
+<dl class="attributes">
+  <dt>GUID['{B8B0FBAC-4D2B-4150-BF54-B6B0B6EC6219}']</dt>
+  <dd></dd>
+</dl>
+</td></tr>
 </table>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="write-sbytearr-"></span><code>procedure <strong>write</strong>(b : <a href="npl.html#sbytearr">sbytearr</a>); overload;</code></td>
+<td class="itemcode"><span id="write-sbytearr-"></span><code>procedure <strong>write</strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>); overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -128,7 +128,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="write-sbytearr-int-int-"></span><code>procedure <strong>write</strong>(b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>); overload;</code></td>
+<td class="itemcode"><span id="write-sbytearr-int-int-"></span><code>procedure <strong>write</strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>); overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -200,7 +200,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="writeBytes-string-"></span><code>procedure <strong>writeBytes</strong>(s : string);</code></td>
+<td class="itemcode"><span id="writeBytes-string-"></span><code>procedure <strong>writeBytes</strong>(var s : string);</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -208,7 +208,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="writeChars-string-"></span><code>procedure <strong>writeChars</strong>(s : string);</code></td>
+<td class="itemcode"><span id="writeChars-string-"></span><code>procedure <strong>writeChars</strong>(var s : string);</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -216,7 +216,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="writeUTF-string-"></span><code>procedure <strong>writeUTF</strong>(s : string);</code></td>
+<td class="itemcode"><span id="writeUTF-string-"></span><code>procedure <strong>writeUTF</strong>(var s : string);</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>

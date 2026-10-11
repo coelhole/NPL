@@ -41,14 +41,14 @@
 <code>type ObjectInput = interface(<a class="normal" href="npl_io_DataInput.DataInput.html">DataInput</a>)</code></p>
 <h2 class="description">Description</h2>
 <p class="nodescription">This item has no description.</p><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">IInterface</li>
+<ul class="hierarchy"><li class="ancestor"><a class="normal" href="npl.html#NPLInterface">NPLInterface</a></li>
 <li class="ancestor"><a class="normal" href="npl_io_DataInput.DataInput.html">DataInput</a></li>
 <li class="thisitem">ObjectInput</li></ul><h2 class="overview">Overview</h2>
 <span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#readObject">readObject</a></strong>: <a href="npl.html#NObject">NObject</a>;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#readObject">readObject</a></strong>: <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -56,11 +56,11 @@
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#read-sbytearr-">read</a></strong>(b : <a href="npl.html#sbytearr">sbytearr</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#read-sbytearr-">read</a></strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr class="list2 visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#read-sbytearr-int-int-">read</a></strong>(b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#read-sbytearr-int-int-">read</a></strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
@@ -70,13 +70,17 @@
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><code>function <strong><a href="npl_io_ObjectInput.ObjectInput.html#available">available</a></strong>: <a href="npl.html#int">int</a>;</code></td>
 </tr>
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_io_ObjectInput.ObjectInput.html#close">close</a></strong>;</code></td>
+</tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Methods</h3>
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="readObject"></span><code>function <strong>readObject</strong>: <a href="npl.html#NObject">NObject</a>;</code></td>
+<td class="itemcode"><span id="readObject"></span><code>function <strong>readObject</strong>: <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p><h6 class="description_section">Attributes</h6>
@@ -97,7 +101,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="read-sbytearr-"></span><code>function <strong>read</strong>(b : <a href="npl.html#sbytearr">sbytearr</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
+<td class="itemcode"><span id="read-sbytearr-"></span><code>function <strong>read</strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -105,7 +109,7 @@
 <table class="detail visibility-public wide_list">
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
-<td class="itemcode"><span id="read-sbytearr-int-int-"></span><code>function <strong>read</strong>(b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
+<td class="itemcode"><span id="read-sbytearr-int-int-"></span><code>function <strong>read</strong>(var b : <a href="npl.html#sbytearr">sbytearr</a>; off, len : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
@@ -122,6 +126,14 @@
 <tr class="list visibility-public">
 <td class="visibility"><span class="badge vis-public">Public</span></td>
 <td class="itemcode"><span id="available"></span><code>function <strong>available</strong>: <a href="npl.html#int">int</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p class="nodescription">This item has no description.</p></td></tr>
+</table>
+<table class="detail visibility-public wide_list">
+<tr class="list visibility-public">
+<td class="visibility"><span class="badge vis-public">Public</span></td>
+<td class="itemcode"><span id="close"></span><code>procedure <strong>close</strong>;</code></td>
 </tr>
 <tr><td colspan="2">
 <p class="nodescription">This item has no description.</p></td></tr>
