@@ -18,8 +18,7 @@ uses
   {$ENDIF}
   ;
 
-//copiado da unit SynCommon.pas (projeto mORMot: https://github.com/synopse/mormot) 
-{$ifdef DELPHI5OROLDER}
+{$ifdef DELPHI5OROLDER}//copiado da unit SynCommon.pas (projeto mORMot: https://github.com/synopse/mormot)
   // Delphi 5 doesn't have those basic types defined :(
 const
   varShortInt = $0010;
@@ -146,13 +145,13 @@ type
   LowerASCIILetter          = 'a' ..  'z';
   UpperASCIILetterCodePoint = 65  ..  90;
   UpperASCIILetter          = 'A' ..  'Z';
-  ASCIIDigitCodePoint       = 48  ..  57;
-  ASCIIDigit                = '0' ..  '9';
+  ANSIDigitCodePoint        = 48  ..  57;
+  ANSIDigit                 = '0' ..  '9';
   ASCIICodePoints           = set of  ASCIICodePoint;
-  ANSICharCodePoint         = 0   ..  255;
-  ANSICharCodePoints        = set of  ANSICharCodePoint;
+  ANSICodePoint             = 0   ..  255;
+  ANSICodePoints            = set of  ANSICodePoint;
 
-  //array types
+  //
   chararr     = array of char;
   wchararr    = array of wchar;
   sstringarr  = array of shortstring;
@@ -194,7 +193,7 @@ type
   nintarr     = array of nint;
   nuintarr    = array of nuint;
 
-  //NPL char & string types
+  //
   uchar       = widechar;
   ustring     = widestring;
   nchar       = type word;
@@ -239,10 +238,18 @@ type
       15: (wcharValue   : wchar);
   end;
 
-  NPLInterface = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
+  NPLObject     = class;
+  NPLInterface  = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
+  IObject       = interface(NPLInterface)
+    ['{8EE56B97-D3E1-4ED3-98F1-5B6B199CC17F}']
+    function equals(obj : NPLObject) : boolean;
+    function hashCode : int;
+    function toString : string;
+    function this : NPLObject;
+  end;
 
 {$M+}
-  NPLObject=class(TObject, NPLInterface)
+  NPLObject=class(TObject, IObject)
   //Eis aqui nossa raiz da hierarquia de classes!
   protected
     fRefCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
@@ -259,6 +266,7 @@ type
     function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
     function hashCode : int; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
+    function this : NPLObject;
   end;
 {$M-}
 
@@ -317,7 +325,7 @@ type
     ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
   end;
 
-  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(NPLInterface)
+  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(IObject)
     ['{6EBC1ADC-027E-4B7B-AA27-88D8F2D1CC17}']
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
@@ -483,7 +491,7 @@ type
   public
     constructor create(aValue : double);
     function equals(obj : NPLObject) : boolean; override;
-    function compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;    
+    function compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;
     function isNaN : boolean; overload;
     function isInfinite : boolean; overload;
     function hashCode : int; override;
@@ -528,6 +536,10 @@ type
     class function charCount(codePoint : int) : int;
     class function toChars(codePoint : int; dst : chararr; dstIndex : int) : int; overload;
     class function toChars(codePoint : int) : chararr; overload;
+    class function isASCII(codePoint : int) : boolean; overload;
+    class function isASCII(ch : char) : boolean; overload;
+    class function isExtendedASCII(codePoint : int) : boolean; overload;
+    class function isExtendedASCII(ch : char) : boolean; overload;                
     class function isLowerCase(codePoint : int) : boolean; overload;
     class function isLowerCase(ch : char) : boolean; overload;
     class function isUpperCase(codePoint : int) : boolean; overload;
@@ -556,6 +568,8 @@ type
     function equals(obj : NPLObject) : boolean; override;
     function toString : string; overload; override;
     function compareTo(c : {$IFDEF GENERICS}NPLANSICharacter{$ELSE}NPLObject{$ENDIF}) : int;
+    function isASCII : boolean; overload;
+    function isExtendedASCII : boolean; overload;
     function isDigit : boolean; overload;
     function isASCIILetter : boolean; overload;
     function isASCIILetterOrDigit : boolean; overload;
@@ -663,20 +677,22 @@ begin
 end;
 
 var
-  UpperANSILetterCodePoints : ANSICharCodePoints =
+  UpperANSILetterCodePoints : ANSICodePoints =
     [Low(UpperASCIILetterCodePoint)..High(UpperASCIILetterCodePoint)] +
     [138,140,142,159,192..214,216..222]  //extended ASCII
   ;
-  LowerANSILetterCodePoints : ANSICharCodePoints =
+  LowerANSILetterCodePoints : ANSICodePoints =
     [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
     [131,154,156,158,170,181,186,223..246,248..255]  //extended ASCII
   ;
-  ANSILetterCodePoints : ANSICharCodePoints =
+  ANSILetterCodePoints : ANSICodePoints =
     [Low(UpperASCIILetterCodePoint)..High(UpperASCIILetterCodePoint)] +
     [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
     [131,138,140,142,154,156,158,159,170,181,186,192..214,216..246,248..255]  //extended ASCII
   ;
-  ANSIDigitCodePoints : ANSICharCodePoints = [Low(ASCIIDigitCodePoint)..High(ASCIIDigitCodePoint)];
+  ANSIDigitCodePoints : ANSICodePoints = [Low(ANSIDigitCodePoint)..High(ANSIDigitCodePoint)];
+  ANSIDigits          : set of char = [Low(ANSIDigit)..High(ANSIDigit)];
+  ASCIILetters        : set of char = [Low(UpperASCIILetter)..High(UpperASCIILetter)] + [Low(LowerASCIILetter)..High(LowerASCIILetter)];
 
 class function NPLObject.unitName : ansistring;
 var
@@ -721,6 +737,11 @@ end;
 function NPLObject.toString : string;
 begin
   result := qualifiedClassName + '@' + NPLInteger.toHexString(hashCode);
+end;
+
+function NPLObject.this : NPLObject;
+begin
+  result := self;
 end;
 
 procedure NPLObject.free;
@@ -2191,19 +2212,29 @@ begin
   result := NPLANSICharacter.compare(self.fValue, NPLANSICharacter(c).fValue);
 end;
 
+function NPLANSICharacter.isASCII : boolean;
+begin
+  result := (fValue>=#0) and (fValue<=#127);
+end;
+
+function NPLANSICharacter.isExtendedASCII : boolean;
+begin
+  result := (fValue>=#128) and (fValue<=#255);
+end;
+
 function NPLANSICharacter.isDigit : boolean;
 begin
-  result := isDigit(fValue);
+  result := fValue in ANSIDigits;
 end;
 
 function NPLANSICharacter.isASCIILetter : boolean;
 begin
-  result := isASCIILetter(fValue);
+  result := fValue in ASCIILetters;
 end;
 
 function NPLANSICharacter.isASCIILetterOrDigit : boolean;
 begin
-  result := isASCIILetterOrDigit(fValue);
+  result := (fValue in ANSIDigits) or (fValue in ASCIILetters);
 end;
 
 class function NPLANSICharacter.isLetter(codePoint : int) : boolean;
@@ -2265,6 +2296,26 @@ begin
   result[0] := char(codePoint);
 end;
 
+class function NPLANSICharacter.isASCII(codePoint : int) : boolean;
+begin
+  result := (codePoint>=0) and (codePoint<=127);
+end;
+
+class function NPLANSICharacter.isASCII(ch : char) : boolean;
+begin
+  result := (ch>=#0) and (ch<=#127);
+end;
+
+class function NPLANSICharacter.isExtendedASCII(codePoint : int) : boolean;
+begin
+  result := (codePoint>=128) and (codePoint<=255);
+end;
+
+class function NPLANSICharacter.isExtendedASCII(ch : char) : boolean;
+begin
+  result := (ch>=#128) and (ch<=#255);
+end;
+
 class function NPLANSICharacter.isLowerCase(codePoint : int) : boolean;
 begin
   result := codePoint in LowerANSILetterCodePoints; 
@@ -2296,11 +2347,8 @@ begin
 end;
 
 class function NPLANSICharacter.isDigit(ch : char) : boolean;
-var
-  codePoint : int;
 begin
-  codePoint := int(ch);
-  result := ((codePoint > 47) and (codePoint < 58));
+  result := ch in ANSIDigits;
 end;
 
 class function NPLANSICharacter.isASCIILetter(codePoint : int) : boolean;
@@ -2309,11 +2357,8 @@ begin
 end;
 
 class function NPLANSICharacter.isASCIILetter(ch : char) : boolean;
-var
-  codePoint : int;
 begin
-  codePoint := int(ch);
-  result := ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123));
+  result := ch in ASCIILetters;
 end;
 
 class function NPLANSICharacter.isASCIILetterOrDigit(codePoint : int) : boolean;
@@ -2322,11 +2367,8 @@ begin
 end;
 
 class function NPLANSICharacter.isASCIILetterOrDigit(ch : char) : boolean;
-var
-  codePoint : int;
 begin
-  codePoint := int(ch);
-  result := ((codePoint > 47) and (codePoint < 58)) or ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123));
+  result := (ch in ANSIDigits) or (ch in ASCIILetters);
 end;
 
 class function NPLANSICharacter.digit(codePoint : int; radix : int) : int;

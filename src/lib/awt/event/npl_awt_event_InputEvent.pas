@@ -1,7 +1,3 @@
-(*
-  https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/awt/event/InputEvent.java @html(<br>)
-  https://docs.oracle.com/javase/7/docs/api/java/awt/event/InputEvent.html
-*)
 unit npl_awt_event_InputEvent;
 
 interface

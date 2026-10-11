@@ -1,13 +1,10 @@
-(*
-  https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/awt/Event.java @html(<br>)
-  https://docs.oracle.com/javase/7/docs/api/java/awt/Event.html
-*)
 unit npl_awt_Event;
 
 interface
 
 uses
-  npl;
+  npl
+  ;
 
 const
   SHIFT_MASK          = 1 shl 0;

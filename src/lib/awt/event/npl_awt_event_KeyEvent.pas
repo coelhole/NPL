@@ -1,7 +1,3 @@
-(*
-  https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/awt/event/KeyEvent.java @html(<br>)
-  https://docs.oracle.com/javase/7/docs/api/java/awt/event/KeyEvent.html
-*)
 unit npl_awt_event_KeyEvent;
 
 interface

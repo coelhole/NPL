@@ -27,7 +27,7 @@ Sorting_7=0
 Sorting_8=0
 Sorting_9=0
 CssFileName=
-Bootstrap=1
+Bootstrap=0
 IntroductionFileName=
 ConclusionFileName=
 HtmlHead=
@@ -40,7 +40,7 @@ AutoLink=0
 HandleMacros=1
 UseTipueSearch=1
 Markdown=1
-AutoBackComments=0
+AutoBackComments=1
 OpenHTML=1
 LineBreakQuality=0
 SpecialMarkerTreatment=1
@@ -49,6 +49,10 @@ VizGraphClasses=0
 VizGraphUses=0
 CheckSpelling=0
 LatexGraphicsPackage=0
+
+[IgnoreMarkers]
+Count=1
+Item_0=~~
 
 [Defines]
 Count=3

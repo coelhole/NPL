@@ -7,7 +7,7 @@ uses
   ;
 
 type
-  ObjectInputValidation = interface(NPLInterface)
+  ObjectInputValidation = interface(IObject)
     ['{3F53D4EC-CDD0-49EB-8DC2-061C06EEDEA4}']
     procedure validateObject;
   end;

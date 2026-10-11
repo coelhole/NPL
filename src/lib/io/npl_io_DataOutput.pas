@@ -7,7 +7,7 @@ uses
   ;
 
 type
-  DataOutput = interface(NPLInterface)
+  DataOutput = interface(IObject)
     ['{B8B0FBAC-4D2B-4150-BF54-B6B0B6EC6219}']
       procedure write(b : int); overload;
       procedure write(var b : sbytearr); overload;

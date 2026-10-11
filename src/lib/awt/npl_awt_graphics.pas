@@ -16,7 +16,7 @@ type
 
   AWTImage = TBitmap;
 
-  AWTGraphics=interface(NPLInterface)
+  AWTGraphics=interface(IObject)
   ['{D8237552-9268-40DE-BAA1-6A1A8861EE27}']
     function getBrushColor:AWTColor;
     function getBrushStyle:TBrushStyle;
@@ -67,10 +67,10 @@ type
     fOldBrush : HBRUSH;
     fBrush : TBrush;
     fOldTextColor,fOldBgTextColor : COLORREF;
-    constructor New;
+    constructor new;
   public
-    constructor Create;
-    destructor Destroy; override;
+    constructor create;
+    destructor destroy; override;
     function getBrushColor:AWTColor;
     function getBrushStyle:TBrushStyle;
     function getPenColor:AWTColor;
@@ -111,9 +111,9 @@ type
 
 implementation
 
-constructor GraphicContext.New;
+constructor GraphicContext.new;
 begin
-  inherited Create;
+  inherited create;
   fDC := 0;
   fOldPen := 0;
   fPen := TPen.Create;
@@ -127,29 +127,29 @@ begin
   fHWnd := 0;
 end;
 
-constructor GraphicContext.Create;
+constructor GraphicContext.create;
 begin
-  raise UnsupportedOperationException.Create(Format('um objeto %s não pode ser instanciado senão por um procedimento de pintura',[self.ClassName]));
+  raise UnsupportedOperationException.create(format('um objeto %s não pode ser instanciado senão por um procedimento de pintura',[self.ClassName]));
 end;
 
-destructor GraphicContext.Destroy;
+destructor GraphicContext.destroy;
 begin
-  SelectObject(fDC,fOldPen);
+  selectObject(fDC,fOldPen);
   fPen.Free;
-  SelectObject(fDC,fOldBrush);
+  selectObject(fDC,fOldBrush);
   fBrush.Free;
-  Windows.SetTextColor(fDC,fOldTextColor);
-  Windows.SetBkColor(fDC,fOldBgTextColor);
-  SelectObject(fDC,fOldFont);
-  fFont.Free;
+  Windows.setTextColor(fDC,fOldTextColor);
+  Windows.setBkColor(fDC,fOldBgTextColor);
+  selectObject(fDC,fOldFont);
+  fFont.free;
   if fHWnd<>0 then
-    ReleaseDC(fHwnd,fDC);
+    releaseDC(fHwnd,fDC);
   fDC := 0;
   fOldPen := 0;
   fOldBrush := 0;
   fOldFont := 0;
   fHWnd := 0;
-  inherited Destroy;
+  inherited destroy;
 end;
 
 function GraphicContext.getBrushColor:TColor;

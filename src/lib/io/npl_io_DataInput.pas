@@ -7,7 +7,7 @@ uses
   ;
 
 type
-  DataInput = interface(NPLInterface)
+  DataInput = interface(IObject)
     ['{319C76F7-F31C-4AB6-B6E0-06CBAFBDE107}']
     procedure readFully(var b : sbytearr); overload;
     procedure readFully(var b : sbytearr; off, len : int); overload;
@@ -22,8 +22,8 @@ type
     function readLong : long;
     function readFloat : float;
     function readDouble : double;
-    procedure readLine : string;
-    procedure readUTF : string;
+    function readLine : string;
+    function readUTF : string;
   end;
 
 implementation

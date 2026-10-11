@@ -1,7 +1,3 @@
-(*
-  https://raw.githubusercontent.com/openjdk-mirror/jdk7u-jdk/refs/heads/master/src/share/classes/java/awt/AWTEvent.java @html(<br>)
-  https://docs.oracle.com/javase/7/docs/api/java/awt/AWTEvent.html
-*)
 unit npl_awt_AWTEvent;
 
 interface
