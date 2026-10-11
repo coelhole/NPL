@@ -211,14 +211,14 @@ end;
 procedure PropertyChangeSupport.firePropertyChange(const propertyName : string; oldValue, newValue : sbyte);
 var
   evt : PropertyChangeEvent;
-  oldSByte, newSByte : NPLSByte;
+  oldSByte, newSByte : NPLByte;
 begin
   if oldValue = newValue then
     exit;
 
-  oldSByte := NPLSByte.create(oldValue);
+  oldSByte := NPLByte.create(oldValue);
   try
-    newSByte := NPLSByte.create(newValue);
+    newSByte := NPLByte.create(newValue);
     try
       evt := PropertyChangeEvent.create(fSource, propertyName, oldSByte, newSByte);
       try

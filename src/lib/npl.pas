@@ -321,7 +321,7 @@ type
   end;
 
   NPLNumber         = class;
-  NPLSByte          = class;
+  NPLByte           = class;
   NPLShort          = class;
   NPLInteger        = class;
   NPLLong           = class;
@@ -345,13 +345,13 @@ type
 
   NPLNumberClass = class of NPLNumber;
 
-  NPLSByte = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLSByte>{$ELSE}Comparable{$ENDIF})
+  NPLByte = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLByte>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : sbyte); overload;
     constructor create(const s : string); overload;
     constructor create(s : NPLANSIString); overload;
     function equals(obj : NPLObject) : boolean; override;
-    function compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
+    function compareTo(anotherByte : {$IFDEF GENERICS}NPLByte{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
     class function toString(b : sbyte) : string; overload;
@@ -363,7 +363,7 @@ type
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
   end;
 
-  NPLSByteClass = class of NPLSByte;
+  NPLByteClass = class of NPLByte;
 
   NPLShort = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLShort>{$ELSE}Comparable{$ENDIF})
   public
@@ -524,6 +524,8 @@ type
     class function toString(c : char) : string; overload;
     class function isValidCodePoint(codePoint : int) : boolean;
     class function charCount(codePoint : int) : int;
+    class function toChars(codePoint : int; dst : chararr; dstIndex : int) : int; overload;
+    class function toChars(codePoint : int) : chararr; overload;
     class function isLowerCase(codePoint : int) : boolean; overload;
     class function isLowerCase(ch : char) : boolean; overload;
     class function isUpperCase(codePoint : int) : boolean; overload;
@@ -591,7 +593,7 @@ type
 
   NObject         = NPLObject;        NClass              = NPLClass;
   NNumber         = NPLNumber;        NNumberClass        = NPLNumberClass;
-  NByte           = NPLSByte;         NByteClass          = NPLSByteClass;
+  NByte           = NPLByte;          NByteClass          = NPLByteClass;
   NShort          = NPLShort;         NShortClass         = NPLShortClass;
   NInteger        = NPLInteger;       NIntegerClass       = NPLIntegerClass;
   NLong           = NPLLong;          NLongClass          = NPLLongClass;
@@ -607,14 +609,14 @@ function signedRightShift(value : long; bits : int): long; overload;
 implementation
 
 uses
-  npl_Character
+  npl_Byte
+  ,npl_Character
   ,npl_Double
   ,npl_Float
   ,npl_Integer
   ,npl_Long
   ,npl_misc_DoubleConsts
   ,npl_misc_FloatConsts
-  ,npl_SByte
   ,npl_Short
   ,typInfo
   ;
@@ -837,90 +839,90 @@ begin
   result := fValue.doubleValue;
 end;
 
-constructor NPLSByte.create(aValue : sbyte);
+constructor NPLByte.create(aValue : sbyte);
 begin
   fValue.sbyteValue := aValue;
 end;
 
-constructor NPLSByte.create(const s : string);
+constructor NPLByte.create(const s : string);
 begin
   fValue.sbyteValue := decode(s);
 end;
 
-constructor NPLSByte.create(s : NPLANSIString);
+constructor NPLByte.create(s : NPLANSIString);
 begin
   fValue.sbyteValue := decode(s);
 end;
 
-function NPLSByte.equals(obj : NPLObject) : boolean;
+function NPLByte.equals(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=NIL then
     exit;
-  if not (obj is NPLSByte) then
+  if not (obj is NPLByte) then
     exit;
-  result := fValue.sbyteValue=NPLSByte(obj).fValue.sbyteValue;
+  result := fValue.sbyteValue=NPLByte(obj).fValue.sbyteValue;
 end;
 
-function NPLSByte.compareTo(anotherByte : {$IFDEF GENERICS}NPLSByte{$ELSE}NPLObject{$ENDIF}) : int;
+function NPLByte.compareTo(anotherByte : {$IFDEF GENERICS}NPLByte{$ELSE}NPLObject{$ENDIF}) : int;
 begin
   if anotherByte=NIL then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
-  if not (anotherByte is NPLSByte) then
+  if not (anotherByte is NPLByte) then
     raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
   {$ENDIF}
 
-  result := NPLSByte.compare(self.fValue.sbyteValue, NPLSByte(anotherByte).fValue.sbyteValue);
+  result := NPLByte.compare(self.fValue.sbyteValue, NPLByte(anotherByte).fValue.sbyteValue);
 end;
 
-function NPLSByte.toString : string;
+function NPLByte.toString : string;
 begin
   result := NPLInteger.toString(int(fValue.sbyteValue));
 end;
 
-function NPLSByte.hashCode : int;
+function NPLByte.hashCode : int;
 begin
   result := int(fValue.sbyteValue);
 end;
 
-class function NPLSByte.toString(b : sbyte) : string;
+class function NPLByte.toString(b : sbyte) : string;
 begin
   result := NPLInteger.toString(int(b), 10);
 end;
 
-class function NPLSByte.parseByte(const s : string; radix : int) : sbyte;
+class function NPLByte.parseByte(const s : string; radix : int) : sbyte;
 var
   i : int;
 begin
   i := NPLInteger.parseInt(s, radix);
-  if (i < npl_SByte.MIN_VALUE) or (i > npl_SByte.MAX_VALUE) then
+  if (i < npl_Byte.MIN_VALUE) or (i > npl_Byte.MAX_VALUE) then
     raise NumberFormatException.createFmt('Value out of range. Value:''%s'' Radix:%d',[s,radix]);
   result := sbyte(i);
 end;
 
-class function NPLSByte.parseByte(const s : string) : sbyte;
+class function NPLByte.parseByte(const s : string) : sbyte;
 begin
   result := parseByte(s, 10);
 end;
 
-class function NPLSByte.decode(nm : NPLANSIString) : sbyte;
+class function NPLByte.decode(nm : NPLANSIString) : sbyte;
 begin
   result := decode(nm.toString);
 end;
 
-class function NPLSByte.decode(const nm : string) : sbyte;
+class function NPLByte.decode(const nm : string) : sbyte;
 var
   i : int;
 begin
   i := NPLInteger.decode(nm);
-  if (i < npl_SByte.MIN_VALUE) or (i > npl_SByte.MAX_VALUE) then
+  if (i < npl_Byte.MIN_VALUE) or (i > npl_Byte.MAX_VALUE) then
     raise NumberFormatException.createFmt('Value %d out of range from input ''%s''',[i,nm]);
   result := sbyte(i);
 end;
 
-class function NPLSByte.compare(x, y : sbyte) : int;
+class function NPLByte.compare(x, y : sbyte) : int;
 begin
   result := x-y;
 end;
@@ -2209,7 +2211,7 @@ end;
 
 class function NPLANSICharacter.isLetter(ch : char) : boolean;
 begin
-  result := isLetter(int(ch));
+  result := int(ch) in ANSILetterCodePoints;
 end;
 
 class function NPLANSICharacter.isLetterOrDigit(codePoint : int) : boolean;
@@ -2218,8 +2220,11 @@ begin
 end;
 
 class function NPLANSICharacter.isLetterOrDigit(ch : char) : boolean;
+var
+  codePoint : int;
 begin
-  result := isLetterOrDigit(int(ch));
+  codePoint := int(ch);
+  result := (codePoint in ANSILetterCodePoints) or (codePoint in ANSIDigitCodePoints);
 end;
 
 class function NPLANSICharacter.toString(c : char) : string;
@@ -2237,6 +2242,27 @@ begin
   result := 1;
 end;
 
+class function NPLANSICharacter.toChars(codePoint : int; dst : chararr; dstIndex : int) : int;
+begin
+  result := 0;
+  if (codePoint<0) or (codePoint>255) then
+    raise IllegalArgumentException.create;
+  if dstIndex>=length(dst) then
+    setLength(dst,dstIndex+1);
+  dst[dstIndex] := char(codePoint);
+  result := 1;
+end;
+
+class function NPLANSICharacter.toChars(codePoint : int) : chararr;
+begin
+  if (codePoint<0) or (codePoint>255) then begin
+    result := NIL;
+    raise IllegalArgumentException.create;
+  end;
+  setLength(result,1);
+  result[0] := char(codePoint);
+end;
+
 class function NPLANSICharacter.isLowerCase(codePoint : int) : boolean;
 begin
   result := codePoint in LowerANSILetterCodePoints; 
@@ -2244,7 +2270,7 @@ end;
 
 class function NPLANSICharacter.isLowerCase(ch : char) : boolean;
 begin
-  result := isLowerCase(int(ch));
+  result := int(ch) in LowerANSILetterCodePoints;
 end;
 
 class function NPLANSICharacter.isUpperCase(codePoint : int) : boolean;
@@ -2254,7 +2280,7 @@ end;
 
 class function NPLANSICharacter.isUpperCase(ch : char) : boolean;
 begin
-  result := isUpperCase(int(ch));
+  result := int(ch) in UpperANSILetterCodePoints;
 end;
 
 class function NPLANSICharacter.compare(x, y : char) : int;
@@ -2264,12 +2290,15 @@ end;
 
 class function NPLANSICharacter.isDigit(codePoint : int) : boolean;
 begin
-    result := ((codePoint > 47) and (codePoint < 58));
+  result := ((codePoint > 47) and (codePoint < 58));
 end;
 
 class function NPLANSICharacter.isDigit(ch : char) : boolean;
+var
+  codePoint : int;
 begin
-  result := isDigit(int(ch));
+  codePoint := int(ch);
+  result := ((codePoint > 47) and (codePoint < 58));
 end;
 
 class function NPLANSICharacter.isASCIILetter(codePoint : int) : boolean;
@@ -2278,8 +2307,11 @@ begin
 end;
 
 class function NPLANSICharacter.isASCIILetter(ch : char) : boolean;
+var
+  codePoint : int;
 begin
-  result := isASCIILetter(int(ch));
+  codePoint := int(ch);
+  result := ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123));
 end;
 
 class function NPLANSICharacter.isASCIILetterOrDigit(codePoint : int) : boolean;
@@ -2288,8 +2320,11 @@ begin
 end;
 
 class function NPLANSICharacter.isASCIILetterOrDigit(ch : char) : boolean;
+var
+  codePoint : int;
 begin
-  result := isASCIILetterOrDigit(int(ch));
+  codePoint := int(ch);
+  result := ((codePoint > 47) and (codePoint < 58)) or ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123));
 end;
 
 class function NPLANSICharacter.digit(codePoint : int; radix : int) : int;
@@ -2348,8 +2383,11 @@ begin
 end;
 
 class function NPLANSICharacter.isWhitespace(ch : char) : boolean;
+var
+  codePoint : int;
 begin
-  result := isWhitespace(int(ch));
+  codePoint := int(ch);
+  result := ((codePoint>8) and (codePoint<14)) or ((codePoint>27) and (codePoint<33));
 end;
 
 class function NPLANSICharacter.isISOControl(codePoint : int) : boolean;
@@ -2358,8 +2396,11 @@ begin
 end;
 
 class function NPLANSICharacter.isISOControl(ch : char) : boolean;
+var
+  codePoint : int;
 begin
-  result := isISOControl(int(ch));
+  codePoint := int(ch);
+  result := ((codePoint>=0) and (codePoint<32)) or (codePoint=127);
 end;
 
 constructor NPLANSIString.create(const original : ansistring);

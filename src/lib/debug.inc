@@ -7,7 +7,7 @@
 {$ENDIF}
 
 {$IFDEF FPC}	{ Free Pascal Compiler }
-  {$Message WARN 'Compilador = FPC'}
+  {$Message WARN 'Compilador FPC'}
   {$IFDEF CPU64}
     {$IFDEF WINDOWS}
       {$Message WARN 'Plataforma-alvo = WIN64'}
