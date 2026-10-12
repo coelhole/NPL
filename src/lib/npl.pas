@@ -79,13 +79,13 @@ type
 {$endif DELPHI5OROLDER}
 
 const
-{$ifdef DELPHI5OROLDER}
+{$IFDEF DELPHI5OROLDER}
   S_OK = 0;
   S_FALSE = $00000001;
   E_NOINTERFACE = HRESULT($80004002);
   E_UNEXPECTED = HRESULT($8000FFFF);
   E_NOTIMPL = HRESULT($80004001);
-{$endif DELPHI5OROLDER}
+{$ENDIF DELPHI5OROLDER}
   NUL = #0;
   BEL = #7;
   BS  = #8;
@@ -96,6 +96,21 @@ const
   CR  = #13;
   CRLF = CR+LF;
   EOL = {$IFDEF WINDOWS}CRLF{$ELSE}LF{$ENDIF};
+
+  IOBJECT_GUIDSTRING          = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
+  AUTOCLOSEABLE_GUIDSTRING    = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';
+  AUTODESTROYABLE_GUIDSTRING  = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';
+  COMPARABLE_GUIDSTRING       = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';
+
+resourcestring
+{$IFDEF DELPHI5OROLDER}
+  SInvalidGUID = '''%s'' is not a valid GUID value';
+{$ENDIF}
+  SStringIndexOutOfRange = 'String index out of range: %d';
+  SForInputString = 'For input string: ''%s''';
+  SValueOutOfRangeValueRadix = 'Value out of range. Value:''%s'' Radix:%d';
+  SValueOutOfRangeFromInput = 'Value %d out of range from input ''%s''';
+  SObjectWrongType = 'Object must be of type %s';
 
 type
   bool    = boolean;
@@ -245,7 +260,7 @@ type
   NPLObject     = class;
   NPLInterface  = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
   IObject       = interface(NPLInterface)
-    ['{8EE56B97-D3E1-4ED3-98F1-5B6B199CC17F}']
+    [IOBJECT_GUIDSTRING]
     function equals(obj : NPLObject) : boolean;
     function hashCode : int;
     function toString : string;
@@ -267,6 +282,7 @@ type
     class function newInstance : TObject; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
+    class function implementsInterface(const IID: TGUID) : boolean;
     function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
     function hashCode : int; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
@@ -318,7 +334,7 @@ type
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
   AutoCloseable = interface(NPLInterface)
-    ['{63DD1A1E-681B-4661-B163-29F81EB23C13}']
+    [AUTOCLOSEABLE_GUIDSTRING]
     procedure close;
   end;
 
@@ -326,11 +342,11 @@ type
     //Interfaces servem primariamente para estabelecimento de contratos.
     //Object Pascal, por influência de COM, amarrou interfaces ao gerenciamento de ciclo de vida.
     //AutoDestroyable é nossa sugestão de desacoplar as coisas: (i) contrato é uma coisa; (ii) ciclo de vida é outra.
-    ['{785BB1DE-C6B1-4EF9-A404-343D1609BABF}']
+    [AUTODESTROYABLE_GUIDSTRING]
   end;
 
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(IObject)
-    ['{6EBC1ADC-027E-4B7B-AA27-88D8F2D1CC17}']
+    [COMPARABLE_GUIDSTRING]
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
 
@@ -625,8 +641,14 @@ type
   NANSICharacter  = NPLANSICharacter; NANSICharacterClass = NPLANSICharacterClass;
   NANSIString     = NPLANSIString;    NANSIStringClass    = NPLANSIStringClass;
 
+{$IFDEF DELPHI5OROLDER}
+function stringToGUID(const S: string): TGUID;
+{$ENDIF}
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
+function isAutoCloseable(obj : NPLObject) : boolean;
+function isAutoDestroyable(obj : NPLObject) : boolean;
+function isComparable(obj : NPLObject) : boolean;
 
 implementation
 
@@ -642,6 +664,16 @@ uses
   ,npl_Short
   ,typInfo
   ;
+
+{$IFDEF DELPHI5OROLDER}
+function CLSIDFromString(psz: PWideChar; out clsid: TGUID): HResult; stdcall;
+  external 'ole32.dll' name 'CLSIDFromString';
+function stringToGUID(const S: string): TGUID;
+begin
+  if not Succeeded(CLSIDFromString(PWideChar(WideString(S)), Result)) then
+    raise EConvertError.CreateResFmt(integer(@SInvalidGUID), [s]);
+end;
+{$ENDIF}
 
 function signedRightShift(value, bits : int): int;
 begin
@@ -680,6 +712,30 @@ begin
       result := result or
         (long($FFFFFFFFFFFFFFFF) shl (64 - bits));
   end;
+end;
+
+function isAutoCloseable(obj : NPLObject) : boolean;
+begin
+  result := false;
+  if obj=nil then
+    exit;
+  result := (obj.classType.getInterfaceEntry(AutoCloseable) <> nil);
+end;
+
+function isAutoDestroyable(obj : NPLObject) : boolean;
+begin
+  result := false;
+  if obj=nil then
+    exit;
+  result := (obj.classType.getInterfaceEntry(AutoDestroyable) <> nil);
+end;
+
+function isComparable(obj : NPLObject) : boolean;
+begin
+  result := false;
+  if obj=nil then
+    exit;
+  result := (obj.classType.getInterfaceEntry(stringToGUID(COMPARABLE_GUIDSTRING)) <> nil);
 end;
 
 var
@@ -726,6 +782,11 @@ begin
     result:=concat(uname, '.', className);
 end;
 
+class function NPLObject.implementsInterface(const IID: TGUID) : boolean;
+begin
+  result := (getInterfaceEntry(IID)<>nil);
+end;
+
 function NPLObject.equals(obj : NPLObject) : boolean;
 begin
   result:=obj=self;
@@ -755,7 +816,7 @@ procedure NPLObject.free;
 //Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
 begin
   if self <> nil then begin
-    InterlockedExchange(fRefCount,0);  
+    InterlockedExchange(fRefCount,0);
     destroy;
   end;
 end;
@@ -830,12 +891,12 @@ end;
 
 constructor StringIndexOutOfBoundsException.create(index : int);
 begin
-  inherited createFmt('String index out of range: %d',[index]);
+  inherited createFmt(SStringIndexOutOfRange,[index]);
 end;
 
 class function NumberFormatException.forInputString(s : string) : NumberFormatException;
 begin
-  result := NumberFormatException.CreateFmt('For input string: ''%s''',[s]);
+  result := NumberFormatException.CreateFmt(SForInputString,[s]);
 end;
 
 function NPLNumber.sbyteValue : sbyte;
@@ -900,7 +961,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (anotherByte is NPLByte) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLByte.compare(self.fValue.sbyteValue, NPLByte(anotherByte).fValue.sbyteValue);
@@ -927,7 +988,7 @@ var
 begin
   i := NPLInteger.parseInt(s, radix);
   if (i < npl_Byte.MIN_VALUE) or (i > npl_Byte.MAX_VALUE) then
-    raise NumberFormatException.createFmt('Value out of range. Value:''%s'' Radix:%d',[s,radix]);
+    raise NumberFormatException.createFmt(SValueOutOfRangeValueRadix,[s,radix]);
   result := sbyte(i);
 end;
 
@@ -947,7 +1008,7 @@ var
 begin
   i := NPLInteger.decode(nm);
   if (i < npl_Byte.MIN_VALUE) or (i > npl_Byte.MAX_VALUE) then
-    raise NumberFormatException.createFmt('Value %d out of range from input ''%s''',[i,nm]);
+    raise NumberFormatException.createFmt(SValueOutOfRangeFromInput,[i,nm]);
   result := sbyte(i);
 end;
 
@@ -988,7 +1049,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (anotherShort is NPLShort) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLShort.compare(self.fValue.shortValue, NPLShort(anotherShort).fValue.shortValue);
@@ -1015,7 +1076,7 @@ var
 begin
   i := NPLInteger.parseInt(s, radix);
   if (i < npl_Short.MIN_VALUE) or (i > npl_Short.MAX_VALUE) then
-    raise NumberFormatException.CreateFmt('Value out of range. Value:''%s'' Radix:%d',[s,radix]);
+    raise NumberFormatException.CreateFmt(SValueOutOfRangeValueRadix,[s,radix]);
   result := short(i);
 end;
 
@@ -1035,7 +1096,7 @@ var
 begin
   i := NPLInteger.decode(nm);
   if (i < npl_Short.MIN_VALUE) or (i > npl_Short.MAX_VALUE) then
-    raise NumberFormatException.createFmt('Value %d out of range from input ''%s''',[i,nm]);
+    raise NumberFormatException.createFmt(SValueOutOfRangeFromInput,[i,nm]);
   result := short(i);
 end;
 
@@ -1081,7 +1142,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (anotherInteger is NPLInteger) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLInteger.compare(self.fValue.intValue, NPLInteger(anotherInteger).fValue.intValue);
@@ -1491,7 +1552,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (anotherLong is NPLLong) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLLong.compare(self.fValue.longValue, NPLLong(anotherLong).fValue.longValue);
@@ -1909,7 +1970,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (anotherFloat is NPLFloat) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLFloat.compare(self.fValue.floatValue, NPLFloat(anotherFloat).fValue.floatValue);
@@ -2014,7 +2075,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (anotherDouble is NPLDouble) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLDouble.compare(self.fValue.doubleValue, NPLDouble(anotherDouble).fValue.doubleValue);
@@ -2153,7 +2214,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (b is NPLBoolean) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLBoolean.compare(self.fValue, NPLBoolean(b).fValue);
@@ -2212,7 +2273,7 @@ begin
 
   {$IFNDEF GENERICS}
   if not (c is NPLANSICharacter) then
-    raise IllegalArgumentException.createFmt('Object must be of type %s',[self.className]);
+    raise IllegalArgumentException.createFmt(SObjectWrongType,[self.className]);
   {$ENDIF}
 
   result := NPLANSICharacter.compare(self.fValue, NPLANSICharacter(c).fValue);

@@ -131,6 +131,15 @@
 <tr class="list2">
 <td class="itemcode"><code>function <strong><a href="npl.html#signedRightShift">signedRightShift</a></strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
 </tr>
+<tr class="list">
+<td class="itemcode"><code>function <strong><a href="npl.html#isAutoCloseable">isAutoCloseable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <strong><a href="npl.html#isAutoDestroyable">isAutoDestroyable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <strong><a href="npl.html#isComparable">isComparable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+</tr>
 </table>
 <span id="PasDoc-Types"></span><h3 class="summary">Types</h3>
 <table class="summary wide_list">
@@ -548,6 +557,33 @@
 <tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#EOL">EOL</a></strong> = <a href="npl.html#CRLF">CRLF</a>;</code></td>
 </tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#IOBJECT_GUIDSTRING">IOBJECT_GUIDSTRING</a></strong>          = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#AUTOCLOSEABLE_GUIDSTRING">AUTOCLOSEABLE_GUIDSTRING</a></strong>    = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#AUTODESTROYABLE_GUIDSTRING">AUTODESTROYABLE_GUIDSTRING</a></strong>  = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#COMPARABLE_GUIDSTRING">COMPARABLE_GUIDSTRING</a></strong>       = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#SStringIndexOutOfRange">SStringIndexOutOfRange</a></strong> = 'String index out of range: %d';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#SForInputString">SForInputString</a></strong> = 'For input string: ''%s''';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#SValueOutOfRangeValueRadix">SValueOutOfRangeValueRadix</a></strong> = 'Value out of range. Value:''%s'' Radix:%d';</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#SValueOutOfRangeFromInput">SValueOutOfRangeFromInput</a></strong> = 'Value %d out of range from input ''%s''';</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#SObjectWrongType">SObjectWrongType</a></strong> = 'Object must be of type %s';</code></td>
+</tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Functions and Procedures</h3>
@@ -561,6 +597,27 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="signedRightShift"></span><code>function <strong>signedRightShift</strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isAutoCloseable"></span><code>function <strong>isAutoCloseable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isAutoDestroyable"></span><code>function <strong>isAutoDestroyable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isComparable"></span><code>function <strong>isComparable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -1561,6 +1618,69 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="EOL"></span><code><strong>EOL</strong> = <a href="npl.html#CRLF">CRLF</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="IOBJECT_GUIDSTRING"></span><code><strong>IOBJECT_GUIDSTRING</strong>          = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="AUTOCLOSEABLE_GUIDSTRING"></span><code><strong>AUTOCLOSEABLE_GUIDSTRING</strong>    = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="AUTODESTROYABLE_GUIDSTRING"></span><code><strong>AUTODESTROYABLE_GUIDSTRING</strong>  = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="COMPARABLE_GUIDSTRING"></span><code><strong>COMPARABLE_GUIDSTRING</strong>       = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SStringIndexOutOfRange"></span><code><strong>SStringIndexOutOfRange</strong> = 'String index out of range: %d';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SForInputString"></span><code><strong>SForInputString</strong> = 'For input string: ''%s''';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SValueOutOfRangeValueRadix"></span><code><strong>SValueOutOfRangeValueRadix</strong> = 'Value out of range. Value:''%s'' Radix:%d';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SValueOutOfRangeFromInput"></span><code><strong>SValueOutOfRangeFromInput</strong> = 'Value %d out of range from input ''%s''';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="SObjectWrongType"></span><code><strong>SObjectWrongType</strong> = 'Object must be of type %s';</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>

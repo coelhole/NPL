@@ -74,17 +74,21 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#equals">equals</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; reintroduce; virtual;</code></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#implementsInterface">implementsInterface</a></strong>(const IID: TGUID) : boolean;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#equals">equals</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; reintroduce; virtual;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#toString">toString</a></strong>: string; reintroduce; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#toString">toString</a></strong>: string; reintroduce; virtual;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#this">this</a></strong>: <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
@@ -170,6 +174,14 @@ Eis aqui nossa raiz da hierarquia de classes!</p>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="qualifiedClassName"></span><code>class function <strong>qualifiedClassName</strong>: ansistring;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="implementsInterface"></span><code>class function <strong>implementsInterface</strong>(const IID: TGUID) : boolean;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
