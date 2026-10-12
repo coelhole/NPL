@@ -97,10 +97,10 @@ const
   CRLF = CR+LF;
   EOL = {$IFDEF WINDOWS}CRLF{$ELSE}LF{$ENDIF};
 
-  IOBJECT_GUIDSTRING          = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
-  AUTOCLOSEABLE_GUIDSTRING    = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';
-  AUTODESTROYABLE_GUIDSTRING  = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';
-  COMPARABLE_GUIDSTRING       = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';
+  IOBJECTGSTR         = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
+  AUTOCLOSEABLEGSTR   = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';
+  AUTODESTROYABLEGSTR = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';
+  COMPARABLEGSTR      = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';
 
 resourcestring
 {$IFDEF DELPHI5OROLDER}
@@ -108,9 +108,13 @@ resourcestring
 {$ENDIF}
   SStringIndexOutOfRange = 'String index out of range: %d';
   SForInputString = 'For input string: ''%s''';
-  SValueOutOfRangeValueRadix = 'Value out of range. Value:''%s'' Radix:%d';
   SValueOutOfRangeFromInput = 'Value %d out of range from input ''%s''';
+  SValueOutOfRangeValueRadix = 'Value out of range. Value:''%s'' Radix:%d';
   SObjectWrongType = 'Object must be of type %s';
+  SRadixGreaterThan = 'radix %d greater than npl_Character.MAX_RADIX';
+  SRadixLessThan = 'radix %d less than npl_Character.MIN_RADIX';
+  SSignInWrongPosition = 'Sign character in wrong position';
+  SZeroLengthString = 'Zero length string';
 
 type
   bool    = boolean;
@@ -260,7 +264,7 @@ type
   NPLObject     = class;
   NPLInterface  = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
   IObject       = interface(NPLInterface)
-    [IOBJECT_GUIDSTRING]
+    [IOBJECTGSTR]
     function equals(obj : NPLObject) : boolean;
     function hashCode : int;
     function toString : string;
@@ -334,7 +338,7 @@ type
   UnsupportedOperationExceptionClass = class of UnsupportedOperationException;
 
   AutoCloseable = interface(NPLInterface)
-    [AUTOCLOSEABLE_GUIDSTRING]
+    [AUTOCLOSEABLEGSTR]
     procedure close;
   end;
 
@@ -342,11 +346,11 @@ type
     //Interfaces servem primariamente para estabelecimento de contratos.
     //Object Pascal, por influência de COM, amarrou interfaces ao gerenciamento de ciclo de vida.
     //AutoDestroyable é nossa sugestão de desacoplar as coisas: (i) contrato é uma coisa; (ii) ciclo de vida é outra.
-    [AUTODESTROYABLE_GUIDSTRING]
+    [AUTODESTROYABLEGSTR]
   end;
 
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(IObject)
-    [COMPARABLE_GUIDSTRING]
+    [COMPARABLEGSTR]
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
 
@@ -554,7 +558,7 @@ type
     class function toString(c : ansichar) : string; overload;
     class function isValidCodePoint(codePoint : int) : boolean;
     class function charCount(codePoint : int) : int;
-    class function toChars(codePoint : int; dst : ansichararr; dstIndex : int) : int; overload;
+    class function toChars(codePoint : int; var dst : ansichararr; dstIndex : int) : int; overload;
     class function toChars(codePoint : int) : ansichararr; overload;
     class function isASCII(codePoint : int) : boolean; overload;
     class function isASCII(ch : ansichar) : boolean; overload;
@@ -735,7 +739,7 @@ begin
   result := false;
   if obj=nil then
     exit;
-  result := (obj.classType.getInterfaceEntry(stringToGUID(COMPARABLE_GUIDSTRING)) <> nil);
+  result := (obj.classType.getInterfaceEntry(stringToGUID(COMPARABLEGSTR)) <> nil);
 end;
 
 var
@@ -752,7 +756,7 @@ var
     [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
     [131,138,140,142,154,156,158,159,170,181,186,192..214,216..246,248..255]  //extended ASCII
   ;
-  ANSIDigitCodePoints : ANSICodePoints = [Low(ANSIDigitCodePoint)..High(ANSIDigitCodePoint)];
+  ANSIDigitCodePoints : ANSICodePoints  = [Low(ANSIDigitCodePoint)..High(ANSIDigitCodePoint)];
   ANSIDigits          : set of ansichar = [Low(ANSIDigit)..High(ANSIDigit)];
   ASCIILetters        : set of ansichar = [Low(UpperASCIILetter)..High(UpperASCIILetter)] + [Low(LowerASCIILetter)..High(LowerASCIILetter)];
 
@@ -1254,9 +1258,9 @@ begin
   if s = '' then
     raise NumberFormatException.create;
   if radix < npl_Character.MIN_RADIX then
-    raise NumberFormatException.CreateFmt('radix %d less than npl_Character.MIN_RADIX',[radix]);
+    raise NumberFormatException.CreateFmt(SRadixLessThan,[radix]);
   if radix > npl_Character.MAX_RADIX then
-    raise NumberFormatException.CreateFmt('radix %d greater than npl_Character.MAX_RADIX',[radix]);
+    raise NumberFormatException.CreateFmt(SRadixGreaterThan,[radix]);
   result := 0;
   negative := false;
   i := 0;
@@ -1309,7 +1313,7 @@ begin
   negative := false;
 
   if nm.length = 0 then
-    raise NumberFormatException.create('Zero length string');
+    raise NumberFormatException.create(SZeroLengthString);
   firstChar := nm.charAt(0);
   // Handle sign, if present
   if firstChar = '-' then begin
@@ -1332,7 +1336,7 @@ begin
   end;
 
   if nm.startsWith('-', index) or nm.startsWith('+', index) then
-    raise NumberFormatException.create('Sign character in wrong position');
+    raise NumberFormatException.create(SSignInWrongPosition);
 
   try
     result := NPLInteger.parseInt(nm.substring(index), radix);
@@ -1477,7 +1481,7 @@ begin
     result := (i shl shift) or (i shr (32-shift));
   end else
   if distance<0 then begin
-    shift := (-distance) mod 32;
+    shift := -(distance mod 32);
     result := (i shr shift) or (i shl (32-shift));
   end else result := i;
 end;
@@ -1491,7 +1495,7 @@ begin
     result := (i shr shift) or (i shl (32-shift));
   end else
   if distance<0 then begin
-    shift := (-distance) mod 32;  
+    shift := -(distance mod 32);  
     result := (i shl shift) or (i shr (32-shift));
   end else result := i;
 end;
@@ -1664,9 +1668,9 @@ begin
   if s = '' then
     raise NumberFormatException.create;
   if radix < npl_Character.MIN_RADIX then
-    raise NumberFormatException.CreateFmt('radix %d less than npl_Character.MIN_RADIX',[radix]);
+    raise NumberFormatException.CreateFmt(SRadixLessThan,[radix]);
   if radix > npl_Character.MAX_RADIX then
-    raise NumberFormatException.CreateFmt('radix %d greater than npl_Character.MAX_RADIX',[radix]);
+    raise NumberFormatException.CreateFmt(SRadixGreaterThan,[radix]);
   result := 0;
   negative := false;
   i := 0;
@@ -1719,7 +1723,7 @@ begin
   negative := false;
 
   if nm.length = 0 then
-    raise NumberFormatException.create('Zero length string');
+    raise NumberFormatException.create(SZeroLengthString);
   firstChar := nm.charAt(0);
   // Handle sign, if present
   if firstChar = '-' then begin
@@ -1742,7 +1746,7 @@ begin
   end;
 
   if nm.startsWith('-', index) or nm.startsWith('+', index) then
-    raise NumberFormatException.create('Sign character in wrong position');
+    raise NumberFormatException.create(SSignInWrongPosition);
 
   try
     result := NPLLong.parseLong(nm.substring(index), radix);
@@ -1903,7 +1907,7 @@ begin
     result := (i shl shift) or (i shr (64-shift));
   end else
   if distance<0 then begin
-    shift := (-distance) mod 64;
+    shift := -(distance mod 64);
     result := (i shr shift) or (i shl (64-shift));
   end else result := i;
 end;
@@ -1917,7 +1921,7 @@ begin
     result := (i shr shift) or (i shl (64-shift));
   end else
   if distance<0 then begin
-    shift := (-distance) mod 64;
+    shift := -(distance mod 64);
     result := (i shl shift) or (i shr (64-shift));
   end else result := i;
 end;
@@ -2319,6 +2323,9 @@ end;
 
 class function NPLANSICharacter.isLetter(codePoint : int) : boolean;
 begin
+  result := false;
+  if (codePoint<0) or (codePoint>255) then
+    exit;
   result := codePoint in ANSILetterCodePoints;
 end;
 
@@ -2329,6 +2336,9 @@ end;
 
 class function NPLANSICharacter.isLetterOrDigit(codePoint : int) : boolean;
 begin
+  result := false;
+  if (codePoint<0) or (codePoint>255) then
+    exit;
   result := (codePoint in ANSILetterCodePoints) or (codePoint in ANSIDigitCodePoints);
 end;
 
@@ -2352,10 +2362,13 @@ end;
 
 class function NPLANSICharacter.charCount(codePoint : int) : int;
 begin
+  result := 0;
+  if (codePoint<0) or (codePoint>255) then
+    exit;
   result := 1;
 end;
 
-class function NPLANSICharacter.toChars(codePoint : int; dst : ansichararr; dstIndex : int) : int;
+class function NPLANSICharacter.toChars(codePoint : int; var dst : ansichararr; dstIndex : int) : int;
 begin
   result := 0;
   if (codePoint<0) or (codePoint>255) or (dstIndex<0) then
@@ -2398,7 +2411,10 @@ end;
 
 class function NPLANSICharacter.isLowerCase(codePoint : int) : boolean;
 begin
-  result := codePoint in LowerANSILetterCodePoints; 
+  result := false;
+  if (codePoint<0) or (codePoint>255) then
+    exit;
+  result := codePoint in LowerANSILetterCodePoints;
 end;
 
 class function NPLANSICharacter.isLowerCase(ch : ansichar) : boolean;
@@ -2408,6 +2424,9 @@ end;
 
 class function NPLANSICharacter.isUpperCase(codePoint : int) : boolean;
 begin
+  result := false;
+  if (codePoint<0) or (codePoint>255) then
+    exit;
   result := codePoint in UpperANSILetterCodePoints;
 end;
 
