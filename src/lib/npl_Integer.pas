@@ -3,14 +3,15 @@ unit npl_Integer;
 interface
 
 uses
-  npl;
+  npl
+  ;
 
 const
   MIN_VALUE : int = int($80000000);
   MAX_VALUE : int = int($7fffffff);
   SIZE      : int = 32;
 
-  digits : array[0..35] of char = (
+  digits : array[0..35] of ansichar = (
     '0' , '1' , '2' , '3' , '4' , '5' ,
     '6' , '7' , '8' , '9' , 'a' , 'b' ,
     'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
@@ -19,7 +20,7 @@ const
     'u' , 'v' , 'w' , 'x' , 'y' , 'z'
   );
 
-  DigitTens : array[0..99] of char = (
+  DigitTens : array[0..99] of ansichar = (
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
     '2', '2', '2', '2', '2', '2', '2', '2', '2', '2',
@@ -32,7 +33,7 @@ const
     '9', '9', '9', '9', '9', '9', '9', '9', '9', '9'
   );
 
-  DigitOnes : array[0..99] of char = (
+  DigitOnes : array[0..99] of ansichar = (
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -50,15 +51,15 @@ const
     99999999, 999999999, int($7fffffff)
   );
 
-  procedure getChars(i, index : int; var buf : chararr);
+  procedure getChars(i, index : int; var buf : ansichararr);
   function stringSize(x : int) : int;
 
 implementation
 
-procedure getChars(i, index : int; var buf : chararr);
+procedure getChars(i, index : int; var buf : ansichararr);
 var
   q, r, charPos : int;
-  sign : char;
+  sign : ansichar;
 begin
   charPos := index;
   sign := NUL;

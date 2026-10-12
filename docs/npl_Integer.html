@@ -23,7 +23,7 @@
 <span id="PasDoc-FuncsProcs"></span><h3 class="summary">Functions and Procedures</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>procedure <strong><a href="npl_Integer.html#getChars">getChars</a></strong>(i, index : <a href="npl.html#int">int</a>; var buf : <a href="npl.html#chararr">chararr</a>);</code></td>
+<td class="itemcode"><code>procedure <strong><a href="npl_Integer.html#getChars">getChars</a></strong>(i, index : <a href="npl.html#int">int</a>; var buf : <a href="npl.html#ansichararr">ansichararr</a>);</code></td>
 </tr>
 <tr class="list2">
 <td class="itemcode"><code>function <strong><a href="npl_Integer.html#stringSize">stringSize</a></strong>(x : <a href="npl.html#int">int</a>) : <a href="npl.html#int">int</a>;</code></td>
@@ -41,7 +41,7 @@
 <td class="itemcode"><code><strong><a href="npl_Integer.html#SIZE">SIZE</a></strong>      : <a href="npl.html#int">int</a> = 32;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code><strong><a href="npl_Integer.html#digits">digits</a></strong> : array[0..35] of char = (
+<td class="itemcode"><code><strong><a href="npl_Integer.html#digits">digits</a></strong> : array[0..35] of ansichar = (
     '0' , '1' , '2' , '3' , '4' , '5' ,
     '6' , '7' , '8' , '9' , 'a' , 'b' ,
     'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
@@ -51,7 +51,7 @@
   );</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code><strong><a href="npl_Integer.html#DigitTens">DigitTens</a></strong> : array[0..99] of char = (
+<td class="itemcode"><code><strong><a href="npl_Integer.html#DigitTens">DigitTens</a></strong> : array[0..99] of ansichar = (
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
     '2', '2', '2', '2', '2', '2', '2', '2', '2', '2',
@@ -65,7 +65,7 @@
   );</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code><strong><a href="npl_Integer.html#DigitOnes">DigitOnes</a></strong> : array[0..99] of char = (
+<td class="itemcode"><code><strong><a href="npl_Integer.html#DigitOnes">DigitOnes</a></strong> : array[0..99] of ansichar = (
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -89,7 +89,7 @@
 <h3 class="detail">Functions and Procedures</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="getChars"></span><code>procedure <strong>getChars</strong>(i, index : <a href="npl.html#int">int</a>; var buf : <a href="npl.html#chararr">chararr</a>);</code></td>
+<td class="itemcode"><span id="getChars"></span><code>procedure <strong>getChars</strong>(i, index : <a href="npl.html#int">int</a>; var buf : <a href="npl.html#ansichararr">ansichararr</a>);</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -125,7 +125,7 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="digits"></span><code><strong>digits</strong> : array[0..35] of char = (
+<td class="itemcode"><span id="digits"></span><code><strong>digits</strong> : array[0..35] of ansichar = (
     '0' , '1' , '2' , '3' , '4' , '5' ,
     '6' , '7' , '8' , '9' , 'a' , 'b' ,
     'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
@@ -139,7 +139,7 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="DigitTens"></span><code><strong>DigitTens</strong> : array[0..99] of char = (
+<td class="itemcode"><span id="DigitTens"></span><code><strong>DigitTens</strong> : array[0..99] of ansichar = (
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
     '2', '2', '2', '2', '2', '2', '2', '2', '2', '2',
@@ -157,7 +157,7 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="DigitOnes"></span><code><strong>DigitOnes</strong> : array[0..99] of char = (
+<td class="itemcode"><span id="DigitOnes"></span><code><strong>DigitOnes</strong> : array[0..99] of ansichar = (
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

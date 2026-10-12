@@ -3,14 +3,15 @@ unit npl_Long;
 interface
 
 uses
-  npl;
+  npl
+  ;
 
 const
   MIN_VALUE : long  = long($8000000000000000);
   MAX_VALUE : long  = long($7fffffffffffffff);
   SIZE      : int   = 64;
 
-  procedure getChars(i : long; index : int; var buf : chararr);
+  procedure getChars(i : long; index : int; var buf : ansichararr);
   function stringSize(x : long) : int;
 
 implementation
@@ -18,11 +19,11 @@ implementation
 uses
   npl_Integer;
 
-procedure getChars(i : long; index : int; var buf : chararr);
+procedure getChars(i : long; index : int; var buf : ansichararr);
 var
   q : long;
   r, charPos, i2, q2 : int;
-  sign : char;
+  sign : ansichar;
 begin
   charPos := index;
   sign := NUL;
