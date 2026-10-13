@@ -820,7 +820,7 @@ procedure NPLObject.free;
 //Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
 begin
   if self <> nil then begin
-    InterlockedExchange(fRefCount,0);
+    interlockedExchange(fRefCount,0);
     destroy;
   end;
 end;
@@ -828,14 +828,18 @@ end;
 function NPLObject.queryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out obj) : {$IFDEF FPC}longint;{$ELSE}hresult;{$ENDIF}
 begin
   if getInterface(IID, obj) then
-    result := 0
+    result := S_OK
   else
+{$IFNDEF FPC}
     result := E_NOINTERFACE;
+{$ELSE}
+    result := longint(E_NOINTERFACE);
+{$ENDIF}
 end;
 
 function NPLObject._addRef : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
 begin
-  result := InterlockedIncrement(fRefCount);
+  result := interlockedIncrement(fRefCount);
 end;
 
 type
@@ -861,7 +865,7 @@ function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
 var
   isAutoDestroyable : boolean;
 begin
-  result := InterlockedDecrement(fRefCount);
+  result := interlockedDecrement(fRefCount);
 
   if result = 0 then begin
     isAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
@@ -873,19 +877,28 @@ end;
 
 procedure NPLObject.afterConstruction;
 begin
-  InterlockedDecrement(fRefCount);
+{$IFNDEF FPC}
+  interlockedDecrement(fRefCount);
+{$ELSE}
+  declocked(fRefCount);
+{$ENDIF}
 end;
 
 procedure NPLObject.beforeDestruction;
 begin
   if fRefCount <> 0 then
+{$IFNDEF FPC}
     System.RunError(2);
+{$ELSE}
+    HandleError(204);  
+{$ENDIF}
 end;
 
 class function NPLObject.newInstance : TObject;
 begin
   result := inherited newInstance;
-  NPLObject(result).fRefCount := 1;
+  if result<>nil then
+    NPLObject(result).fRefCount := 1;
 end;
 
 constructor NPLException.create;
