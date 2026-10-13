@@ -274,8 +274,13 @@ type
 {$M+}
   NPLObject=class(TObject, IObject)
   //Eis aqui nossa raiz da hierarquia de classes!
+  private
+    fIsAutoDestroyable, fIsAutoCloseable : boolean;
+    fAutoCloaseableEntry : PInterfaceEntry;
+    fAutoCloseableInstancePtr, fAutoCloseableVTablePtr, fClosePointer : Pointer;
   protected
     fRefCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
+    fDestroyCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
     function queryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out obj) : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}hresult; virtual; stdcall;{$ENDIF}
     function _addRef : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}integer; virtual; stdcall;{$ENDIF}
     function _release : {$IFDEF FPC}longint; virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};{$ELSE}integer; virtual; stdcall;{$ENDIF}
@@ -844,44 +849,43 @@ end;
 
 type
   CloseProc = procedure(const aSelf: Pointer);
-procedure checkAutoCloseable(obj : NPLObject);
-var
-  AutoCloaseableEntry : PInterfaceEntry;
-  AutoCloseableInstancePtr : Pointer;
-  AutoCloseableVTablePtr : Pointer;
-  ClosePointer : Pointer;
-  Close : CloseProc;
-begin
-  AutoCloaseableEntry := obj.getInterfaceEntry(AutoCloseable);
-  if AutoCloaseableEntry <> nil then begin
-    AutoCloseableInstancePtr := Pointer(nint(obj) + AutoCloaseableEntry^.IOffset);
-    AutoCloseableVTablePtr := PPointer(AutoCloseableInstancePtr)^;
-    ClosePointer := PPointer(nint(AutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
-    @Close := ClosePointer;
-    Close(AutoCloseableInstancePtr);
-  end;
-end;
 function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
 var
-  isAutoDestroyable : boolean;
+  Close : CloseProc;
 begin
-  result := interlockedDecrement(fRefCount);
+  if fDestroyCount=0 then
+    result := interlockedDecrement(fRefCount)
+  else begin
+    result := 0;
+    exit;
+  end;
 
   if result = 0 then begin
-    isAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
-    checkAutoCloseable(self);
-    if isAutoDestroyable then
-      destroy;
+    if fIsAutoCloseable then begin
+      @Close := fClosePointer;
+      Close(fAutoCloseableInstancePtr);
+    end;
+    if fIsAutoDestroyable then
+      if interlockedIncrement(fDestroyCount)=1 then
+        destroy;
   end;
 end;
 
 procedure NPLObject.afterConstruction;
 begin
-{$IFNDEF FPC}
   interlockedDecrement(fRefCount);
-{$ELSE}
-  declocked(fRefCount);
-{$ENDIF}
+  fIsAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
+  fAutoCloaseableEntry := self.getInterfaceEntry(AutoCloseable);
+  fIsAutoCloseable := (fAutoCloaseableEntry <> nil);
+  if fIsAutoCloseable then begin
+    fAutoCloseableInstancePtr := Pointer(nint(self) + fAutoCloaseableEntry^.IOffset);
+    fAutoCloseableVTablePtr := PPointer(fAutoCloseableInstancePtr)^;
+    fClosePointer := PPointer(nint(fAutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
+  end else begin
+    fAutoCloseableInstancePtr := nil;
+    fAutoCloseableVTablePtr := nil;
+    fClosePointer := nil;
+  end;      
 end;
 
 procedure NPLObject.beforeDestruction;
@@ -890,15 +894,17 @@ begin
 {$IFNDEF FPC}
     System.RunError(2);
 {$ELSE}
-    HandleError(204);  
+    System.RunError(204);  
 {$ENDIF}
 end;
 
 class function NPLObject.newInstance : TObject;
 begin
   result := inherited newInstance;
-  if result<>nil then
+  if result<>nil then begin
     NPLObject(result).fRefCount := 1;
+    NPLObject(result).fDestroyCount := 0;
+  end;
 end;
 
 constructor NPLException.create;
