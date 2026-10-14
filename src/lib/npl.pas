@@ -111,6 +111,7 @@ const
   IOBJECTGSTR         = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
   AUTOCLOSEABLEGSTR   = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';
   AUTODESTROYABLEGSTR = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';
+  CLONEABLEGSTR       = '{28C824E5-8F33-4EAE-9190-9B24198703CD}';
   COMPARABLEGSTR      = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';
 
 resourcestring
@@ -170,6 +171,10 @@ type
   nuint   = uint32;
 {$ENDIF}
 
+{$IFNDEF FPC}
+  qword = uint64;
+{$ENDIF}
+
   ASCIICodePoint            = 0   ..  127;
   LowerASCIILetterCodePoint = 97  ..  122;
   LowerASCIILetter          = 'a' ..  'z';
@@ -201,6 +206,7 @@ type
   uint8arr    = array of uint8;
   uint16arr   = array of uint16;
   uint32arr   = array of uint32;
+  uint64arr   = array of uint64;
   sbytearr    = array of sbyte;
   ubytearr    = array of ubyte;
   shortarr    = array of short;
@@ -210,6 +216,7 @@ type
   longarr     = array of long;
   wordarr     = array of word;
   dwordarr    = array of dword;
+  qwordarr    = array of qword;
   pointerarr  = array of pointer;
   currencyarr = array of currency;
   moneyarr    = array of money;
@@ -276,21 +283,20 @@ type
   NPLInterface  = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
   IObject       = interface(NPLInterface)
     [IOBJECTGSTR]
-    function equals(obj : NPLObject) : boolean;
     function hashCode : int;
+    function equals(obj : NPLObject) : boolean;
+    function clone : NPLObject;
     function toString : string;
     function this : NPLObject;
   end;
 
 {$M+}
   NPLObject=class(TObject, IObject)
-  //Eis aqui nossa raiz da hierarquia de classes!
   private
     fIsAutoDestroyable : boolean;
   {$IFNDEF AUTOCLOSEABLE_OFF}
     fIsAutoCloseable : boolean;
-    fAutoCloaseableEntry : PInterfaceEntry;
-    fAutoCloseableInstancePtr, fAutoCloseableVTablePtr, fClosePointer : Pointer;
+    fAutoCloseableInstancePtr, fClosePointer : Pointer;
   {$ENDIF}
   protected
     fRefCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
@@ -305,9 +311,11 @@ type
     class function newInstance : TObject; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
-    class function implementsInterface(const IID: TGUID) : boolean;
-    function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
+    class function implementsInterface(const IID: TGUID) : boolean; overload;
+    class function implementsInterface(const gstr : ansistring) : boolean; overload;
     function hashCode : int; virtual;
+    function equals(obj : NPLObject) : boolean; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
+    function clone : NPLObject; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
     function this : NPLObject;
     destructor destroy; override;
@@ -326,6 +334,10 @@ type
   NilPointerException = class(NPLException);
 
   NilPointerExceptionClass = class of NilPointerException;
+
+  CloneNotSupportedException = class(NPLException);
+
+  CloneNotSupportedExceptionClass = class of CloneNotSupportedException;
 
   IllegalArgumentException = class(NPLException);
 
@@ -363,10 +375,11 @@ type
   end;
 
   AutoDestroyable = interface(NPLInterface)
-    //Interfaces servem primariamente para estabelecimento de contratos.
-    //Object Pascal, por influência de COM, amarrou interfaces ao gerenciamento de ciclo de vida.
-    //AutoDestroyable é nossa sugestão de desacoplar as coisas: (i) contrato é uma coisa; (ii) ciclo de vida é outra.
     [AUTODESTROYABLEGSTR]
+  end;
+
+  Cloneable = interface(NPLInterface)
+    [CLONEABLEGSTR]
   end;
 
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(IObject)
@@ -670,9 +683,15 @@ function stringToGUID(const S: string): TGUID;
 {$ENDIF}
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
-function isAutoCloseable(obj : NPLObject) : boolean;
-function isAutoDestroyable(obj : NPLObject) : boolean;
-function isComparable(obj : NPLObject) : boolean;
+function childMethodImplementationDiffers(cls : TClass; intfc : TGUID; methodIndex : int) : boolean;
+function isAutoCloseable(cls : TClass) : boolean; overload;
+function isAutoCloseable(obj : NPLObject) : boolean; overload;
+function isAutoDestroyable(cls : TClass) : boolean; overload;
+function isAutoDestroyable(obj : NPLObject) : boolean; overload;
+function isCloneable(cls : TClass) : boolean; overload;
+function isCloneable(obj : NPLObject) : boolean; overload;
+function isComparable(cls : TClass) : boolean; overload;
+function isComparable(obj : NPLObject) : boolean; overload;
 
 implementation
 
@@ -738,6 +757,42 @@ begin
   end;
 end;
 
+function childMethodImplementationDiffers(cls : TClass; intfc : TGUID; methodIndex : int) : boolean;
+var
+  parentClass : TClass;
+  childIntfcEntry, parentIntfcEntry : PInterfaceEntry;
+  childMethodPtr, parentMethodPtr : pointer;
+begin
+  result := false;
+
+  if (cls=nil) or (methodIndex < 0) then
+    exit;
+
+  parentClass := cls.classParent;
+
+  if parentClass=nil then
+    exit;
+
+  childIntfcEntry := cls.getInterfaceEntry(intfc);
+  parentIntfcEntry := parentClass.getInterfaceEntry(intfc);
+
+  if (childIntfcEntry=nil) or (parentIntfcEntry=nil) then
+    exit;
+
+  childMethodPtr  := ppointer(nint(childIntfcEntry.VTable)  + (methodIndex * sizeOf(pointer)))^;
+  parentMethodPtr := ppointer(nint(parentIntfcEntry.VTable) + (methodIndex * sizeOf(pointer)))^;
+
+  result := (childMethodPtr<>parentMethodPtr);
+end;
+
+function isAutoCloseable(cls : TClass) : boolean;
+begin
+  result := false;
+  if cls=nil then
+    exit;
+  result := (cls.getInterfaceEntry(AutoCloseable) <> nil);
+end;
+
 function isAutoCloseable(obj : NPLObject) : boolean;
 begin
   result := false;
@@ -746,12 +801,50 @@ begin
   result := (obj.classType.getInterfaceEntry(AutoCloseable) <> nil);
 end;
 
+function isAutoDestroyable(cls : TClass) : boolean;
+begin
+  result := false;
+  if cls=nil then
+    exit;
+  result := (cls.getInterfaceEntry(AutoDestroyable) <> nil);
+end;
+
 function isAutoDestroyable(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=nil then
     exit;
   result := (obj.classType.getInterfaceEntry(AutoDestroyable) <> nil);
+end;
+
+function isCloneable(cls : TClass) : boolean;
+begin
+  result := false;
+  if cls=nil then
+    exit;
+  result := (cls.getInterfaceEntry(Cloneable) <> nil);
+  if result=false then
+    exit;
+  result := childMethodImplementationDiffers(cls,IObject,5);
+end;
+
+function isCloneable(obj : NPLObject) : boolean;
+begin
+  result := false;
+  if obj=nil then
+    exit;
+  result := (obj.classType.getInterfaceEntry(Cloneable) <> nil);
+  if result=false then
+    exit;
+  result := childMethodImplementationDiffers(obj.classType,IObject,5);
+end;
+
+function isComparable(cls : TClass) : boolean;
+begin
+  result := false;
+  if cls=nil then
+    exit;
+  result := (cls.getInterfaceEntry(stringToGUID(COMPARABLEGSTR)) <> nil);
 end;
 
 function isComparable(obj : NPLObject) : boolean;
@@ -793,9 +886,9 @@ begin
   result := (getInterfaceEntry(IID)<>nil);
 end;
 
-function NPLObject.equals(obj : NPLObject) : boolean;
+class function NPLObject.implementsInterface(const gstr : ansistring) : boolean;
 begin
-  result:=obj=self;
+  result := (getInterfaceEntry(stringToGUID(gstr))<>nil);
 end;
 
 function NPLObject.hashCode : int;
@@ -805,6 +898,17 @@ begin
 {$ELSE}
   result := int(self);
 {$ENDIF}
+end;
+
+function NPLObject.equals(obj : NPLObject) : boolean;
+begin
+  result:=obj=self;
+end;
+
+function NPLObject.clone : NPLObject;
+begin
+  result := nil;
+  raise CloneNotSupportedException.create;
 end;
 
 function NPLObject.toString : string;
@@ -884,21 +988,23 @@ begin
 end;
 
 procedure NPLObject.afterConstruction;
+var
+  AutoCloseableEntry : PInterfaceEntry;
+  AutoCloseableVTablePtr : pointer;
 begin
 {$IFDEF NPLDEBUG}debug(pointer(self),'afterConstruction');{$ENDIF}
 
   interlockedDecrement(fRefCount);
   fIsAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
 {$IFNDEF AUTOCLOSEABLE_OFF}
-  fAutoCloaseableEntry := self.getInterfaceEntry(AutoCloseable);
-  fIsAutoCloseable := (fAutoCloaseableEntry <> nil);
+  AutoCloseableEntry := self.getInterfaceEntry(AutoCloseable);
+  fIsAutoCloseable := (AutoCloseableEntry <> nil);
   if fIsAutoCloseable then begin
-    fAutoCloseableInstancePtr := Pointer(nint(self) + fAutoCloaseableEntry^.IOffset);
-    fAutoCloseableVTablePtr := PPointer(fAutoCloseableInstancePtr)^;
-    fClosePointer := PPointer(nint(fAutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
+    fAutoCloseableInstancePtr := Pointer(nint(self) + AutoCloseableEntry^.IOffset);
+    AutoCloseableVTablePtr := PPointer(fAutoCloseableInstancePtr)^;
+    fClosePointer := PPointer(nint(AutoCloseableVTablePtr) + (3 * SizeOf(Pointer)))^;
   end else begin
     fAutoCloseableInstancePtr := nil;
-    fAutoCloseableVTablePtr := nil;
     fClosePointer := nil;
   end;
 {$ENDIF}
@@ -936,9 +1042,7 @@ begin
 {$IFNDEF AUTOCLOSEABLE_OFF}
   fIsAutoCloseable:=false;
   fClosePointer:=nil;
-  fAutoCloseableVTablePtr:=nil;
   fAutoCloseableInstancePtr:=nil;
-  fAutoCloaseableEntry:=nil;
 {$ENDIF}
 
   inherited destroy;

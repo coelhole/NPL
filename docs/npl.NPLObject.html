@@ -39,15 +39,7 @@
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
-<td class="itemcode"><code><strong><a href="npl.NPLObject.html#fAutoCloaseableEntry">fAutoCloaseableEntry</a></strong>: PInterfaceEntry;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
 <td class="itemcode"><code><strong><a href="npl.NPLObject.html#fAutoCloseableInstancePtr">fAutoCloseableInstancePtr</a></strong>: Pointer;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
-<td class="itemcode"><code><strong><a href="npl.NPLObject.html#fAutoCloseableVTablePtr">fAutoCloseableVTablePtr</a></strong>: Pointer;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
@@ -102,7 +94,15 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#implementsInterface">implementsInterface</a></strong>(const IID: TGUID) : boolean;</code></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#implementsInterface">implementsInterface</a></strong>(const IID: TGUID) : boolean; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#implementsInterface">implementsInterface</a></strong>(const gstr : ansistring) : boolean; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -110,7 +110,7 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#clone">clone</a></strong>: <a href="npl.NPLObject.html">NPLObject</a>; virtual;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -133,9 +133,7 @@
 <td class="itemcode"><span id="fIsAutoDestroyable"></span><code><strong>fIsAutoDestroyable</strong>: boolean;</code></td>
 </tr>
 <tr><td colspan="2">
-<p>
-Eis aqui nossa raiz da hierarquia de classes!</p>
-</td></tr>
+&nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -148,23 +146,7 @@ Eis aqui nossa raiz da hierarquia de classes!</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
-<td class="itemcode"><span id="fAutoCloaseableEntry"></span><code><strong>fAutoCloaseableEntry</strong>: PInterfaceEntry;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
 <td class="itemcode"><span id="fAutoCloseableInstancePtr"></span><code><strong>fAutoCloseableInstancePtr</strong>: Pointer;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="private.gif" alt="Private" title="Private"></a></td>
-<td class="itemcode"><span id="fAutoCloseableVTablePtr"></span><code><strong>fAutoCloseableVTablePtr</strong>: Pointer;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -269,7 +251,23 @@ Eis aqui nossa raiz da hierarquia de classes!</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="implementsInterface"></span><code>class function <strong>implementsInterface</strong>(const IID: TGUID) : boolean;</code></td>
+<td class="itemcode"><span id="implementsInterface"></span><code>class function <strong>implementsInterface</strong>(const IID: TGUID) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="implementsInterface"></span><code>class function <strong>implementsInterface</strong>(const gstr : ansistring) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="hashCode"></span><code>function <strong>hashCode</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -285,7 +283,7 @@ Eis aqui nossa raiz da hierarquia de classes!</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="hashCode"></span><code>function <strong>hashCode</strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
+<td class="itemcode"><span id="clone"></span><code>function <strong>clone</strong>: <a href="npl.NPLObject.html">NPLObject</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>

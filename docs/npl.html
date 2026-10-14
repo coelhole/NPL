@@ -47,35 +47,43 @@
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
+<td class="itemname">Class&nbsp;<a class="bold" href="npl.CloneNotSupportedException.html"><code>CloneNotSupportedException</code></a></td>
+<td class="itemdesc">&nbsp;</td>
+</tr>
+<tr class="list">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.IllegalArgumentException.html"><code>IllegalArgumentException</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.IndexOutOfBoundsException.html"><code>IndexOutOfBoundsException</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.ArrayIndexOutOfBoundsException.html"><code>ArrayIndexOutOfBoundsException</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.StringIndexOutOfBoundsException.html"><code>StringIndexOutOfBoundsException</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.NumberFormatException.html"><code>NumberFormatException</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname">Class&nbsp;<a class="bold" href="npl.UnsupportedOperationException.html"><code>UnsupportedOperationException</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname">Interface&nbsp;<a class="bold" href="npl.AutoCloseable.html"><code>AutoCloseable</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname">Interface&nbsp;<a class="bold" href="npl.AutoDestroyable.html"><code>AutoDestroyable</code></a></td>
+<td class="itemdesc">&nbsp;</td>
+</tr>
+<tr class="list">
+<td class="itemname">Interface&nbsp;<a class="bold" href="npl.Cloneable.html"><code>Cloneable</code></a></td>
 <td class="itemdesc">&nbsp;</td>
 </tr>
 <tr class="list2">
@@ -132,13 +140,31 @@
 <td class="itemcode"><code>function <strong><a href="npl.html#signedRightShift">signedRightShift</a></strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <strong><a href="npl.html#isAutoCloseable">isAutoCloseable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.html#childMethodImplementationDiffers">childMethodImplementationDiffers</a></strong>(cls : TClass; intfc : TGUID; methodIndex : <a href="npl.html#int">int</a>) : boolean;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <strong><a href="npl.html#isAutoDestroyable">isAutoDestroyable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.html#isAutoCloseable">isAutoCloseable</a></strong>(cls : TClass) : boolean; overload;</code></td>
 </tr>
 <tr class="list">
-<td class="itemcode"><code>function <strong><a href="npl.html#isComparable">isComparable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.html#isAutoCloseable">isAutoCloseable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <strong><a href="npl.html#isAutoDestroyable">isAutoDestroyable</a></strong>(cls : TClass) : boolean; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <strong><a href="npl.html#isAutoDestroyable">isAutoDestroyable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <strong><a href="npl.html#isCloneable">isCloneable</a></strong>(cls : TClass) : boolean; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <strong><a href="npl.html#isCloneable">isCloneable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code>function <strong><a href="npl.html#isComparable">isComparable</a></strong>(cls : TClass) : boolean; overload;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code>function <strong><a href="npl.html#isComparable">isComparable</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Types"></span><h3 class="summary">Types</h3>
@@ -315,31 +341,37 @@
 <td class="itemcode"><code><strong><a href="npl.html#uint32arr">uint32arr</a></strong>   = array of <a href="npl.html#uint32">uint32</a>;</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#uint64arr">uint64arr</a></strong>   = array of uint64;</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#sbytearr">sbytearr</a></strong>    = array of <a href="npl.html#sbyte">sbyte</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#ubytearr">ubytearr</a></strong>    = array of <a href="npl.html#ubyte">ubyte</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#shortarr">shortarr</a></strong>    = array of <a href="npl.html#short">short</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#ushortarr">ushortarr</a></strong>   = array of <a href="npl.html#ushort">ushort</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#intarr">intarr</a></strong>      = array of <a href="npl.html#int">int</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#uintarr">uintarr</a></strong>     = array of <a href="npl.html#uint">uint</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#longarr">longarr</a></strong>     = array of <a href="npl.html#long">long</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#wordarr">wordarr</a></strong>     = array of word;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#dwordarr">dwordarr</a></strong>    = array of <a href="npl.html#dword">dword</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#qwordarr">qwordarr</a></strong>    = array of qword;</code></td>
 </tr>
 <tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#pointerarr">pointerarr</a></strong>  = array of pointer;</code></td>
@@ -411,117 +443,120 @@
 <td class="itemcode"><code><strong><a href="npl.html#NilPointerExceptionClass">NilPointerExceptionClass</a></strong> = class of <a href="npl.NilPointerException.html">NilPointerException</a>;</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#CloneNotSupportedExceptionClass">CloneNotSupportedExceptionClass</a></strong> = class of <a href="npl.CloneNotSupportedException.html">CloneNotSupportedException</a>;</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#IllegalArgumentExceptionClass">IllegalArgumentExceptionClass</a></strong> = class of <a href="npl.IllegalArgumentException.html">IllegalArgumentException</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#IndexOutOfBoundsExceptionClass">IndexOutOfBoundsExceptionClass</a></strong> = class of <a href="npl.IndexOutOfBoundsException.html">IndexOutOfBoundsException</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#ArrayIndexOutOfBoundsExceptionClass">ArrayIndexOutOfBoundsExceptionClass</a></strong> = class of <a href="npl.ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#StringIndexOutOfBoundsExceptionClass">StringIndexOutOfBoundsExceptionClass</a></strong> = class of <a href="npl.StringIndexOutOfBoundsException.html">StringIndexOutOfBoundsException</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NumberFormatExceptionClass">NumberFormatExceptionClass</a></strong> = class of <a href="npl.NumberFormatException.html">NumberFormatException</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#UnsupportedOperationExceptionClass">UnsupportedOperationExceptionClass</a></strong> = class of <a href="npl.UnsupportedOperationException.html">UnsupportedOperationException</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NPLNumberClass">NPLNumberClass</a></strong> = class of <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NPLByteClass">NPLByteClass</a></strong> = class of <a href="npl.NPLByte.html">NPLByte</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NPLShortClass">NPLShortClass</a></strong> = class of <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NPLIntegerClass">NPLIntegerClass</a></strong> = class of <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NPLLongClass">NPLLongClass</a></strong> = class of <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NPLFloatClass">NPLFloatClass</a></strong> = class of <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NPLDoubleClass">NPLDoubleClass</a></strong> = class of <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NPLBooleanClass">NPLBooleanClass</a></strong> = class of <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NPLANSICharacterClass">NPLANSICharacterClass</a></strong> = class of <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NPLANSIStringClass">NPLANSIStringClass</a></strong> = class of <a href="npl.NPLANSIString.html">NPLANSIString</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NObject">NObject</a></strong>         = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NClass">NClass</a></strong>              = <a href="npl.html#NPLClass">NPLClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NNumber">NNumber</a></strong>         = <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NNumberClass">NNumberClass</a></strong>        = <a href="npl.html#NPLNumberClass">NPLNumberClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NByte">NByte</a></strong>           = <a href="npl.NPLByte.html">NPLByte</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NByteClass">NByteClass</a></strong>          = <a href="npl.html#NPLByteClass">NPLByteClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NShort">NShort</a></strong>          = <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NShortClass">NShortClass</a></strong>         = <a href="npl.html#NPLShortClass">NPLShortClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NInteger">NInteger</a></strong>        = <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NIntegerClass">NIntegerClass</a></strong>       = <a href="npl.html#NPLIntegerClass">NPLIntegerClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NLong">NLong</a></strong>           = <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NLongClass">NLongClass</a></strong>          = <a href="npl.html#NPLLongClass">NPLLongClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NFloat">NFloat</a></strong>          = <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NFloatClass">NFloatClass</a></strong>         = <a href="npl.html#NPLFloatClass">NPLFloatClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NDouble">NDouble</a></strong>         = <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NDoubleClass">NDoubleClass</a></strong>        = <a href="npl.html#NPLDoubleClass">NPLDoubleClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NBoolean">NBoolean</a></strong>        = <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NBooleanClass">NBooleanClass</a></strong>       = <a href="npl.html#NPLBooleanClass">NPLBooleanClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NANSICharacter">NANSICharacter</a></strong>  = <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NANSICharacterClass">NANSICharacterClass</a></strong> = <a href="npl.html#NPLANSICharacterClass">NPLANSICharacterClass</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NANSIString">NANSIString</a></strong>     = <a href="npl.NPLANSIString.html">NPLANSIString</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NANSIStringClass">NANSIStringClass</a></strong>    = <a href="npl.html#NPLANSIStringClass">NPLANSIStringClass</a>;</code></td>
 </tr>
 </table>
@@ -567,33 +602,36 @@
 <td class="itemcode"><code><strong><a href="npl.html#AUTODESTROYABLEGSTR">AUTODESTROYABLEGSTR</a></strong> = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';</code></td>
 </tr>
 <tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#CLONEABLEGSTR">CLONEABLEGSTR</a></strong>       = '{28C824E5-8F33-4EAE-9190-9B24198703CD}';</code></td>
+</tr>
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#COMPARABLEGSTR">COMPARABLEGSTR</a></strong>      = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#SStringIndexOutOfRange">SStringIndexOutOfRange</a></strong> = 'String index out of range: %d';</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#SForInputString">SForInputString</a></strong> = 'For input string: ''%s''';</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#SValueOutOfRangeFromInput">SValueOutOfRangeFromInput</a></strong> = 'Value %d out of range from input ''%s''';</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#SValueOutOfRangeValueRadix">SValueOutOfRangeValueRadix</a></strong> = 'Value out of range. Value:''%s'' Radix:%d';</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#SObjectWrongType">SObjectWrongType</a></strong> = 'Object must be of type %s';</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#SRadixGreaterThan">SRadixGreaterThan</a></strong> = 'radix %d greater than npl_ANSICharacter.MAX_RADIX';</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#SRadixLessThan">SRadixLessThan</a></strong> = 'radix %d less than npl_ANSICharacter.MIN_RADIX';</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#SSignInWrongPosition">SSignInWrongPosition</a></strong> = 'Sign character in wrong position';</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#SZeroLengthString">SZeroLengthString</a></strong> = 'Zero length string';</code></td>
 </tr>
 </table>
@@ -615,21 +653,63 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="isAutoCloseable"></span><code>function <strong>isAutoCloseable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+<td class="itemcode"><span id="childMethodImplementationDiffers"></span><code>function <strong>childMethodImplementationDiffers</strong>(cls : TClass; intfc : TGUID; methodIndex : <a href="npl.html#int">int</a>) : boolean;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="isAutoDestroyable"></span><code>function <strong>isAutoDestroyable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+<td class="itemcode"><span id="isAutoCloseable"></span><code>function <strong>isAutoCloseable</strong>(cls : TClass) : boolean; overload;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="isComparable"></span><code>function <strong>isComparable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean;</code></td>
+<td class="itemcode"><span id="isAutoCloseable"></span><code>function <strong>isAutoCloseable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isAutoDestroyable"></span><code>function <strong>isAutoDestroyable</strong>(cls : TClass) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isAutoDestroyable"></span><code>function <strong>isAutoDestroyable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isCloneable"></span><code>function <strong>isCloneable</strong>(cls : TClass) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isCloneable"></span><code>function <strong>isCloneable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isComparable"></span><code>function <strong>isComparable</strong>(cls : TClass) : boolean; overload;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="isComparable"></span><code>function <strong>isComparable</strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; overload;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -1036,6 +1116,13 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
+<td class="itemcode"><span id="uint64arr"></span><code><strong>uint64arr</strong>   = array of uint64;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
 <td class="itemcode"><span id="sbytearr"></span><code><strong>sbytearr</strong>    = array of <a href="npl.html#sbyte">sbyte</a>;</code></td>
 </tr>
 <tr><td colspan="1">
@@ -1093,6 +1180,13 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="dwordarr"></span><code><strong>dwordarr</strong>    = array of <a href="npl.html#dword">dword</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="qwordarr"></span><code><strong>qwordarr</strong>    = array of qword;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -1293,6 +1387,13 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="NilPointerExceptionClass"></span><code><strong>NilPointerExceptionClass</strong> = class of <a href="npl.NilPointerException.html">NilPointerException</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="CloneNotSupportedExceptionClass"></span><code><strong>CloneNotSupportedExceptionClass</strong> = class of <a href="npl.CloneNotSupportedException.html">CloneNotSupportedException</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -1651,6 +1752,13 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="AUTODESTROYABLEGSTR"></span><code><strong>AUTODESTROYABLEGSTR</strong> = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="CLONEABLEGSTR"></span><code><strong>CLONEABLEGSTR</strong>       = '{28C824E5-8F33-4EAE-9190-9B24198703CD}';</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
