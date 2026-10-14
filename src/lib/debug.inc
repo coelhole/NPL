@@ -1,3 +1,5 @@
+{$DEFINE NPLDEBUG}
+
 {$IFDEF VER140}  { Delphi 6 }
   {$MESSAGE WARN 'Compilador v140 (Delphi 6)'}
 {$ENDIF}

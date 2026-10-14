@@ -13,6 +13,9 @@ interface
 uses
   classes
   ,SysUtils
+  {$IFDEF NPLDEBUG}
+  ,npl_debug
+  {$ENDIF}
   {$IFDEF WINDOWS}
   ,Windows
   {$ENDIF}
@@ -78,6 +81,14 @@ type
 {$endif FPC}
 {$endif DELPHI5OROLDER}
 
+{$ifdef DELPHI6OROLDER}
+
+// some definitions not available prior to Delphi 7
+type
+  UInt64 = Int64;
+
+{$endif}
+
 const
 {$IFDEF DELPHI5OROLDER}
   S_OK = 0;
@@ -111,8 +122,8 @@ resourcestring
   SValueOutOfRangeFromInput = 'Value %d out of range from input ''%s''';
   SValueOutOfRangeValueRadix = 'Value out of range. Value:''%s'' Radix:%d';
   SObjectWrongType = 'Object must be of type %s';
-  SRadixGreaterThan = 'radix %d greater than npl_Character.MAX_RADIX';
-  SRadixLessThan = 'radix %d less than npl_Character.MIN_RADIX';
+  SRadixGreaterThan = 'radix %d greater than npl_ANSICharacter.MAX_RADIX';
+  SRadixLessThan = 'radix %d less than npl_ANSICharacter.MIN_RADIX';
   SSignInWrongPosition = 'Sign character in wrong position';
   SZeroLengthString = 'Zero length string';
 
@@ -135,7 +146,7 @@ type
   int     = int32;
   uint    = uint32;
   long    = int64;
-{$IFDEF FPC}
+{$IFDEF HASUINT64}
   ulong   = uint64;
 {$ELSE}
   ulong   = long;
@@ -149,7 +160,7 @@ type
   wstring = widestring;
 {$IFDEF CPU64}
   nint    = int64;
-  {$IFDEF FPC}
+  {$IFDEF HASUINT64}
   nuint   = uint64;
   {$ELSE}
   nuint   = nint;
@@ -275,9 +286,12 @@ type
   NPLObject=class(TObject, IObject)
   //Eis aqui nossa raiz da hierarquia de classes!
   private
-    fIsAutoDestroyable, fIsAutoCloseable : boolean;
+    fIsAutoDestroyable : boolean;
+  {$IFNDEF AUTOCLOSEABLE_OFF}
+    fIsAutoCloseable : boolean;
     fAutoCloaseableEntry : PInterfaceEntry;
     fAutoCloseableInstancePtr, fAutoCloseableVTablePtr, fClosePointer : Pointer;
+  {$ENDIF}
   protected
     fRefCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
     fDestroyCount : {$IFDEF FPC}longint{$ELSE}integer{$ENDIF};
@@ -296,6 +310,7 @@ type
     function hashCode : int; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
     function this : NPLObject;
+    destructor destroy; override;
   end;
 {$M-}
 
@@ -387,17 +402,17 @@ type
   NPLByte = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLByte>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : sbyte); overload;
-    constructor create(const s : string); overload;
+    constructor create(const s : ansistring); overload;
     constructor create(s : NPLANSIString); overload;
     function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherByte : {$IFDEF GENERICS}NPLByte{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
     class function toString(b : sbyte) : string; overload;
-    class function parseByte(const s : string; radix : int) : sbyte; overload;
-    class function parseByte(const s : string) : sbyte; overload;
+    class function parseByte(const s : ansistring; radix : int) : sbyte; overload;
+    class function parseByte(const s : ansistring) : sbyte; overload;
     class function decode(nm : NPLANSIString) : sbyte; overload;
-    class function decode(const nm : string) : sbyte; overload;
+    class function decode(const nm : ansistring) : sbyte; overload;
     class function compare(x, y : sbyte) : int;
     property value : sbyte read fValue.sbyteValue write fValue.sbyteValue;
   end;
@@ -407,17 +422,17 @@ type
   NPLShort = class(NPLNumber,{$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<NPLShort>{$ELSE}Comparable{$ENDIF})
   public
     constructor create(aValue : short); overload;
-    constructor create(const s : string); overload;
+    constructor create(const s : ansistring); overload;
     constructor create(s : NPLANSIString); overload;
     function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
     function toString : string; overload; override;
     function hashCode : int; override;
     class function toString(s : short) : string; overload;
-    class function parseShort(const s : string; radix : int) : short; overload;
-    class function parseShort(const s : string) : short; overload;
+    class function parseShort(const s : ansistring; radix : int) : short; overload;
+    class function parseShort(const s : ansistring) : short; overload;
     class function decode(nm : NPLANSIString) : short; overload;
-    class function decode(const nm : string) : short; overload;
+    class function decode(const nm : ansistring) : short; overload;
     class function compare(x, y : short) : int;
     class function reverseBytes(i : short) : short;
     property value : short read fValue.shortValue write fValue.shortValue;
@@ -430,7 +445,7 @@ type
     class function toUnsignedString(i, shift : int) : string;
   public
     constructor create(aValue : int); overload;
-    constructor create(const s : string); overload;
+    constructor create(const s : ansistring); overload;
     constructor create(s : NPLANSIString); overload;
     function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
@@ -441,10 +456,10 @@ type
     class function toHexString(i : int) : string;
     class function toOctalString(i : int) : string;
     class function toBinaryString(i : int) : string;
-    class function parseInt(const s : string; radix : int) : int; overload;
-    class function parseInt(const s : string) : int; overload;
+    class function parseInt(const s : ansistring; radix : int) : int; overload;
+    class function parseInt(const s : ansistring) : int; overload;
     class function decode(nm : NPLANSIString) : int; overload;
-    class function decode(const nm : string) : int; overload;
+    class function decode(const nm : ansistring) : int; overload;
     class function compare(x, y : int) : int;
     class function highestOneBit(i : int) : int;
     class function lowestOneBit(i : int) : int;
@@ -466,7 +481,7 @@ type
     class function toUnsignedString(i : long; shift : int) : string;
   public
     constructor create(aValue : long); overload;
-    constructor create(const s : string); overload;
+    constructor create(const s : ansistring); overload;
     constructor create(s : NPLANSIString); overload;
     function equals(obj : NPLObject) : boolean; override;
     function compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
@@ -477,10 +492,10 @@ type
     class function toHexString(i : long) : string;
     class function toOctalString(i : long) : string;
     class function toBinaryString(i : long) : string;
-    class function parseLong(const s : string; radix : int) : long; overload;
-    class function parseLong(const s : string) : long; overload;
+    class function parseLong(const s : ansistring; radix : int) : long; overload;
+    class function parseLong(const s : ansistring) : long; overload;
     class function decode(nm : NPLANSIString) : long; overload;
-    class function decode(const nm : string) : long; overload;
+    class function decode(const nm : ansistring) : long; overload;
     class function compare(x, y : long) : int;
     class function highestOneBit(i : long) : long;
     class function lowestOneBit(i : long) : long;
@@ -662,8 +677,8 @@ function isComparable(obj : NPLObject) : boolean;
 implementation
 
 uses
-  npl_Byte
-  ,npl_Character
+  npl_ANSICharacter
+  ,npl_Byte
   ,npl_Double
   ,npl_Float
   ,npl_Integer
@@ -747,24 +762,6 @@ begin
   result := (obj.classType.getInterfaceEntry(stringToGUID(COMPARABLEGSTR)) <> nil);
 end;
 
-var
-  UpperANSILetterCodePoints : ANSICodePoints =
-    [Low(UpperASCIILetterCodePoint)..High(UpperASCIILetterCodePoint)] +
-    [138,140,142,159,192..214,216..222]  //extended ASCII
-  ;
-  LowerANSILetterCodePoints : ANSICodePoints =
-    [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
-    [131,154,156,158,170,181,186,223..246,248..255]  //extended ASCII
-  ;
-  ANSILetterCodePoints : ANSICodePoints =
-    [Low(UpperASCIILetterCodePoint)..High(UpperASCIILetterCodePoint)] +
-    [Low(LowerASCIILetterCodePoint)..High(LowerASCIILetterCodePoint)] +
-    [131,138,140,142,154,156,158,159,170,181,186,192..214,216..246,248..255]  //extended ASCII
-  ;
-  ANSIDigitCodePoints : ANSICodePoints  = [Low(ANSIDigitCodePoint)..High(ANSIDigitCodePoint)];
-  ANSIDigits          : set of ansichar = [Low(ANSIDigit)..High(ANSIDigit)];
-  ASCIILetters        : set of ansichar = [Low(UpperASCIILetter)..High(UpperASCIILetter)] + [Low(LowerASCIILetter)..High(LowerASCIILetter)];
-
 class function NPLObject.unitName : ansistring;
 var
   typeInfo : PTypeInfo;
@@ -847,11 +844,15 @@ begin
   result := interlockedIncrement(fRefCount);
 end;
 
+{$IFNDEF AUTOCLOSEABLE_OFF}
 type
   CloseProc = procedure(const aSelf: Pointer);
 function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
 var
   Close : CloseProc;
+{$ELSE}
+function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
+{$ENDIF}
 begin
   if fDestroyCount=0 then
     result := interlockedDecrement(fRefCount)
@@ -861,10 +862,21 @@ begin
   end;
 
   if result = 0 then begin
-    if fIsAutoCloseable then begin
+    {$IFNDEF AUTOCLOSEABLE_OFF}
+    if fIsAutoCloseable then try
       @Close := fClosePointer;
       Close(fAutoCloseableInstancePtr);
+    except
+      {$IFNDEF AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE}
+        on e : Exception do
+          //TODO: redefinir quando tivermos innerexceptions
+          raise NPLException.createFmt('%s: %s: %p',[e.classname,e.message,self]);
+      {$ELSE}
+        //compilation directive AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE is defined
+        //no exception will be raised
+      {$ENDIF}
     end;
+    {$ENDIF}
     if fIsAutoDestroyable then
       if interlockedIncrement(fDestroyCount)=1 then
         destroy;
@@ -873,8 +885,11 @@ end;
 
 procedure NPLObject.afterConstruction;
 begin
+{$IFDEF NPLDEBUG}debug(pointer(self),'afterConstruction');{$ENDIF}
+
   interlockedDecrement(fRefCount);
   fIsAutoDestroyable := (self.classType.getInterfaceEntry(AutoDestroyable) <> nil);
+{$IFNDEF AUTOCLOSEABLE_OFF}
   fAutoCloaseableEntry := self.getInterfaceEntry(AutoCloseable);
   fIsAutoCloseable := (fAutoCloaseableEntry <> nil);
   if fIsAutoCloseable then begin
@@ -885,16 +900,19 @@ begin
     fAutoCloseableInstancePtr := nil;
     fAutoCloseableVTablePtr := nil;
     fClosePointer := nil;
-  end;      
+  end;
+{$ENDIF}
 end;
 
 procedure NPLObject.beforeDestruction;
 begin
+{$IFDEF NPLDEBUG}debug(pointer(self),'beforeDestruction');{$ENDIF}
+
   if fRefCount <> 0 then
 {$IFNDEF FPC}
     System.RunError(2);
 {$ELSE}
-    System.RunError(204);  
+    System.RunError(204);
 {$ENDIF}
 end;
 
@@ -905,6 +923,25 @@ begin
     NPLObject(result).fRefCount := 1;
     NPLObject(result).fDestroyCount := 0;
   end;
+end;
+
+destructor NPLObject.destroy;
+begin
+{$IFDEF NPLDEBUG}debug(pointer(self),'destroy');{$ENDIF}
+
+  fRefCount:=0;
+  fDestroyCount:=0;
+  fIsAutoDestroyable:=false;
+
+{$IFNDEF AUTOCLOSEABLE_OFF}
+  fIsAutoCloseable:=false;
+  fClosePointer:=nil;
+  fAutoCloseableVTablePtr:=nil;
+  fAutoCloseableInstancePtr:=nil;
+  fAutoCloaseableEntry:=nil;
+{$ENDIF}
+
+  inherited destroy;
 end;
 
 constructor NPLException.create;
@@ -957,7 +994,7 @@ begin
   fValue.sbyteValue := aValue;
 end;
 
-constructor NPLByte.create(const s : string);
+constructor NPLByte.create(const s : ansistring);
 begin
   fValue.sbyteValue := decode(s);
 end;
@@ -1005,7 +1042,7 @@ begin
   result := NPLInteger.toString(int(b), 10);
 end;
 
-class function NPLByte.parseByte(const s : string; radix : int) : sbyte;
+class function NPLByte.parseByte(const s : ansistring; radix : int) : sbyte;
 var
   i : int;
 begin
@@ -1015,7 +1052,7 @@ begin
   result := sbyte(i);
 end;
 
-class function NPLByte.parseByte(const s : string) : sbyte;
+class function NPLByte.parseByte(const s : ansistring) : sbyte;
 begin
   result := parseByte(s, 10);
 end;
@@ -1025,7 +1062,7 @@ begin
   result := decode(nm.toString);
 end;
 
-class function NPLByte.decode(const nm : string) : sbyte;
+class function NPLByte.decode(const nm : ansistring) : sbyte;
 var
   i : int;
 begin
@@ -1045,7 +1082,7 @@ begin
   fValue.shortValue := aValue;
 end;
 
-constructor NPLShort.create(const s : string);
+constructor NPLShort.create(const s : ansistring);
 begin
   fValue.shortValue := decode(s);
 end;
@@ -1093,7 +1130,7 @@ begin
   result := NPLInteger.toString(int(s), 10);
 end;
 
-class function NPLShort.parseShort(const s : string; radix : int) : short;
+class function NPLShort.parseShort(const s : ansistring; radix : int) : short;
 var
   i : int;
 begin
@@ -1103,7 +1140,7 @@ begin
   result := short(i);
 end;
 
-class function NPLShort.parseShort(const s : string) : short;
+class function NPLShort.parseShort(const s : ansistring) : short;
 begin
   result := parseShort(s, 10);
 end;
@@ -1113,7 +1150,7 @@ begin
   result := decode(nm.toString);
 end;
 
-class function NPLShort.decode(const nm : string) : short;
+class function NPLShort.decode(const nm : ansistring) : short;
 var
   i : int;
 begin
@@ -1138,7 +1175,7 @@ begin
   fValue.intValue := aValue;
 end;
 
-constructor NPLInteger.create(const s : string);
+constructor NPLInteger.create(const s : ansistring);
 begin
   fValue.intValue := decode(s);
 end;
@@ -1187,7 +1224,7 @@ var
   negative : boolean;
   charPos : int;
 begin
-  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+  if (radix < npl_ANSICharacter.MIN_RADIX) or (radix > npl_ANSICharacter.MAX_RADIX) then
     radix := 10;
 
   if radix = 10 then begin
@@ -1268,7 +1305,7 @@ begin
   result := toUnsignedString(i, 1);
 end;
 
-class function NPLInteger.parseInt(const s : string; radix : int) : int;
+class function NPLInteger.parseInt(const s : ansistring; radix : int) : int;
 var
   negative : boolean;
   i, len, limit, multmin, digit : int;
@@ -1276,9 +1313,9 @@ var
 begin
   if s = '' then
     raise NumberFormatException.create;
-  if radix < npl_Character.MIN_RADIX then
+  if radix < npl_ANSICharacter.MIN_RADIX then
     raise NumberFormatException.CreateFmt(SRadixLessThan,[radix]);
-  if radix > npl_Character.MAX_RADIX then
+  if radix > npl_ANSICharacter.MAX_RADIX then
     raise NumberFormatException.CreateFmt(SRadixGreaterThan,[radix]);
   result := 0;
   negative := false;
@@ -1316,7 +1353,7 @@ begin
     result := - result;
 end;
 
-class function NPLInteger.parseInt(const s : string) : int;
+class function NPLInteger.parseInt(const s : ansistring) : int;
 begin
   result := parseInt(s,10);
 end;
@@ -1368,7 +1405,7 @@ begin
   end;
 end;
 
-class function NPLInteger.decode(const nm : string) : int;
+class function NPLInteger.decode(const nm : ansistring) : int;
 var
   nmstr : NANSIString;
 begin
@@ -1548,7 +1585,7 @@ begin
   fValue.longValue := aValue;
 end;
 
-constructor NPLLong.create(const s : string);
+constructor NPLLong.create(const s : ansistring);
 begin
   fValue.longValue := decode(s);
 end;
@@ -1597,7 +1634,7 @@ var
   charPos : int;
   negative : boolean;
 begin
-  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+  if (radix < npl_ANSICharacter.MIN_RADIX) or (radix > npl_ANSICharacter.MAX_RADIX) then
     radix := 10;
 
   if radix = 10 then begin
@@ -1677,7 +1714,7 @@ begin
   result := string(buf);
 end;
 
-class function NPLLong.parseLong(const s : string; radix : int) : long;
+class function NPLLong.parseLong(const s : ansistring; radix : int) : long;
 var
   negative : boolean;
   i, len, digit : int;
@@ -1686,9 +1723,9 @@ var
 begin
   if s = '' then
     raise NumberFormatException.create;
-  if radix < npl_Character.MIN_RADIX then
+  if radix < npl_ANSICharacter.MIN_RADIX then
     raise NumberFormatException.CreateFmt(SRadixLessThan,[radix]);
-  if radix > npl_Character.MAX_RADIX then
+  if radix > npl_ANSICharacter.MAX_RADIX then
     raise NumberFormatException.CreateFmt(SRadixGreaterThan,[radix]);
   result := 0;
   negative := false;
@@ -1726,7 +1763,7 @@ begin
     result := - result;
 end;
 
-class function NPLLong.parseLong(const s : string) : long;
+class function NPLLong.parseLong(const s : ansistring) : long;
 begin
   result := parseLong(s, 10);
 end;
@@ -1778,7 +1815,7 @@ begin
   end;
 end;
 
-class function NPLLong.decode(const nm : string) : long;
+class function NPLLong.decode(const nm : ansistring) : long;
 var
   nmstr : NANSIString;
 begin
@@ -2492,7 +2529,7 @@ end;
 class function NPLANSICharacter.digit(codePoint : int; radix : int) : int;
 begin
   result := -1;
-  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+  if (radix < npl_ANSICharacter.MIN_RADIX) or (radix > npl_ANSICharacter.MAX_RADIX) then
     exit;
   if not (((codePoint > 47) and (codePoint < 58)) or ((codePoint > 64) and (codePoint < 91)) or ((codePoint > 96) and (codePoint < 123))) then
     exit;
@@ -2520,7 +2557,7 @@ class function NPLANSICharacter.forDigit(digit, radix : int) : ansichar;
 begin
   result := NUL;
 
-  if (radix < npl_Character.MIN_RADIX) or (radix > npl_Character.MAX_RADIX) then
+  if (radix < npl_ANSICharacter.MIN_RADIX) or (radix > npl_ANSICharacter.MAX_RADIX) then
     exit;
 
   if (digit >= radix) or (digit < 0) then
