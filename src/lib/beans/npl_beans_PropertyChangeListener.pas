@@ -17,7 +17,7 @@ type
     procedure propertyChange(evt : PropertyChangeEvent);
   end;
 
-  PropertyChangeListenerArray = array of PropertyChangeListener;
+  ArrOfPropertyChangeListener = array of PropertyChangeListener;
 
 function implementsPropertyChangeListener(cls : TClass) : boolean; overload;
 function implementsPropertyChangeListener(obj : NPLObject) : boolean; overload;

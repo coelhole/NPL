@@ -86,43 +86,43 @@
 </tr>
 <tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#unitName">unitName</a></strong>: ansistring;</code></td>
+<td class="itemcode"><code>destructor <strong><a href="npl.NPLObject.html#destroy">destroy</a></strong>; override;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#unitName">unitName</a></strong>: ansistring;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#qualifiedClassName">qualifiedClassName</a></strong>: ansistring;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#implementsInterface">implementsInterface</a></strong>(const IID: TGUID) : boolean; overload;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>class function <strong><a href="npl.NPLObject.html#implementsInterface">implementsInterface</a></strong>(const gstr : ansistring) : boolean; overload;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#hashCode">hashCode</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#equals">equals</a></strong>(obj : <a href="npl.NPLObject.html">NPLObject</a>) : boolean; reintroduce; virtual;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#clone">clone</a></strong>: <a href="npl.NPLObject.html">NPLObject</a>; virtual;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#toString">toString</a></strong>: string; reintroduce; virtual;</code></td>
 </tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#this">this</a></strong>: <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
-</tr>
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>destructor <strong><a href="npl.NPLObject.html#destroy">destroy</a></strong>; override;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLObject.html#this">this</a></strong>: <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -235,6 +235,14 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="destroy"></span><code>destructor <strong>destroy</strong>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="unitName"></span><code>class function <strong>unitName</strong>: ansistring;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -300,14 +308,6 @@
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="this"></span><code>function <strong>this</strong>: <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="destroy"></span><code>destructor <strong>destroy</strong>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>

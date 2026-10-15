@@ -130,10 +130,10 @@
 <span id="PasDoc-FuncsProcs"></span><h3 class="summary">Functions and Procedures</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="itemcode"><code>function <strong><a href="npl.html#signedRightShift">signedRightShift</a></strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.html#sshr">sshr</a></strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr class="list2">
-<td class="itemcode"><code>function <strong><a href="npl.html#signedRightShift">signedRightShift</a></strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
+<td class="itemcode"><code>function <strong><a href="npl.html#sshr">sshr</a></strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
 </tr>
 <tr class="list">
 <td class="itemcode"><code>function <strong><a href="npl.html#implementsAutoCloseable">implementsAutoCloseable</a></strong>(cls : TClass) : boolean; overload;</code></td>
@@ -481,70 +481,157 @@
 <td class="itemcode"><code><strong><a href="npl.html#NPLANSIStringClass">NPLANSIStringClass</a></strong> = class of <a href="npl.NPLANSIString.html">NPLANSIString</a>;</code></td>
 </tr>
 <tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#NInterface">NInterface</a></strong>      = <a href="npl.html#NPLInterface">NPLInterface</a>;</code></td>
+</tr>
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NObject">NObject</a></strong>         = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NClass">NClass</a></strong>              = <a href="npl.html#NPLClass">NPLClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NNumber">NNumber</a></strong>         = <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NNumberClass">NNumberClass</a></strong>        = <a href="npl.html#NPLNumberClass">NPLNumberClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NByte">NByte</a></strong>           = <a href="npl.NPLByte.html">NPLByte</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NByteClass">NByteClass</a></strong>          = <a href="npl.html#NPLByteClass">NPLByteClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NShort">NShort</a></strong>          = <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NShortClass">NShortClass</a></strong>         = <a href="npl.html#NPLShortClass">NPLShortClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NInteger">NInteger</a></strong>        = <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NIntegerClass">NIntegerClass</a></strong>       = <a href="npl.html#NPLIntegerClass">NPLIntegerClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NLong">NLong</a></strong>           = <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NLongClass">NLongClass</a></strong>          = <a href="npl.html#NPLLongClass">NPLLongClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NFloat">NFloat</a></strong>          = <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NFloatClass">NFloatClass</a></strong>         = <a href="npl.html#NPLFloatClass">NPLFloatClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NDouble">NDouble</a></strong>         = <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NDoubleClass">NDoubleClass</a></strong>        = <a href="npl.html#NPLDoubleClass">NPLDoubleClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NBoolean">NBoolean</a></strong>        = <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NBooleanClass">NBooleanClass</a></strong>       = <a href="npl.html#NPLBooleanClass">NPLBooleanClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NANSICharacter">NANSICharacter</a></strong>  = <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NANSICharacterClass">NANSICharacterClass</a></strong> = <a href="npl.html#NPLANSICharacterClass">NPLANSICharacterClass</a>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemcode"><code><strong><a href="npl.html#NANSIString">NANSIString</a></strong>     = <a href="npl.NPLANSIString.html">NPLANSIString</a>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemcode"><code><strong><a href="npl.html#NANSIStringClass">NANSIStringClass</a></strong>    = <a href="npl.html#NPLANSIStringClass">NPLANSIStringClass</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLInterface">ArrOfNPLInterface</a></strong>     = array of <a href="npl.html#NPLInterface">NPLInterface</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNInterface">ArrOfNInterface</a></strong>       = array of <a href="npl.html#NInterface">NInterface</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLObject">ArrOfNPLObject</a></strong>        = array of <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNObject">ArrOfNObject</a></strong>          = array of <a href="npl.html#NObject">NObject</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfIObject">ArrOfIObject</a></strong>          = array of <a href="npl.IObject.html">IObject</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfAutoDestroyable">ArrOfAutoDestroyable</a></strong>  = array of <a href="npl.AutoDestroyable.html">AutoDestroyable</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfAutoCloseable">ArrOfAutoCloseable</a></strong>    = array of <a href="npl.AutoCloseable.html">AutoCloseable</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfComparable">ArrOfComparable</a></strong>       = array of <a href="npl.Comparable.html">Comparable</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLNumber">ArrOfNPLNumber</a></strong>        = array of <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNNumber">ArrOfNNumber</a></strong>          = array of <a href="npl.html#NNumber">NNumber</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLByte">ArrOfNPLByte</a></strong>          = array of <a href="npl.NPLByte.html">NPLByte</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNByte">ArrOfNByte</a></strong>            = array of <a href="npl.html#NByte">NByte</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLShort">ArrOfNPLShort</a></strong>         = array of <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNShort">ArrOfNShort</a></strong>           = array of <a href="npl.html#NShort">NShort</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLInteger">ArrOfNPLInteger</a></strong>       = array of <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNInteger">ArrOfNInteger</a></strong>         = array of <a href="npl.html#NInteger">NInteger</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLLong">ArrOfNPLLong</a></strong>          = array of <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNLong">ArrOfNLong</a></strong>            = array of <a href="npl.html#NLong">NLong</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLFloat">ArrOfNPLFloat</a></strong>         = array of <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNFloat">ArrOfNFloat</a></strong>           = array of <a href="npl.html#NFloat">NFloat</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLDouble">ArrOfNPLDouble</a></strong>        = array of <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNDouble">ArrOfNDouble</a></strong>          = array of <a href="npl.html#NDouble">NDouble</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLBoolean">ArrOfNPLBoolean</a></strong>       = array of <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNBoolean">ArrOfNBoolean</a></strong>         = array of <a href="npl.html#NBoolean">NBoolean</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLANSICharacter">ArrOfNPLANSICharacter</a></strong> = array of <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNANSICharacter">ArrOfNANSICharacter</a></strong>   = array of <a href="npl.html#NANSICharacter">NANSICharacter</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNPLANSIString">ArrOfNPLANSIString</a></strong>    = array of <a href="npl.NPLANSIString.html">NPLANSIString</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="itemcode"><code><strong><a href="npl.html#ArrOfNANSIString">ArrOfNANSIString</a></strong>      = array of <a href="npl.html#NANSIString">NANSIString</a>;</code></td>
 </tr>
 </table>
 <span id="PasDoc-Constants"></span><h3 class="summary">Constants</h3>
@@ -623,14 +710,14 @@
 <h3 class="detail">Functions and Procedures</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="signedRightShift"></span><code>function <strong>signedRightShift</strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
+<td class="itemcode"><span id="sshr"></span><code>function <strong>sshr</strong>(value, bits : <a href="npl.html#int">int</a>): <a href="npl.html#int">int</a>; overload;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
-<td class="itemcode"><span id="signedRightShift"></span><code>function <strong>signedRightShift</strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
+<td class="itemcode"><span id="sshr"></span><code>function <strong>sshr</strong>(value : <a href="npl.html#long">long</a>; bits : <a href="npl.html#int">int</a>): <a href="npl.html#long">long</a>; overload;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>
@@ -1475,6 +1562,13 @@
 </table>
 <table class="detail wide_list">
 <tr class="list">
+<td class="itemcode"><span id="NInterface"></span><code><strong>NInterface</strong>      = <a href="npl.html#NPLInterface">NPLInterface</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
 <td class="itemcode"><span id="NObject"></span><code><strong>NObject</strong>         = <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
 </tr>
 <tr><td colspan="1">
@@ -1623,6 +1717,202 @@
 <table class="detail wide_list">
 <tr class="list">
 <td class="itemcode"><span id="NANSIStringClass"></span><code><strong>NANSIStringClass</strong>    = <a href="npl.html#NPLANSIStringClass">NPLANSIStringClass</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLInterface"></span><code><strong>ArrOfNPLInterface</strong>     = array of <a href="npl.html#NPLInterface">NPLInterface</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNInterface"></span><code><strong>ArrOfNInterface</strong>       = array of <a href="npl.html#NInterface">NInterface</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLObject"></span><code><strong>ArrOfNPLObject</strong>        = array of <a href="npl.NPLObject.html">NPLObject</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNObject"></span><code><strong>ArrOfNObject</strong>          = array of <a href="npl.html#NObject">NObject</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfIObject"></span><code><strong>ArrOfIObject</strong>          = array of <a href="npl.IObject.html">IObject</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfAutoDestroyable"></span><code><strong>ArrOfAutoDestroyable</strong>  = array of <a href="npl.AutoDestroyable.html">AutoDestroyable</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfAutoCloseable"></span><code><strong>ArrOfAutoCloseable</strong>    = array of <a href="npl.AutoCloseable.html">AutoCloseable</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfComparable"></span><code><strong>ArrOfComparable</strong>       = array of <a href="npl.Comparable.html">Comparable</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLNumber"></span><code><strong>ArrOfNPLNumber</strong>        = array of <a href="npl.NPLNumber.html">NPLNumber</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNNumber"></span><code><strong>ArrOfNNumber</strong>          = array of <a href="npl.html#NNumber">NNumber</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLByte"></span><code><strong>ArrOfNPLByte</strong>          = array of <a href="npl.NPLByte.html">NPLByte</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNByte"></span><code><strong>ArrOfNByte</strong>            = array of <a href="npl.html#NByte">NByte</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLShort"></span><code><strong>ArrOfNPLShort</strong>         = array of <a href="npl.NPLShort.html">NPLShort</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNShort"></span><code><strong>ArrOfNShort</strong>           = array of <a href="npl.html#NShort">NShort</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLInteger"></span><code><strong>ArrOfNPLInteger</strong>       = array of <a href="npl.NPLInteger.html">NPLInteger</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNInteger"></span><code><strong>ArrOfNInteger</strong>         = array of <a href="npl.html#NInteger">NInteger</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLLong"></span><code><strong>ArrOfNPLLong</strong>          = array of <a href="npl.NPLLong.html">NPLLong</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNLong"></span><code><strong>ArrOfNLong</strong>            = array of <a href="npl.html#NLong">NLong</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLFloat"></span><code><strong>ArrOfNPLFloat</strong>         = array of <a href="npl.NPLFloat.html">NPLFloat</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNFloat"></span><code><strong>ArrOfNFloat</strong>           = array of <a href="npl.html#NFloat">NFloat</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLDouble"></span><code><strong>ArrOfNPLDouble</strong>        = array of <a href="npl.NPLDouble.html">NPLDouble</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNDouble"></span><code><strong>ArrOfNDouble</strong>          = array of <a href="npl.html#NDouble">NDouble</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLBoolean"></span><code><strong>ArrOfNPLBoolean</strong>       = array of <a href="npl.NPLBoolean.html">NPLBoolean</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNBoolean"></span><code><strong>ArrOfNBoolean</strong>         = array of <a href="npl.html#NBoolean">NBoolean</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLANSICharacter"></span><code><strong>ArrOfNPLANSICharacter</strong> = array of <a href="npl.NPLANSICharacter.html">NPLANSICharacter</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNANSICharacter"></span><code><strong>ArrOfNANSICharacter</strong>   = array of <a href="npl.html#NANSICharacter">NANSICharacter</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNPLANSIString"></span><code><strong>ArrOfNPLANSIString</strong>    = array of <a href="npl.NPLANSIString.html">NPLANSIString</a>;</code></td>
+</tr>
+<tr><td colspan="1">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="itemcode"><span id="ArrOfNANSIString"></span><code><strong>ArrOfNANSIString</strong>      = array of <a href="npl.html#NANSIString">NANSIString</a>;</code></td>
 </tr>
 <tr><td colspan="1">
 &nbsp;</td></tr>

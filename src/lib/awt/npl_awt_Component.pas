@@ -142,10 +142,10 @@ type
     function getBaselineResizeBehavior : BaselineResizeBehavior; virtual;
     procedure addPropertyChangeListener(listener : PropertyChangeListener); overload; virtual;
     procedure removePropertyChangeListener(listener : PropertyChangeListener); overload; virtual;
-    function getPropertyChangeListeners : PropertyChangeListenerArray; overload; virtual;
+    function getPropertyChangeListeners : ArrOfPropertyChangeListener; overload; virtual;
     procedure addPropertyChangeListener(propertyName : string; listener : PropertyChangeListener); overload; virtual;
     procedure removePropertyChangeListener(propertyName : string; listener : PropertyChangeListener); overload; virtual;
-    function getPropertyChangeListeners(propertyName : string) : PropertyChangeListenerArray; overload; virtual;
+    function getPropertyChangeListeners(propertyName : string) : ArrOfPropertyChangeListener; overload; virtual;
     procedure doLayout; virtual; abstract;
     property x : int read fX;
     property y : int read fY;
@@ -563,7 +563,7 @@ begin
   end;
 end;
 
-function AWTComponent.getPropertyChangeListeners : PropertyChangeListenerArray;
+function AWTComponent.getPropertyChangeListeners : ArrOfPropertyChangeListener;
 begin
   getTreeLock.enter;
   try
@@ -601,7 +601,7 @@ begin
   end;
 end;
 
-function AWTComponent.getPropertyChangeListeners(propertyName : string) : PropertyChangeListenerArray;
+function AWTComponent.getPropertyChangeListeners(propertyName : string) : ArrOfPropertyChangeListener;
 begin
   getTreeLock.enter;
   try

@@ -34,8 +34,8 @@ type
     procedure firePropertyChange(const propertyName: string; oldValue, newValue: float); overload; virtual;
     procedure firePropertyChange(const propertyName: string; oldValue, newValue: double); overload; virtual;
     function hasListeners(const propertyName: string): boolean; virtual;
-    function getPropertyChangeListeners : PropertyChangeListenerArray; overload; virtual;
-    function getPropertyChangeListeners(const propertyName: string) : PropertyChangeListenerArray; overload; virtual;
+    function getPropertyChangeListeners : ArrOfPropertyChangeListener; overload; virtual;
+    function getPropertyChangeListeners(const propertyName: string) : ArrOfPropertyChangeListener; overload; virtual;
   end;
 
 implementation
@@ -429,7 +429,7 @@ begin
   end;
 end;
 
-function PropertyChangeSupport.getPropertyChangeListeners : PropertyChangeListenerArray;
+function PropertyChangeSupport.getPropertyChangeListeners : ArrOfPropertyChangeListener;
 var
   i, j, totalCount, index : int;
   list : TInterfaceList;
@@ -471,7 +471,7 @@ begin
   end;
 end;
 
-function PropertyChangeSupport.getPropertyChangeListeners(const propertyName : string) : PropertyChangeListenerArray;
+function PropertyChangeSupport.getPropertyChangeListeners(const propertyName : string) : ArrOfPropertyChangeListener;
 var
   i, idx : int;
   list : TInterfaceList;

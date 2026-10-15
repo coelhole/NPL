@@ -312,6 +312,7 @@ type
     procedure afterConstruction; override;
     procedure beforeDestruction; override;
     class function newInstance : TObject; override;
+    destructor destroy; override;
     class function unitName : ansistring;
     class function qualifiedClassName : ansistring;
     class function implementsInterface(const IID: TGUID) : boolean; overload;
@@ -321,7 +322,6 @@ type
     function clone : NPLObject; virtual;
     function toString : string; {$IFDEF FPC}reintroduce; {$ENDIF}virtual;
     function this : NPLObject;
-    destructor destroy; override;
   end;
 {$M-}
 
@@ -665,6 +665,7 @@ type
 
   NPLANSIStringClass = class of NPLANSIString;
 
+  NInterface      = NPLInterface;
   NObject         = NPLObject;        NClass              = NPLClass;
   NNumber         = NPLNumber;        NNumberClass        = NPLNumberClass;
   NByte           = NPLByte;          NByteClass          = NPLByteClass;
@@ -677,11 +678,40 @@ type
   NANSICharacter  = NPLANSICharacter; NANSICharacterClass = NPLANSICharacterClass;
   NANSIString     = NPLANSIString;    NANSIStringClass    = NPLANSIStringClass;
 
+  ArrOfNPLInterface     = array of NPLInterface;
+  ArrOfNInterface       = array of NInterface;
+  ArrOfNPLObject        = array of NPLObject;
+  ArrOfNObject          = array of NObject;
+  ArrOfIObject          = array of IObject;
+  ArrOfAutoDestroyable  = array of AutoDestroyable;
+  ArrOfAutoCloseable    = array of AutoCloseable;
+  ArrOfComparable       = array of Comparable;
+  ArrOfNPLNumber        = array of NPLNumber;
+  ArrOfNNumber          = array of NNumber;
+  ArrOfNPLByte          = array of NPLByte;
+  ArrOfNByte            = array of NByte;
+  ArrOfNPLShort         = array of NPLShort;
+  ArrOfNShort           = array of NShort;
+  ArrOfNPLInteger       = array of NPLInteger;
+  ArrOfNInteger         = array of NInteger;
+  ArrOfNPLLong          = array of NPLLong;
+  ArrOfNLong            = array of NLong;
+  ArrOfNPLFloat         = array of NPLFloat;
+  ArrOfNFloat           = array of NFloat;
+  ArrOfNPLDouble        = array of NPLDouble;
+  ArrOfNDouble          = array of NDouble;
+  ArrOfNPLBoolean       = array of NPLBoolean;
+  ArrOfNBoolean         = array of NBoolean;
+  ArrOfNPLANSICharacter = array of NPLANSICharacter;
+  ArrOfNANSICharacter   = array of NANSICharacter;
+  ArrOfNPLANSIString    = array of NPLANSIString;
+  ArrOfNANSIString      = array of NANSIString;
+
 {$IFDEF DELPHI5OROLDER}
 function stringToGUID(const S: string): TGUID;
 {$ENDIF}
-function signedRightShift(value, bits : int): int; overload;
-function signedRightShift(value : long; bits : int): long; overload;
+function sshr(value, bits : int): int; overload;
+function sshr(value : long; bits : int): long; overload;
 function implementsAutoCloseable(cls : TClass) : boolean; overload;
 function implementsAutoCloseable(obj : NPLObject) : boolean; overload;
 function implementsAutoDestroyable(cls : TClass) : boolean; overload;
@@ -714,7 +744,7 @@ begin
 end;
 {$ENDIF}
 
-function signedRightShift(value, bits : int): int;
+function sshr(value, bits : int): int;
 begin
   if bits = 0 then
     result := value
@@ -733,7 +763,7 @@ begin
   end;
 end;
 
-function signedRightShift(value : long; bits : int): long;
+function sshr(value : long; bits : int): long;
 begin
   if bits = 0 then
     result := value
@@ -816,57 +846,6 @@ begin
   end;
 end;
 
-class function NPLObject.qualifiedClassName : ansistring;
-var
-  uname : ansistring;
-begin
-  uname := unitName;
-  if uname='' then
-    result:=className
-  else
-    result:=concat(uname, '.', className);
-end;
-
-class function NPLObject.implementsInterface(const IID: TGUID) : boolean;
-begin
-  result := (getInterfaceEntry(IID)<>nil);
-end;
-
-class function NPLObject.implementsInterface(const gstr : ansistring) : boolean;
-begin
-  result := (getInterfaceEntry(stringToGUID(gstr))<>nil);
-end;
-
-function NPLObject.hashCode : int;
-begin
-{$IFDEF CPU64}
-  result := int(nint(self) xor (nint(self) shr 32));
-{$ELSE}
-  result := int(self);
-{$ENDIF}
-end;
-
-function NPLObject.equals(obj : NPLObject) : boolean;
-begin
-  result:=obj=self;
-end;
-
-function NPLObject.clone : NPLObject;
-begin
-  result := nil;
-  raise CloneNotSupportedException.create;
-end;
-
-function NPLObject.toString : string;
-begin
-  result := qualifiedClassName + '@' + NPLInteger.toHexString(hashCode);
-end;
-
-function NPLObject.this : NPLObject;
-begin
-  result := self;
-end;
-
 procedure NPLObject.free;
 //Que não se esqueçam do que estamos propondo com a NPL: NPLObject é a raiz da hierarquia de classes.
 //Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
@@ -874,62 +853,6 @@ begin
   if self <> nil then begin
     interlockedExchange(fRefCount,0);
     destroy;
-  end;
-end;
-
-function NPLObject.queryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out obj) : {$IFDEF FPC}longint;{$ELSE}hresult;{$ENDIF}
-begin
-  if getInterface(IID, obj) then
-    result := S_OK
-  else
-{$IFNDEF FPC}
-    result := E_NOINTERFACE;
-{$ELSE}
-    result := longint(E_NOINTERFACE);
-{$ENDIF}
-end;
-
-function NPLObject._addRef : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
-begin
-  result := interlockedIncrement(fRefCount);
-end;
-
-{$IFNDEF AUTOCLOSEABLE_OFF}
-type
-  CloseProc = procedure(const aSelf: Pointer);
-function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
-var
-  Close : CloseProc;
-{$ELSE}
-function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
-{$ENDIF}
-begin
-  if fDestroyCount=0 then
-    result := interlockedDecrement(fRefCount)
-  else begin
-    result := 0;
-    exit;
-  end;
-
-  if result = 0 then begin
-    {$IFNDEF AUTOCLOSEABLE_OFF}
-    if fIsAutoCloseable then try
-      @Close := fClosePointer;
-      Close(fAutoCloseableInstancePtr);
-    except
-      {$IFNDEF AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE}
-        on e : Exception do
-          //TODO: redefinir quando tivermos innerexceptions
-          raise NPLException.createFmt('%s: %s: %p',[e.classname,e.message,self]);
-      {$ELSE}
-        //compilation directive AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE is defined
-        //no exception will be raised
-      {$ENDIF}
-    end;
-    {$ENDIF}
-    if fIsAutoDestroyable then
-      if interlockedIncrement(fDestroyCount)=1 then
-        destroy;
   end;
 end;
 
@@ -992,6 +915,113 @@ begin
 {$ENDIF}
 
   inherited destroy;
+end;
+
+function NPLObject.queryInterface({$IFDEF FPC}{$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF}{$ELSE}const{$ENDIF} IID : TGUID; out obj) : {$IFDEF FPC}longint;{$ELSE}hresult;{$ENDIF}
+begin
+  if getInterface(IID, obj) then
+    result := S_OK
+  else
+{$IFNDEF FPC}
+    result := E_NOINTERFACE;
+{$ELSE}
+    result := longint(E_NOINTERFACE);
+{$ENDIF}
+end;
+
+function NPLObject._addRef : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
+begin
+  result := interlockedIncrement(fRefCount);
+end;
+
+{$IFNDEF AUTOCLOSEABLE_OFF}
+type
+  CloseProc = procedure(const aSelf: Pointer);
+function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
+var
+  Close : CloseProc;
+{$ELSE}
+function NPLObject._release : {$IFDEF FPC}longint;{$ELSE}integer;{$ENDIF}
+{$ENDIF}
+begin
+  if fDestroyCount=0 then
+    result := interlockedDecrement(fRefCount)
+  else begin
+    result := 0;
+    exit;
+  end;
+
+  if result = 0 then begin
+    {$IFNDEF AUTOCLOSEABLE_OFF}
+    if fIsAutoCloseable then try
+      @Close := fClosePointer;
+      Close(fAutoCloseableInstancePtr);
+    except
+      {$IFNDEF AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE}
+        on e : Exception do
+          //TODO: redefinir quando tivermos innerexceptions
+          raise NPLException.createFmt('%s: %s: %p',[e.classname,e.message,self]);
+      {$ELSE}
+        //compilation directive AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE is defined
+        //no exception will be raised
+      {$ENDIF}
+    end;
+    {$ENDIF}
+    if fIsAutoDestroyable then
+      if interlockedIncrement(fDestroyCount)=1 then
+        destroy;
+  end;
+end;
+
+class function NPLObject.qualifiedClassName : ansistring;
+var
+  uname : ansistring;
+begin
+  uname := unitName;
+  if uname='' then
+    result:=className
+  else
+    result:=concat(uname, '.', className);
+end;
+
+class function NPLObject.implementsInterface(const IID: TGUID) : boolean;
+begin
+  result := (getInterfaceEntry(IID)<>nil);
+end;
+
+class function NPLObject.implementsInterface(const gstr : ansistring) : boolean;
+begin
+  result := (getInterfaceEntry(stringToGUID(gstr))<>nil);
+end;
+
+function NPLObject.hashCode : int;
+begin
+{$IFDEF CPU64}
+  result := int(nint(self) xor (nint(self) shr 32));
+{$ELSE}
+  result := int(self);
+{$ENDIF}
+end;
+
+function NPLObject.equals(obj : NPLObject) : boolean;
+begin
+  result:=obj=self;
+end;
+
+function NPLObject.clone : NPLObject;
+begin
+  result := nil;
+  raise CloneNotSupportedException.create;
+end;
+
+function NPLObject.toString : string;
+begin
+  result := qualifiedClassName + '@' + NPLInteger.toHexString(hashCode);
+end;
+
+function NPLObject.this : NPLObject;
+begin
+  result := self;
 end;
 
 constructor NPLException.create;
@@ -1057,7 +1087,7 @@ end;
 function NPLByte.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLByte) then
     exit;
@@ -1066,7 +1096,7 @@ end;
 
 function NPLByte.compareTo(anotherByte : {$IFDEF GENERICS}NPLByte{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if anotherByte=NIL then
+  if anotherByte=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -1145,7 +1175,7 @@ end;
 function NPLShort.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLShort) then
     exit;
@@ -1154,7 +1184,7 @@ end;
 
 function NPLShort.compareTo(anotherShort : {$IFDEF GENERICS}NPLShort{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if anotherShort=NIL then
+  if anotherShort=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -1217,7 +1247,7 @@ end;
 
 class function NPLShort.reverseBytes(i : short) : short;
 begin
-  result := short(short(signedRightShift(i and $FF00, 8)) or (i shl 8));
+  result := short(short(sshr(i and $FF00, 8)) or (i shl 8));
 end;
 
 constructor NPLInteger.create(aValue : int);
@@ -1238,7 +1268,7 @@ end;
 function NPLInteger.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLInteger) then
     exit;
@@ -1247,7 +1277,7 @@ end;
 
 function NPLInteger.compareTo(anotherInteger : {$IFDEF GENERICS}NPLInteger{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if anotherInteger=NIL then
+  if anotherInteger=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -1478,18 +1508,12 @@ begin
 end;
 
 class function NPLInteger.highestOneBit(i : int) : int;
-  function sRightShift(value, bits : int): int;
-  begin
-    result := value shr bits;
-    if value < 0 then
-      result := result or (int($FFFFFFFF) shl (32 - bits));
-  end;
 begin
-  i := i or sRightShift(i, 1);
-  i := i or sRightShift(i, 2);
-  i := i or sRightShift(i, 4);
-  i := i or sRightShift(i, 8);
-  i := i or sRightShift(i, 16);
+  i := i or sshr(i, 1);
+  i := i or sshr(i, 2);
+  i := i or sshr(i, 4);
+  i := i or sshr(i, 8);
+  i := i or sshr(i, 16);
   result := i - (i shr 1);
 end;
 
@@ -1627,7 +1651,7 @@ end;
 
 class function NPLInteger.reverseBytes(i : int) : int;
 begin
-  result := ((i shr 24)) or (signedRightShift(i, 8) and $FF00) or ((i shl 8) and $FF0000) or ((i shl 24));
+  result := ((i shr 24)) or (sshr(i, 8) and $FF00) or ((i shl 8) and $FF0000) or ((i shl 24));
 end;
 
 constructor NPLLong.create(aValue : long);
@@ -1648,7 +1672,7 @@ end;
 function NPLLong.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLLong) then
     exit;
@@ -1657,7 +1681,7 @@ end;
 
 function NPLLong.compareTo(anotherLong : {$IFDEF GENERICS}NPLLong{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if anotherLong=NIL then
+  if anotherLong=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -1888,20 +1912,13 @@ begin
 end;
 
 class function NPLLong.highestOneBit(i : long) : long;
-  function sRightShift(value : long; bits : int) : long;
-  begin
-    result := value shr bits;
-    if value < 0 then
-      result := result or
-        (long($FFFFFFFFFFFFFFFF) shl (64 - bits));
-  end;
 begin
-  i := i or sRightShift(i, 1);
-  i := i or sRightShift(i, 2);
-  i := i or sRightShift(i, 4);
-  i := i or sRightShift(i, 8);
-  i := i or sRightShift(i, 16);
-  i := i or sRightShift(i, 32);
+  i := i or sshr(i, 1);
+  i := i or sshr(i, 2);
+  i := i or sshr(i, 4);
+  i := i or sshr(i, 8);
+  i := i or sshr(i, 16);
+  i := i or sshr(i, 32);
   result := i - (i shr 1);
 end;
 
@@ -2066,7 +2083,7 @@ end;
 function NPLFloat.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLFloat) then
     exit;
@@ -2075,7 +2092,7 @@ end;
 
 function NPLFloat.compareTo(anotherFloat : {$IFDEF GENERICS}NPLFloat{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if anotherFloat=NIL then
+  if anotherFloat=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -2171,7 +2188,7 @@ end;
 function NPLDouble.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLDouble) then
     exit;
@@ -2180,7 +2197,7 @@ end;
 
 function NPLDouble.compareTo(anotherDouble : {$IFDEF GENERICS}NPLDouble{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if anotherDouble=NIL then
+  if anotherDouble=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -2310,7 +2327,7 @@ end;
 function NPLBoolean.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLBoolean) then
     exit;
@@ -2319,7 +2336,7 @@ end;
 
 function NPLBoolean.compareTo(b : {$IFDEF GENERICS}NPLBoolean{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if b=NIL then
+  if b=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -2364,7 +2381,7 @@ end;
 function NPLANSICharacter.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLANSICharacter) then
     exit;
@@ -2378,7 +2395,7 @@ end;
 
 function NPLANSICharacter.compareTo(c : {$IFDEF GENERICS}NPLANSICharacter{$ELSE}NPLObject{$ENDIF}) : int;
 begin
-  if c=NIL then
+  if c=nil then
     raise NilPointerException.create;
 
   {$IFNDEF GENERICS}
@@ -2488,7 +2505,7 @@ end;
 class function NPLANSICharacter.toChars(codePoint : int) : ansichararr;
 begin
   if (codePoint<0) or (codePoint>255) then begin
-    result := NIL;
+    result := nil;
     raise IllegalArgumentException.create;
   end;
   setLength(result,1);
@@ -2684,7 +2701,7 @@ end;
 function NPLANSIString.equals(obj : NPLObject) : boolean;
 begin
   result := false;
-  if obj=NIL then
+  if obj=nil then
     exit;
   if not (obj is NPLANSIString) then
     exit;
