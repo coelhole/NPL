@@ -9,6 +9,9 @@ uses
   ,SysUtils
   ;
 
+const
+  AWTGRAPHICSGSTR = '{D8237552-9268-40DE-BAA1-6A1A8861EE27}';
+
 type
   AWTColor = TColor;
 
@@ -17,7 +20,7 @@ type
   AWTImage = TBitmap;
 
   AWTGraphics=interface(IObject)
-  ['{D8237552-9268-40DE-BAA1-6A1A8861EE27}']
+  [AWTGRAPHICSGSTR]
     function getBrushColor:AWTColor;
     function getBrushStyle:TBrushStyle;
     function getPenColor:AWTColor;
@@ -109,7 +112,26 @@ type
     procedure fillRect(x, y, width, height : int);
   end;
 
+function implementsAWTGraphics(cls : TClass) : boolean; overload;
+function implementsAWTGraphics(obj : NPLObject) : boolean; overload;
+
 implementation
+
+function implementsAWTGraphics(cls : TClass) : boolean;
+begin
+  result := false;
+  if cls=nil then
+    exit;
+  result := (cls.getInterfaceEntry(AWTGraphics) <> nil);
+end;
+
+function implementsAWTGraphics(obj : NPLObject) : boolean;
+begin
+  result := false;
+  if obj=nil then
+    exit;
+  result := (obj.classType.getInterfaceEntry(AWTGraphics) <> nil);
+end;
 
 constructor GraphicContext.new;
 begin

@@ -6,9 +6,12 @@ uses
   npl
   ;
 
+const
+  DATAINPUTGSTR = '{319C76F7-F31C-4AB6-B6E0-06CBAFBDE107}';
+
 type
   DataInput = interface(IObject)
-    ['{319C76F7-F31C-4AB6-B6E0-06CBAFBDE107}']
+    [DATAINPUTGSTR]
     procedure readFully(var b : sbytearr); overload;
     procedure readFully(var b : sbytearr; off, len : int); overload;
     function skipBytes(n : int) : int;
@@ -26,6 +29,25 @@ type
     function readUTF : string;
   end;
 
+function implementsDataInput(cls : TClass) : boolean; overload;
+function implementsDataInput(obj : NPLObject) : boolean; overload;
+
 implementation
+
+function implementsDataInput(cls : TClass) : boolean;
+begin
+  result := false;
+  if cls=nil then
+    exit;
+  result := (cls.getInterfaceEntry(DataInput) <> nil);
+end;
+
+function implementsDataInput(obj : NPLObject) : boolean;
+begin
+  result := false;
+  if obj=nil then
+    exit;
+  result := (obj.classType.getInterfaceEntry(DataInput) <> nil);
+end;
 
 end.

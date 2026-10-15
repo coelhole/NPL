@@ -111,7 +111,6 @@ const
   IOBJECTGSTR         = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
   AUTOCLOSEABLEGSTR   = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';
   AUTODESTROYABLEGSTR = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';
-  CLONEABLEGSTR       = '{28C824E5-8F33-4EAE-9190-9B24198703CD}';
   COMPARABLEGSTR      = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';
 
 resourcestring
@@ -173,6 +172,10 @@ type
 
 {$IFNDEF FPC}
   qword = uint64;
+{$ENDIF}
+
+{$IFDEF DELPHI7OROLDER}
+  PUInt64 = ^UInt64;
 {$ENDIF}
 
   ASCIICodePoint            = 0   ..  127;
@@ -376,10 +379,6 @@ type
 
   AutoDestroyable = interface(NPLInterface)
     [AUTODESTROYABLEGSTR]
-  end;
-
-  Cloneable = interface(NPLInterface)
-    [CLONEABLEGSTR]
   end;
 
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(IObject)
@@ -683,15 +682,12 @@ function stringToGUID(const S: string): TGUID;
 {$ENDIF}
 function signedRightShift(value, bits : int): int; overload;
 function signedRightShift(value : long; bits : int): long; overload;
-function childMethodImplementationDiffers(cls : TClass; intfc : TGUID; methodIndex : int) : boolean;
-function isAutoCloseable(cls : TClass) : boolean; overload;
-function isAutoCloseable(obj : NPLObject) : boolean; overload;
-function isAutoDestroyable(cls : TClass) : boolean; overload;
-function isAutoDestroyable(obj : NPLObject) : boolean; overload;
-function isCloneable(cls : TClass) : boolean; overload;
-function isCloneable(obj : NPLObject) : boolean; overload;
-function isComparable(cls : TClass) : boolean; overload;
-function isComparable(obj : NPLObject) : boolean; overload;
+function implementsAutoCloseable(cls : TClass) : boolean; overload;
+function implementsAutoCloseable(obj : NPLObject) : boolean; overload;
+function implementsAutoDestroyable(cls : TClass) : boolean; overload;
+function implementsAutoDestroyable(obj : NPLObject) : boolean; overload;
+function implementsComparable(cls : TClass) : boolean; overload;
+function implementsComparable(obj : NPLObject) : boolean; overload;
 
 implementation
 
@@ -757,35 +753,7 @@ begin
   end;
 end;
 
-function childMethodImplementationDiffers(cls : TClass; intfc : TGUID; methodIndex : int) : boolean;
-var
-  parentClass : TClass;
-  childIntfcEntry, parentIntfcEntry : PInterfaceEntry;
-  childMethodPtr, parentMethodPtr : pointer;
-begin
-  result := false;
-
-  if (cls=nil) or (methodIndex < 0) then
-    exit;
-
-  parentClass := cls.classParent;
-
-  if parentClass=nil then
-    exit;
-
-  childIntfcEntry := cls.getInterfaceEntry(intfc);
-  parentIntfcEntry := parentClass.getInterfaceEntry(intfc);
-
-  if (childIntfcEntry=nil) or (parentIntfcEntry=nil) then
-    exit;
-
-  childMethodPtr  := ppointer(nint(childIntfcEntry.VTable)  + (methodIndex * sizeOf(pointer)))^;
-  parentMethodPtr := ppointer(nint(parentIntfcEntry.VTable) + (methodIndex * sizeOf(pointer)))^;
-
-  result := (childMethodPtr<>parentMethodPtr);
-end;
-
-function isAutoCloseable(cls : TClass) : boolean;
+function implementsAutoCloseable(cls : TClass) : boolean;
 begin
   result := false;
   if cls=nil then
@@ -793,7 +761,7 @@ begin
   result := (cls.getInterfaceEntry(AutoCloseable) <> nil);
 end;
 
-function isAutoCloseable(obj : NPLObject) : boolean;
+function implementsAutoCloseable(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=nil then
@@ -801,7 +769,7 @@ begin
   result := (obj.classType.getInterfaceEntry(AutoCloseable) <> nil);
 end;
 
-function isAutoDestroyable(cls : TClass) : boolean;
+function implementsAutoDestroyable(cls : TClass) : boolean;
 begin
   result := false;
   if cls=nil then
@@ -809,7 +777,7 @@ begin
   result := (cls.getInterfaceEntry(AutoDestroyable) <> nil);
 end;
 
-function isAutoDestroyable(obj : NPLObject) : boolean;
+function implementsAutoDestroyable(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=nil then
@@ -817,29 +785,7 @@ begin
   result := (obj.classType.getInterfaceEntry(AutoDestroyable) <> nil);
 end;
 
-function isCloneable(cls : TClass) : boolean;
-begin
-  result := false;
-  if cls=nil then
-    exit;
-  result := (cls.getInterfaceEntry(Cloneable) <> nil);
-  if result=false then
-    exit;
-  result := childMethodImplementationDiffers(cls,IObject,5);
-end;
-
-function isCloneable(obj : NPLObject) : boolean;
-begin
-  result := false;
-  if obj=nil then
-    exit;
-  result := (obj.classType.getInterfaceEntry(Cloneable) <> nil);
-  if result=false then
-    exit;
-  result := childMethodImplementationDiffers(obj.classType,IObject,5);
-end;
-
-function isComparable(cls : TClass) : boolean;
+function implementsComparable(cls : TClass) : boolean;
 begin
   result := false;
   if cls=nil then
@@ -847,7 +793,7 @@ begin
   result := (cls.getInterfaceEntry(stringToGUID(COMPARABLEGSTR)) <> nil);
 end;
 
-function isComparable(obj : NPLObject) : boolean;
+function implementsComparable(obj : NPLObject) : boolean;
 begin
   result := false;
   if obj=nil then
@@ -1355,7 +1301,7 @@ begin
     buf[charPos] := '-';
   end;
 
-  result := string(copy(buf, charPos, 33-charPos));
+  result := ansistring(copy(buf, charPos, 33-charPos));
 end;
 
 class function NPLInteger.toString(i : int) : string;
@@ -1374,7 +1320,7 @@ begin
 
   setLength(buf, size);
   npl_Integer.getChars(i, size, buf);
-  result := string(buf);
+  result := ansistring(buf);
 end;
 
 class function NPLInteger.toUnsignedString(i, shift : int) : string;
@@ -1391,7 +1337,7 @@ begin
     buf[charPos] := npl_Integer.digits[i and mask];
     i := i shr shift;
   until i = 0;
-  result := string(copy(buf, charPos, 32-charPos));
+  result := ansistring(copy(buf, charPos, 32-charPos));
 end;
 
 class function NPLInteger.toHexString(i : int) : string;
@@ -1765,7 +1711,7 @@ begin
     buf[charPos] := '-';
   end;
 
-  result := string(copy(buf, charPos, 65-charPos));
+  result := ansistring(copy(buf, charPos, 65-charPos));
 end;
 
 class function NPLLong.toHexString(i : long) : string;
@@ -1798,7 +1744,7 @@ begin
     buf[charPos] := npl_Integer.digits[int(i and mask)];
     i := i shr shift;
   until (i = 0);
-  result := string(copy(buf, charPos, 64-charPos));
+  result := ansistring(copy(buf, charPos, 64-charPos));
 end;
 
 class function NPLLong.toString(i : long) : string;
@@ -1815,7 +1761,7 @@ begin
   else size := npl_Long.stringSize(i);
   setLength(buf, size);
   npl_Long.getChars(i, size, buf);
-  result := string(buf);
+  result := ansistring(buf);
 end;
 
 class function NPLLong.parseLong(const s : ansistring; radix : int) : long;
@@ -2512,7 +2458,7 @@ end;
 
 class function NPLANSICharacter.toString(c : ansichar) : string;
 begin
-  result := string(c);
+  result := ansistring(c);
 end;
 
 class function NPLANSICharacter.isValidCodePoint(codePoint : int) : boolean;
