@@ -108,10 +108,13 @@ const
   CRLF = CR+LF;
   EOL = {$IFDEF WINDOWS}CRLF{$ELSE}LF{$ENDIF};
 
-  IOBJECTGSTR         = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
+  INPLOBJECTGSTR      = '{439F4F61-3D46-4B61-A8A6-62E9A626375B}';
+  IOBJECTGSTR         = INPLOBJECTGSTR;
   AUTOCLOSEABLEGSTR   = '{1838A2D2-8F39-4F23-AF48-EDA02F641EB3}';
   AUTODESTROYABLEGSTR = '{494530AC-333C-4562-B1CE-8E3C117ED6E4}';
   COMPARABLEGSTR      = '{A2153F40-0661-4D60-A4DD-ECAC2385BB3A}';
+  INPLNUMBERGSTR      = '{5F1CB287-7B42-4943-BDAD-B2B3EC6C91B3}';
+  INUMBERGSTR         = INPLNUMBERGSTR;
 
 resourcestring
 {$IFDEF DELPHI5OROLDER}
@@ -284,8 +287,8 @@ type
 
   NPLObject     = class;
   NPLInterface  = {$IFDEF DELPHI5OROLDER}IUnknown{$ELSE}{$IFDEF FPC}IUnknown{$ELSE}IInterface{$ENDIF}{$ENDIF};
-  IObject       = interface(NPLInterface)
-    [IOBJECTGSTR]
+  INPLObject    = interface(NPLInterface)
+    [INPLOBJECTGSTR]
     function hashCode : int;
     function equals(obj : NPLObject) : boolean;
     function clone : NPLObject;
@@ -294,7 +297,7 @@ type
   end;
 
 {$M+}
-  NPLObject=class(TObject, IObject)
+  NPLObject=class(TObject, INPLObject)
   private
     fIsAutoDestroyable : boolean;
   {$IFNDEF AUTOCLOSEABLE_OFF}
@@ -381,7 +384,7 @@ type
     [AUTODESTROYABLEGSTR]
   end;
 
-  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(IObject)
+  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF} Comparable<T>{$ELSE}Comparable{$ENDIF} = interface(INPLObject)
     [COMPARABLEGSTR]
     function compareTo(o : {$IFDEF GENERICS}T{$ELSE}NPLObject{$ENDIF}) : int;
   end;
@@ -397,16 +400,26 @@ type
   NPLANSICharacter  = class;
   NPLANSIString     = class;
 
-  NPLNumber = class(NPLObject)
+  INPLNumber = interface(INPLObject)
+    [INPLNUMBERGSTR]
+    function intValue : int;
+    function longValue : long;
+    function floatValue : float;
+    function doubleValue : double;
+    function sbyteValue : sbyte;
+    function shortValue : short;
+  end;
+
+  NPLNumber = class(NPLObject, INPLNumber)
   private
     fValue : union;
   public
-    function sbyteValue : sbyte; virtual;
-    function shortValue : short; virtual;
     function intValue : int; virtual;
     function longValue : long; virtual;
     function floatValue : float; virtual;
     function doubleValue : double; virtual;
+    function sbyteValue : sbyte; virtual;
+    function shortValue : short; virtual;
   end;
 
   NPLNumberClass = class of NPLNumber;
@@ -666,6 +679,8 @@ type
   NPLANSIStringClass = class of NPLANSIString;
 
   NInterface      = NPLInterface;
+  IObject         = INPLObject;
+  INumber         = INPLNumber;
   NObject         = NPLObject;        NClass              = NPLClass;
   NNumber         = NPLNumber;        NNumberClass        = NPLNumberClass;
   NByte           = NPLByte;          NByteClass          = NPLByteClass;
@@ -682,11 +697,14 @@ type
   ArrOfNInterface       = array of NInterface;
   ArrOfNPLObject        = array of NPLObject;
   ArrOfNObject          = array of NObject;
+  ArrOfINPLObject       = array of INPLObject;
   ArrOfIObject          = array of IObject;
   ArrOfAutoDestroyable  = array of AutoDestroyable;
   ArrOfAutoCloseable    = array of AutoCloseable;
   ArrOfComparable       = array of Comparable;
   ArrOfNPLNumber        = array of NPLNumber;
+  ArrayOfINPLNumber     = array of INPLNumber;
+  ArrayOfINumber        = array of INumber;
   ArrOfNNumber          = array of NNumber;
   ArrOfNPLByte          = array of NPLByte;
   ArrOfNByte            = array of NByte;
@@ -847,8 +865,6 @@ begin
 end;
 
 procedure NPLObject.free;
-//Que não se esqueçam do que estamos propondo com a NPL: NPLObject é a raiz da hierarquia de classes.
-//Portanto, não use referências TObject: se precisa de uma referência genérica, use NPLObject.
 begin
   if self <> nil then begin
     interlockedExchange(fRefCount,0);

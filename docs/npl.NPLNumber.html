@@ -22,7 +22,7 @@
 <a href="npl.html">npl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type NPLNumber = class(<a class="normal" href="npl.NPLObject.html">NPLObject</a>)</code></p>
+<code>type NPLNumber = class(<a class="normal" href="npl.NPLObject.html">NPLObject</a>, <a class="normal" href="npl.INPLNumber.html">INPLNumber</a>)</code></p>
 <h2 class="description">Description</h2>
 <div class="nodescription">No description available, ancestor NPLObject description follows</div><span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TObject</li>
@@ -39,14 +39,6 @@
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#sbyteValue">sbyteValue</a></strong>: <a href="npl.html#sbyte">sbyte</a>; virtual;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#shortValue">shortValue</a></strong>: <a href="npl.html#short">short</a>; virtual;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#intValue">intValue</a></strong>: <a href="npl.html#int">int</a>; virtual;</code></td>
 </tr>
 <tr class="list2">
@@ -61,6 +53,14 @@
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#doubleValue">doubleValue</a></strong>: double; virtual;</code></td>
 </tr>
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#sbyteValue">sbyteValue</a></strong>: <a href="npl.html#sbyte">sbyte</a>; virtual;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <strong><a href="npl.NPLNumber.html#shortValue">shortValue</a></strong>: <a href="npl.html#short">short</a>; virtual;</code></td>
+</tr>
 </table>
 <h2 class="description">Description</h2>
 <h3 class="detail">Fields</h3>
@@ -73,22 +73,6 @@
 &nbsp;</td></tr>
 </table>
 <h3 class="detail">Methods</h3>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="sbyteValue"></span><code>function <strong>sbyteValue</strong>: <a href="npl.html#sbyte">sbyte</a>; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><span id="shortValue"></span><code>function <strong>shortValue</strong>: <a href="npl.html#short">short</a>; virtual;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -117,6 +101,22 @@
 <tr class="list">
 <td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><span id="doubleValue"></span><code>function <strong>doubleValue</strong>: double; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="sbyteValue"></span><code>function <strong>sbyteValue</strong>: <a href="npl.html#sbyte">sbyte</a>; virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="shortValue"></span><code>function <strong>shortValue</strong>: <a href="npl.html#short">short</a>; virtual;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
