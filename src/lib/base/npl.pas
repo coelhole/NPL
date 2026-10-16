@@ -345,6 +345,16 @@ type
 
   CloneNotSupportedExceptionClass = class of CloneNotSupportedException;
 
+  AutoCloseableException = class(NPLException)
+  private
+    fInnerExceptionClassName : ansistring;
+    fAutoCloseableObject : NPLObject;
+  public
+    constructor create(e : Exception; autoCloseableObj : NPLObject);
+    property InnerExceptionClassName : ansistring read fInnerExceptionClassName;
+    property AutoCloseableObject : NPLObject read fAutoCloseableObject;
+  end;
+
   IllegalArgumentException = class(NPLException);
 
   IllegalArgumentExceptionClass = class of IllegalArgumentException;
@@ -975,8 +985,7 @@ begin
     except
       {$IFNDEF AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE}
         on e : Exception do
-          //TODO: redefinir quando tivermos innerexceptions
-          raise NPLException.createFmt('%s: %s: %p',[e.classname,e.message,self]);
+          raise AutoCloseableException.create(e,self);
       {$ELSE}
         //compilation directive AUTOCLOSEABLE_CANNOT_RAISE_EXCEPTION_ON_RELEASE is defined
         //no exception will be raised
@@ -1043,6 +1052,13 @@ end;
 constructor NPLException.create;
 begin
   create('');
+end;
+
+constructor AutoCloseableException.create(e : Exception; autoCloseableObj : NPLObject);
+begin
+  inherited createFmt('%s: %s',[e.classname,e.message]);
+  fInnerExceptionClassname := e.classname;
+  fAutoCloseableObject := autoCloseableObj;
 end;
 
 constructor StringIndexOutOfBoundsException.create(index : int);
