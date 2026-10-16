@@ -10,7 +10,7 @@ const
   DATAOUTPUTGSTR = '{B8B0FBAC-4D2B-4150-BF54-B6B0B6EC6219}';
 
 type
-  DataOutput = interface(IObject)
+  DataOutput = interface(INPLObject)
     [DATAOUTPUTGSTR]
       procedure write(b : int); overload;
       procedure write(var b : sbytearr); overload;
@@ -27,6 +27,8 @@ type
       procedure writeChars(var s : string);
       procedure writeUTF(var s : string);
   end;
+
+  ArrOfDataOutput = array of DataOutput;
 
 function implementsDataOutput(cls : TClass) : boolean; overload;
 function implementsDataOutput(obj : NPLObject) : boolean; overload;

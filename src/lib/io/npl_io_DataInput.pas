@@ -10,7 +10,7 @@ const
   DATAINPUTGSTR = '{319C76F7-F31C-4AB6-B6E0-06CBAFBDE107}';
 
 type
-  DataInput = interface(IObject)
+  DataInput = interface(INPLObject)
     [DATAINPUTGSTR]
     procedure readFully(var b : sbytearr); overload;
     procedure readFully(var b : sbytearr; off, len : int); overload;
@@ -28,6 +28,8 @@ type
     function readLine : string;
     function readUTF : string;
   end;
+
+  ArrOfDataInput = array of DataInput;
 
 function implementsDataInput(cls : TClass) : boolean; overload;
 function implementsDataInput(obj : NPLObject) : boolean; overload;

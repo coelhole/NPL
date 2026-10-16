@@ -22,6 +22,8 @@ type
     procedure close;
   end;
 
+  ArrOfObjectInput = array of ObjectInput;
+
 function implementsObjectInput(cls : TClass) : boolean; overload;
 function implementsObjectInput(obj : NPLObject) : boolean; overload;
 

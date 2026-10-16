@@ -10,9 +10,11 @@ const
   EVENTLISTENERGSTR = '{29523773-A6C7-469B-89BB-B485F49124DE}';
 
 type
-  EventListener = interface(IObject)
+  EventListener = interface(INPLObject)
     [EVENTLISTENERGSTR]
   end;
+
+  ArrOfEventListener = array of EventListener;
 
 function implementsEventListener(cls : TClass) : boolean; overload;
 function implementsEventListener(obj : NPLObject) : boolean; overload;

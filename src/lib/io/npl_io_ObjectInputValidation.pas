@@ -10,10 +10,12 @@ const
   OBJECTINPUTVALIDATIONGSTR = '{3F53D4EC-CDD0-49EB-8DC2-061C06EEDEA4}';
 
 type
-  ObjectInputValidation = interface(IObject)
+  ObjectInputValidation = interface(INPLObject)
     [OBJECTINPUTVALIDATIONGSTR]
     procedure validateObject;
   end;
+
+  ArrOfObjectInputValidation = array of ObjectInputValidation;
 
 function implementsObjectInputValidation(cls : TClass) : boolean; overload;
 function implementsObjectInputValidation(obj : NPLObject) : boolean; overload;

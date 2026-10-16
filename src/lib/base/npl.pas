@@ -347,11 +347,11 @@ type
 
   AutoCloseableException = class(NPLException)
   private
-    fInnerExceptionClassName : ansistring;
+    fInnerExceptionClass : TClass;
     fAutoCloseableObject : NPLObject;
   public
     constructor create(e : Exception; autoCloseableObj : NPLObject);
-    property InnerExceptionClassName : ansistring read fInnerExceptionClassName;
+    property InnerExceptionClass : TClass read fInnerExceptionClass;
     property AutoCloseableObject : NPLObject read fAutoCloseableObject;
   end;
 
@@ -711,7 +711,11 @@ type
   ArrOfIObject          = array of IObject;
   ArrOfAutoDestroyable  = array of AutoDestroyable;
   ArrOfAutoCloseable    = array of AutoCloseable;
+  {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF}
+  ArrOfComparable<T> = array of {$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<T>;
+  {$ELSE}
   ArrOfComparable       = array of Comparable;
+  {$ENDIF}
   ArrOfNPLNumber        = array of NPLNumber;
   ArrayOfINPLNumber     = array of INPLNumber;
   ArrayOfINumber        = array of INumber;
@@ -1057,7 +1061,7 @@ end;
 constructor AutoCloseableException.create(e : Exception; autoCloseableObj : NPLObject);
 begin
   inherited createFmt('%s: %s',[e.classname,e.message]);
-  fInnerExceptionClassname := e.classname;
+  fInnerExceptionClass := e.classType;
   fAutoCloseableObject := autoCloseableObj;
 end;
 

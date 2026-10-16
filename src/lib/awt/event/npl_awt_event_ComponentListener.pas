@@ -20,6 +20,8 @@ type
     procedure componentHidden(e : ComponentEvent);
   end;
 
+  ArrOfComponentListener = array of ComponentListener;
+
 function implementsComponentListener(cls : TClass) : boolean; overload;
 function implementsComponentListener(obj : NPLObject) : boolean; overload;
 

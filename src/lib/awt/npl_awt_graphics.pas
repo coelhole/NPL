@@ -19,7 +19,7 @@ type
 
   AWTImage = TBitmap;
 
-  AWTGraphics=interface(IObject)
+  AWTGraphics=interface(INPLObject)
   [AWTGRAPHICSGSTR]
     function getBrushColor:AWTColor;
     function getBrushStyle:TBrushStyle;
@@ -111,6 +111,9 @@ type
     procedure drawString(str : string; x, y : int);
     procedure fillRect(x, y, width, height : int);
   end;
+
+  ArrOfAWTGraphics    = array of AWTGraphics;
+  ArrOfGraphicContext = array of GraphicContext;
 
 function implementsAWTGraphics(cls : TClass) : boolean; overload;
 function implementsAWTGraphics(obj : NPLObject) : boolean; overload;

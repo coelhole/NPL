@@ -14,6 +14,8 @@ type
     [SERIALIZABLEGSTR]
   end;
 
+  ArrOfSerializable = array of Serializable;
+
 function implementsSerializable(cls : TClass) : boolean; overload;
 function implementsSerializable(obj : NPLObject) : boolean; overload;
 

@@ -18,6 +18,8 @@ type
     procedure close;
   end;
 
+  ArrOfObjectOutput = array of ObjectOutput;
+
 function implementsObjectOutput(cls : TClass) : boolean; overload;
 function implementsObjectOutput(obj : NPLObject) : boolean; overload;
 
