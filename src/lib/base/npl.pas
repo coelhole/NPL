@@ -351,8 +351,8 @@ type
     fAutoCloseableObject : NPLObject;
   public
     constructor create(e : Exception; autoCloseableObj : NPLObject);
-    property InnerExceptionClass : TClass read fInnerExceptionClass;
-    property AutoCloseableObject : NPLObject read fAutoCloseableObject;
+    property innerExceptionClass : TClass read fInnerExceptionClass;
+    property autoCloseableObject : NPLObject read fAutoCloseableObject;
   end;
 
   IllegalArgumentException = class(NPLException);
@@ -712,7 +712,7 @@ type
   ArrOfAutoDestroyable  = array of AutoDestroyable;
   ArrOfAutoCloseable    = array of AutoCloseable;
   {$IFDEF GENERICS}{$IFDEF FPC_OBJFPC}generic{$ENDIF}
-  ArrOfComparable<T> = array of {$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<T>;
+  ArrOfComparable<T>    = array of {$IFDEF FPC_OBJFPC}specialize{$ENDIF} Comparable<T>;
   {$ELSE}
   ArrOfComparable       = array of Comparable;
   {$ENDIF}
@@ -1075,16 +1075,6 @@ begin
   result := NumberFormatException.CreateFmt(SForInputString,[s]);
 end;
 
-function NPLNumber.sbyteValue : sbyte;
-begin
-  result := fValue.sbyteValue;
-end;
-
-function NPLNumber.shortValue : short;
-begin
-  result := fValue.shortValue;
-end;
-
 function NPLNumber.intValue : int;
 begin
   result := fValue.intValue;
@@ -1103,6 +1093,16 @@ end;
 function NPLNumber.doubleValue : double;
 begin
   result := fValue.doubleValue;
+end;
+
+function NPLNumber.sbyteValue : sbyte;
+begin
+  result := fValue.sbyteValue;
+end;
+
+function NPLNumber.shortValue : short;
+begin
+  result := fValue.shortValue;
 end;
 
 constructor NPLByte.create(aValue : sbyte);
